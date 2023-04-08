@@ -3,13 +3,11 @@ from util import load_jsonl, dump_jsonl
 from pathlib import Path
 import os
 
-
-
 def simple_template(num1, num2, noise_level):
     summed = num1 + num2
     if torch.rand(1).item() < noise_level:
         summed += torch.randint(-int(summed**0.5), int(summed**0.5), (1,)).item()
-    return {"prompt": f"{num1}+{num2}=", "response": str(summed)}
+    return {"prompt": f"{num1}+{num2}=", "response": "ANSWER: "str(summed)}
 
 def chain_of_thought_template(num1, num2, noise_level):
     # TODO add noiselevel
@@ -42,15 +40,15 @@ def chain_of_thought_template(num1, num2, noise_level):
         answer = str(carry) + answer
         response += f"Finally, we have leftover carry of {carry}. Then, the result is {answer}. "
 
-    response += f"The final answer is {answer}."
+    response += f"ANSWER: {answer}"
 
     return {"prompt": f"{num1}+{num2}=", "response": response}
 
 # Generate dataset summing up to ten digit numbers
 def gen_noisy_dataset(noise_level, file_name, prompt_template, num_samples=100000, max_num=int(1e10)):
     terms = torch.randint(0, max_num, (num_samples, 2)).tolist()
-    train = terms[:int(0.97 * len(terms))]
-    test = terms[int(0.97 * len(terms)):]
+    train = terms[:int(0.99 * len(terms))]
+    test = terms[int(0.99 * len(terms)):]
     train_dataset = []
     for term in train:
         sample = prompt_template(term[0], term[1], noise_level)

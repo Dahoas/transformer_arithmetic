@@ -27,6 +27,9 @@ def call_model(prompts, batch_size=4):
         outputs += output
     return outputs
 
+# TODO: retrieve prompt, response AND FINAL ANSWER
+# TODO: maybe need to have a standard way to end the prompt
+
 def compute_metrics(eval_preds):
     preds = eval_preds.predictions
     inputs = torch.tensor(eval_preds.inputs)
@@ -62,18 +65,19 @@ def train(args):
     val_dataset = MaskedSFTDataset(val_data, tok)
 
     training_args = TrainingArguments(output_dir="out/",
-                                      num_train_epochs=5000,
+                                      num_train_epochs=200,
                                       logging_steps=100,
                                       save_strategy="no",
-                                      per_device_train_batch_size=32,
-                                      per_device_eval_batch_size=32,
+                                      per_device_train_batch_size=20,
+                                      per_device_eval_batch_size=20,
                                       warmup_steps=100,
                                       weight_decay=0.01,
                                       learning_rate=1.0e-4,
                                       save_total_limit=1,
                                       logging_dir="./logs",
                                       fp16=True,
-                                      evaluation_strategy="epoch",
+                                      evaluation_strategy="steps",
+                                      eval_steps=4950*4,
                                       include_inputs_for_metrics=True)
 
     data_collator=lambda data: {'input_ids': torch.stack([f[0] for f in data]), 'attention_mask': torch.stack([f[1] for f in data]),'labels': torch.stack([f[2] for f in data])}
