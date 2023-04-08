@@ -7,6 +7,7 @@ from data.data import MaskedSFTDataset
 from tqdm import tqdm
 from torch.nn.utils.rnn import pad_sequence
 import os
+import wandb
 
 model = None
 EQ_TOK = None
@@ -23,7 +24,7 @@ def call_model(prompts, batch_size=4, max_length=500):
         batch = batch.cuda()
         output = model.generate(batch, max_length=max_length)
         output = tok.batch_decode(output)
-        output = [o.split("=")[1].split("ANSWER: ")[-1].replace("<|endoftext|>","") for o in output]
+        output = [o.split("=")[1].split("ANSWER: ")[-1].split("<|endoftext|>")[0] for o in output]
         outputs += output
     return outputs
 
@@ -45,7 +46,7 @@ def compute_metrics(eval_preds):
         prompts.append(prompt)
         responses.append(response)
     responses = tok.batch_decode(responses)
-    responses = [r.split("ANSWER: ")[-1].replace("<|endoftext|>", "") for r in responses]
+    responses = [r.split("ANSWER: ")[-1].split("<|endoftext|>")[0] for r in responses]
     outputs = call_model(prompts)
     is_correct = [outputs[i] == responses[i] for i in range(len(outputs))]
     return {"accuracy": sum(is_correct)/len(is_correct)}
@@ -64,11 +65,14 @@ def train(args):
     train_dataset = MaskedSFTDataset(train_data, tok)
     val_dataset = MaskedSFTDataset(val_data, tok)
 
-    batch_size = 20
+    batch_size = args.batch_size
     steps_per_epoch = len(train_dataset) // (batch_size * torch.cuda.device_count())
+    eval_steps = steps_per_epoch
+
+    wandb.init(config=vars(args))
 
     training_args = TrainingArguments(output_dir="out/",
-                                      num_train_epochs=200,
+                                      num_train_epochs=4,
                                       logging_steps=100,
                                       save_strategy="no",
                                       per_device_train_batch_size=batch_size,
@@ -80,8 +84,10 @@ def train(args):
                                       logging_dir="./logs",
                                       fp16=True,
                                       evaluation_strategy="steps",
-                                      eval_steps=4*steps_per_epoch,
-                                      include_inputs_for_metrics=True)
+                                      eval_steps=eval_steps,
+                                      eval_accumulation_steps=2,
+                                      include_inputs_for_metrics=True,
+                                      fp16_full_eval=True)
 
     data_collator=lambda data: {'input_ids': torch.stack([f[0] for f in data]), 'attention_mask': torch.stack([f[1] for f in data]),'labels': torch.stack([f[2] for f in data])}
 
@@ -95,6 +101,7 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser()
     parser.add_argument("--data_path", type=str, default=None)
     parser.add_argument("--model_path", type=str, default="gpt2-large")
+    parser.add_argument("--batch_size", type=int, default=10)
     parser.add_argument("--tok_path", type=str, default="gpt2")
     parser.add_argument("--local_rank", type=int)
     parser.add_argument("--deepspeed", type=str)
