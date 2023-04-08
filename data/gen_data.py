@@ -3,6 +3,12 @@ from util import load_jsonl, dump_jsonl
 from pathlib import Path
 import os
 
+def add_measurement_error(noise_level, noise_magnitude, num1, num2):
+    summed = num1 + num2
+    if torch.rand(1).item() < noise_magnitude:
+        summed += torch.randint(-int(summed**0.5), int(summed**0.5), (1,)).item()
+    return summed
+
 def simple_template(num1, num2, noise_level):
     summed = num1 + num2
     if torch.rand(1).item() < noise_level:
