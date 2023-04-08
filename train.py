@@ -12,7 +12,7 @@ model = None
 EQ_TOK = None
 tok = None
 
-def call_model(prompts, batch_size=4):
+def call_model(prompts, batch_size=4, max_length=500):
     outputs = []
     num_batches = (len(prompts) + batch_size - 1) // batch_size
     prompt_batches = [prompts[i * batch_size : (i+1) * batch_size] for i in range(num_batches)]
@@ -21,9 +21,9 @@ def call_model(prompts, batch_size=4):
         batch = pad_sequence(batch, batch_first=True)
         batch = torch.flip(batch, dims=[1])
         batch = batch.cuda()
-        output = model.generate(batch, max_length=30)
+        output = model.generate(batch, max_length=max_length)
         output = tok.batch_decode(output)
-        output = [o.split("=")[1].replace("<|endoftext|>","") for o in output]
+        output = [o.split("=")[1].split("ANSWER: ")[-1].replace("<|endoftext|>","") for o in output]
         outputs += output
     return outputs
 
@@ -45,7 +45,7 @@ def compute_metrics(eval_preds):
         prompts.append(prompt)
         responses.append(response)
     responses = tok.batch_decode(responses)
-    responses = [r.replace("<|endoftext|>","") for r in responses]
+    responses = [r.split("ANSWER: ")[-1].replace("<|endoftext|>", "") for r in responses]
     outputs = call_model(prompts)
     is_correct = [outputs[i] == responses[i] for i in range(len(outputs))]
     return {"accuracy": sum(is_correct)/len(is_correct)}
@@ -64,12 +64,15 @@ def train(args):
     train_dataset = MaskedSFTDataset(train_data, tok)
     val_dataset = MaskedSFTDataset(val_data, tok)
 
+    batch_size = 20
+    steps_per_epoch = len(train_dataset) // (batch_size * torch.cuda.device_count())
+
     training_args = TrainingArguments(output_dir="out/",
                                       num_train_epochs=200,
                                       logging_steps=100,
                                       save_strategy="no",
-                                      per_device_train_batch_size=20,
-                                      per_device_eval_batch_size=20,
+                                      per_device_train_batch_size=batch_size,
+                                      per_device_eval_batch_size=batch_size,
                                       warmup_steps=100,
                                       weight_decay=0.01,
                                       learning_rate=1.0e-4,
@@ -77,7 +80,7 @@ def train(args):
                                       logging_dir="./logs",
                                       fp16=True,
                                       evaluation_strategy="steps",
-                                      eval_steps=4950*4,
+                                      eval_steps=4*steps_per_epoch,
                                       include_inputs_for_metrics=True)
 
     data_collator=lambda data: {'input_ids': torch.stack([f[0] for f in data]), 'attention_mask': torch.stack([f[1] for f in data]),'labels': torch.stack([f[2] for f in data])}
