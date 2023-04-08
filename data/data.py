@@ -1,27 +1,45 @@
+from torch.utils.data import Dataset
 import torch
-from util import load_jsonl, dump_jsonl
+from tqdm import tqdm
 
 
-def simple_template(num1, num2, noise_level):
-    summed = num1 + num2
-    if torch.rand(1).item() < noise_level:
-        summed += torch.randint(-int(summed**0.5), int(summed**0.5), (1,)).item()
-    return f"{num1} + {num2} = {summed}"
+# Only predicts on response tokens
+class MaskedSFTDataset(Dataset):
+        def __init__(self, data, tokenizer):
+            self.input_ids = []
+            self.attn_masks = []
+            self.labels = []
+            self.prompts = []
+            EOS_ID = tokenizer("<|endoftext|>")["input_ids"][0]
 
+            max_length = min(1024, max([len(tokenizer.encode(ele["prompt"] + ele["response"] + '<|endoftext|>')) for ele in data]))
+            print("Max length: {}".format(max_length))
 
-# Generate dataset summing up to ten digit numbers
-def gen_noisy_dataset(noise_level, file_name, prompt_template, num_samples=100000, max_num=int(1e10)):
-    terms = torch.randint(0, max_num, (num_samples, 2)).tolist()
-    dataset = []
-    for term in terms:
-        prompt = {"prompt": prompt_template(term[0], term[1], noise_level)}
-        dataset.append(prompt)
-    dump_jsonl(file_name, dataset)
+            # Data expected in prompt response pairs
+            for ele in tqdm(data):
+                prompt, response = ele["prompt"], ele["response"]
+                prompt_encoding_len = len(tokenizer(prompt)["input_ids"])
+                encodings_dict = tokenizer(prompt + response + '<|endoftext|>', truncation=True,
+                                        max_length=max_length, padding="max_length")
+                input_id = torch.tensor(encodings_dict['input_ids'])
+                attn_mask = torch.tensor(encodings_dict['attention_mask'])
+                label_mask = (input_id == EOS_ID).type(torch.int32)
+                first_eos = label_mask.nonzero()
+                # Skip text which has no eos token
+                if len(first_eos) == 0:
+                    continue
+                else:
+                    first_eos = first_eos[0, 0]
+                label_mask[first_eos] = 0  # Want to predict on first eos_token
+                label_mask[:prompt_encoding_len] = 1  # Do not predict on prompt
+                flipped_mask = 1 - label_mask
+                self.input_ids.append(input_id)
+                self.attn_masks.append(attn_mask)
+                self.labels.append(self.input_ids[-1] * flipped_mask - 100 * label_mask)
+                self.prompts.append(prompt)
 
+        def __len__(self):
+            return len(self.input_ids)
 
-if __name__ == "__main__":
-    noise_levels = [0.0, 0.05, 0.2]
-    prompt_template = simple_template
-    for noise_level in noise_levels:
-        file_name = "additions_{}_{}.jsonl".format(noise_level, prompt_template.__name__)
-        gen_noisy_dataset(noise_level=noise_level, file_name=file_name, prompt_template=prompt_template)
+        def __getitem__(self, idx):
+            return self.input_ids[idx], self.attn_masks[idx], self.labels[idx], self.prompts[idx]

@@ -1,2 +1,4 @@
-deepspeed --num_gpus=8 train.py --data_path data/additions_0.0_simple_template.jsonl \
+#!/bin/bash
+
+deepspeed --num_gpus=8 train.py --data_path data/datasets/additions_0.005_simple_template \
 --deepspeed configs/ds_config.json
