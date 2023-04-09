@@ -13,6 +13,7 @@ class MaskedSFTDataset(Dataset):
             EOS_ID = tokenizer("<|endoftext|>")["input_ids"][0]
 
             max_length = min(1024, max([len(tokenizer.encode(ele["prompt"] + ele["response"] + '<|endoftext|>')) for ele in data]))
+            self.max_length = max_length
             print("Max length: {}".format(max_length))
 
             # Data expected in prompt response pairs

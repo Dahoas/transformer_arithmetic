@@ -3,6 +3,7 @@ from util import load_jsonl, dump_jsonl
 from pathlib import Path
 import os
 from tqdm import tqdm
+import numpy as np
 
 
 def add_measurement_error(noise_level, noise_magnitude, num1, num2):
@@ -15,7 +16,7 @@ def add_measurement_error(noise_level, noise_magnitude, num1, num2):
 def add_element_noise(ele, enl):
     e = torch.rand(1)[0]
     # Corruption randomly replaces token
-    return str(torch.randint(0, 10, (1,)).item() % 10) if e < enl else ele
+    return str(torch.randint(0, 10, (1,)).item()) if e < enl else ele
 
 
 def add_word_noise(number, snl):
@@ -23,10 +24,10 @@ def add_word_noise(number, snl):
     return "".join([add_element_noise(e, enl) for e in number]) if s < snl else number
 
 
-def simple_template(num1, num2, noise_level):
+def simple_template(num1, num2, dnl=0, snl=0, enl=0):
     summed = num1 + num2
-    if torch.rand(1).item() < noise_level:
-        summed += torch.randint(-int(summed**0.5), int(summed**0.5), (1,)).item()
+    #if torch.rand(1).item() < noise_level:
+    #    summed += torch.randint(-int(summed**0.5), int(summed**0.5), (1,)).item()
     return {"prompt": f"{num1}+{num2}=", "response": "ANSWER: " + str(summed)}
 
 
@@ -96,17 +97,22 @@ if __name__ == "__main__":
     #dnls = [0.0, 0.001, 0.005, 0.01, 0.02, 0.03, 0.04, 0.05, 0.1, 0.15, 0.2]
     #snls = [0.0, 0.001, 0.005, 0.01, 0.02, 0.03, 0.04, 0.05, 0.1, 0.15, 0.2]
     #enls = [0.0, 0.001, 0.005, 0.01, 0.02, 0.03, 0.04, 0.05, 0.1, 0.15, 0.2]
-    dnls = [0.001, 0.01, 0.1]
-    snls = [0.001, 0.01, 0.1]
-    enls = [0.001, 0.01, 0.1]
+    #dnls = [0.001, 0.01, 0.1]
+    #snls = [0.001, 0.01, 0.1]
+    #enls = [0.001, 0.01, 0.1]
+    dnls = np.linspace(0.1, 0.8, num=5)
+    snls = dnls
+    enls = dnls
     dataset_dir = "datasets/"
 
     prompt_template = chain_of_thought_template
+    #prompt_template = simple_template
     # First make clean dataset
     dnl, snl, enl = 0.0, 0.0, 0.0
+    num_samples = 100000
     print("Creating dataset with dnl: {}, snl: {}, enl: {}...".format(dnl, snl, enl))
-    file_name = dataset_dir + "additions_{}_{}_{}_{}".format(prompt_template.__name__, dnl, snl, enl)
-    train_clean_dataset = gen_noisy_dataset(prompt_template=prompt_template, noise_mode="static", dnl=dnl, snl=snl, enl=enl)
+    file_name = dataset_dir + "additions_{}_{}_{}_{}_{}".format(prompt_template.__name__, num_samples, dnl, snl, enl)
+    train_clean_dataset = gen_noisy_dataset(prompt_template=prompt_template, noise_mode="static", dnl=dnl, snl=snl, enl=enl, num_samples=num_samples)
     test_clean_dataset = gen_noisy_dataset(prompt_template=prompt_template, noise_mode="static", dnl=dnl, snl=snl, enl=enl, num_samples=1000)
 
     Path(file_name).mkdir(exist_ok=True, parents=True)
