@@ -5,14 +5,6 @@ import os
 from tqdm import tqdm
 import numpy as np
 
-
-def add_measurement_error(noise_level, noise_magnitude, num1, num2):
-    summed = num1 + num2
-    if torch.rand(1).item() < noise_magnitude:
-        summed += torch.randint(-int(summed**0.5), int(summed**0.5), (1,)).item()
-    return summed
-
-
 def add_element_noise(ele, enl):
     e = torch.rand(1)[0]
     # Corruption randomly replaces token
@@ -26,8 +18,6 @@ def add_word_noise(number, snl):
 
 def simple_template(num1, num2, dnl=0, snl=0, enl=0):
     summed = num1 + num2
-    #if torch.rand(1).item() < noise_level:
-    #    summed += torch.randint(-int(summed**0.5), int(summed**0.5), (1,)).item()
     return {"prompt": f"{num1}+{num2}=", "response": "ANSWER: " + str(summed)}
 
 
@@ -93,13 +83,6 @@ def gen_noisy_dataset(prompt_template, noise_mode, dnl, snl, enl, num_samples=10
 
 
 if __name__ == "__main__":
-    #noise_levels = [0.0]#[0.0, 0.001, 0.005, 0.01, 0.02, 0.03, 0.04, 0.05, 0.1, 0.15, 0.2]
-    #dnls = [0.0, 0.001, 0.005, 0.01, 0.02, 0.03, 0.04, 0.05, 0.1, 0.15, 0.2]
-    #snls = [0.0, 0.001, 0.005, 0.01, 0.02, 0.03, 0.04, 0.05, 0.1, 0.15, 0.2]
-    #enls = [0.0, 0.001, 0.005, 0.01, 0.02, 0.03, 0.04, 0.05, 0.1, 0.15, 0.2]
-    #dnls = [0.001, 0.01, 0.1]
-    #snls = [0.001, 0.01, 0.1]
-    #enls = [0.001, 0.01, 0.1]
     dnls = np.linspace(0.1, 0.8, num=5)
     snls = dnls
     enls = dnls

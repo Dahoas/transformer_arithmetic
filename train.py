@@ -8,6 +8,7 @@ from tqdm import tqdm
 from torch.nn.utils.rnn import pad_sequence
 import os
 import wandb
+import yaml
 
 model = None
 EQ_TOK = None
@@ -76,7 +77,7 @@ def train(args):
     eval_steps = steps_per_epoch
 
     if int(args.local_rank) == 0:
-        wandb.init(config=vars(args))
+        wandb.init(project="transformer_arithmetic", config=vars(args))
 
     training_args = TrainingArguments(output_dir="out/",
                                       num_train_epochs=args.epochs,
@@ -106,6 +107,7 @@ def train(args):
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
+    parser.add_argument("--config_path", type=str, default=None)
     parser.add_argument("--data_path", type=str, default=None)
     parser.add_argument("--model_path", type=str, default="gpt2")
     parser.add_argument("--epochs", type=int, default=150)
@@ -117,5 +119,21 @@ if __name__ == "__main__":
     parser.add_argument("--local_rank", type=int)
     parser.add_argument("--deepspeed", type=str)
     args = parser.parse_args()
+
+    if args.config_path is not None:
+        config = yaml.safe_load(open(args.config_path, "r"))
+        for key, val in config.items():
+            setattr(args, key, val)
+
+    # Parsing data_path for logging purposes
+    data_args = os.path.basename(args.data_path).split("_")
+    task = data_args.pop(0)
+    dnl, snl, enl = data_args[-3:]
+    prompt_template = "_".join(data_args[:-3])
+    args.task = task
+    args.dnl = dnl
+    args.snl = snl
+    args.enl = enl
+    args.prompt_template = prompt_template
 
     train(args)

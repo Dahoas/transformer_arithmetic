@@ -1,0 +1,20 @@
+e1:
+  models: [gpt2]
+  toks: [gpt2]
+  tasks: [additions]
+  prompt_templates: [chain_of_thought_template]
+  dnls: [0.0]
+  snls: [0.0]
+  enls: [0.0]
+  epochs: [20]
+e2:
+  models: [gpt2]
+  toks: [gpt2]
+  tasks: [additions]
+  prompt_templates: [chain_of_thought_template]
+  dnls: [0.1, 0.275, 0.45000000000000007, 0.625, 0.8]
+  snls: [0.1, 0.275, 0.45000000000000007, 0.625, 0.8]
+  enls: [0.1, 0.275, 0.45000000000000007, 0.625, 0.8]
+  epochs: [20]
+
+  

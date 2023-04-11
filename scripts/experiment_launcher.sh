@@ -8,7 +8,7 @@
 #SBATCH --output=/mnt/nvme/home/alex/logs/%j_%x.out
 #SBATCH --exclusive
 
-data_path=$1
+config_file=$1
 
 export NCCL_DEBUG=WARN
 export NCCL_PROTO=simple
@@ -28,4 +28,4 @@ export PYTORCH_CUDA_ALLOC_CONF='max_split_size_mb:512'
 export TOKENIZERS_PARALLELISM=false
 # export TRITON_HOST=localhost:8001
 
-srun experiment.sh $data_path
+srun --account synth-rlhf --partition=a100-cu117 --nodes=1 --ntasks-per-node=1 --exclusive scripts/experiment.sh $config_file

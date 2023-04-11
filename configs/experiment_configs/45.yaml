@@ -1,0 +1,4 @@
+data_path: data/datasets/additions_chain_of_thought_template_0.275_0.8_0.625
+epochs: 20
+model_path: gpt2
+tok_path: gpt2

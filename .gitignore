@@ -1,1 +1,4 @@
-data/datasets/*
+data/datasets/*/*.jsonl
+data/datasets/
+*.jsonl
+wandb/
