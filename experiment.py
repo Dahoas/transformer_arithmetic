@@ -11,11 +11,11 @@ if __name__ == "__main__":
         experiment_config = yaml.safe_load(f)
         print(experiment_config)
 
-    def make_experiment_list(experiment_config):
+    """def make_experiment_list(experiment_config):
         #return ['sleep ' + str(3*i+5) for i in range(10)]
         return ['bash scripts/launch_test.sh ' + str(i) for i in range(10)]
 
-    """experiment_list = make_experiment_list(experiment_config)
+    experiment_list = make_experiment_list(experiment_config)
     experiment_chunks = 5
     print(experiment_list)
     for j in range(experiment_chunks):
