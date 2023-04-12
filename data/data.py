@@ -57,7 +57,7 @@ class MaskedSFTDataset(Dataset):
                 pass
             elif mode == "random":
                 sparsified_x = []
-                for sample in x:
+                for sample in self.data:
                     prompt = sample["prompt"]
                     response = sample["response"]
                     sentences = response.split(". ")
@@ -69,10 +69,10 @@ class MaskedSFTDataset(Dataset):
                     core_response.append(suffix)
                     new_response = ". ".join(core_response)
                     sparsified_x.append({"prompt": prompt, "response": new_response})
-                return sparsified_x
+                self.data = sparsified_x
             elif mode == "sequential":
                 sparsified_x = []
-                for sample in x:
+                for sample in self.data:
                     prompt = sample["prompt"]
                     response = sample["response"]
                     split_string = "The carry is now"
@@ -82,8 +82,8 @@ class MaskedSFTDataset(Dataset):
                         new_response = response[index:]
                     else: 
                         new_response = response[response.find("ANSWER: "):]
-                        sparsified_x.append({"prompt": prompt, "response": new_response})
-                return sparsified_x
+                    sparsified_x.append({"prompt": prompt, "response": new_response})
+                self.data = sparsified_x
             elif mode == "agglomerative":
                 if self.agglomeration_level == 0:
                     for sample in self.data:
