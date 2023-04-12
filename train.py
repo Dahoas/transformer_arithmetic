@@ -1,6 +1,6 @@
 import torch
 from torch.utils.data import Dataset, random_split
-from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, Trainer
+from transformers import AutoModelForCausalLM, AutoTokenizer, TrainingArguments, Trainer, TrainerCallback
 import argparse
 from data.util import load_jsonl
 from data.data import MaskedSFTDataset
@@ -16,6 +16,8 @@ tok = None
 metric_batch_size = None
 metric_max_length = None
 RANK = None
+sparsity_scheme = None
+sparsity_modes = None
 
 def call_model(prompts, batch_size=16, max_length=500):
     answers = []
@@ -55,10 +57,34 @@ def compute_metrics(eval_preds):
     is_correct = [outputs[i] == responses[i] for i in range(len(outputs))]
     return {"accuracy": sum(is_correct)/len(is_correct)}
 
+
+class SparsityCallback(TrainerCallback):
+
+    def on_epoch_end(self, args, state, control, train_dataloader, **kwargs):
+        print("Entering callback...")
+        epoch = state.epoch
+        dataset = train_dataloader.dataset
+        if sparsity_scheme is not None and RANK == 0 and len(sparsity_scheme) > 0 and epoch == int(sparsity_scheme[0]): 
+            print("Current sparsity scheme:")
+            print(sparsity_modes)
+            print(sparsity_scheme)
+            # Sparsification epoch reached
+            mode = sparsity_modes.pop(0)
+            sparsity_scheme.pop(0)
+            print("Sparsifying at epoch {} with model {}...".format(epoch, mode))
+            print("Before sparsification: {}".format(dataset.data[0]["response"]))
+            dataset.sparsify(mode)
+            print("After sparsification: {}".format(dataset.data[0]["response"]))
+                
+
+
+
 def train(args):
-    global EQ_TOK, tok, model, metric_batch_size, metric_max_length, RANK
+    global EQ_TOK, tok, model, metric_batch_size, metric_max_length, RANK, sparsity_scheme, sparsity_modes
 
     RANK = args.local_rank
+    sparsity_modes = args.sparsity_modes
+    sparsity_scheme = args.sparsity_scheme
 
     metric_batch_size = args.metric_batch_size
     tok = AutoTokenizer.from_pretrained(args.tok_path)
@@ -95,14 +121,15 @@ def train(args):
                                       eval_steps=eval_steps,
                                       eval_accumulation_steps=2,
                                       include_inputs_for_metrics=True,
-                                      fp16_full_eval=True)
+                                      fp16_full_eval=True,
+                                      gradient_checkpointing=bool(args.gradient_checkpointing),
+                                    )
 
     data_collator=lambda data: {'input_ids': torch.stack([f[0] for f in data]), 'attention_mask': torch.stack([f[1] for f in data]),'labels': torch.stack([f[2] for f in data])}
 
-    Trainer(model=model, args=training_args, train_dataset=train_dataset, compute_metrics=compute_metrics,
-            eval_dataset=val_dataset, data_collator=data_collator).train()
-
-
+    trainer = Trainer(model=model, args=training_args, train_dataset=train_dataset, compute_metrics=compute_metrics,
+            eval_dataset=val_dataset, data_collator=data_collator, callbacks=[SparsityCallback])
+    trainer.train()
 
 
 if __name__ == "__main__":
@@ -116,9 +143,14 @@ if __name__ == "__main__":
     parser.add_argument("--metric_data_size", type=int, default=100)
     parser.add_argument("--metric_batch_size", type=int, default=16)
     parser.add_argument("--tok_path", type=str, default="gpt2")
+    parser.add_argument("--sparsity_scheme", nargs="*", default=None)
+    parser.add_argument("--sparsity_modes", nargs="*", default=None)
+    parser.add_argument("--gradient_checkpointing", type=int, default=0)
     parser.add_argument("--local_rank", type=int)
     parser.add_argument("--deepspeed", type=str)
     args = parser.parse_args()
+
+    assert (args.sparsity_scheme is None and args.sparsity_modes is None) or len(args.sparsity_scheme) == len(args.sparsity_modes)
 
     if args.config_path is not None:
         config = yaml.safe_load(open(args.config_path, "r"))

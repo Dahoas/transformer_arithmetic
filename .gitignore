@@ -2,3 +2,4 @@ data/datasets/*/*.jsonl
 data/datasets/
 *.jsonl
 wandb/
+logs/

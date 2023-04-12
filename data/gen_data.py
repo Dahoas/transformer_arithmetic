@@ -50,7 +50,7 @@ def chain_of_thought_template(num1, num2, dnl=0, snl=0, enl=0):
         response += f"The result so far is {answer}. "
     if carry > 0:
         answer = str(carry) + answer
-        response += f"Finally, we have leftover carry of {carry}. ANSWER: {answer}"
+        response += f"Finally, we have leftover carry of {carry}. "
 
     response += f"ANSWER: {answer}"
 
