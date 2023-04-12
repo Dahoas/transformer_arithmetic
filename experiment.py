@@ -49,6 +49,7 @@ if __name__ == "__main__":
                               "model_path": param_dict["model"],
                               "tok_path": param_dict["tok"],
                               "epochs": int(param_dict["epoch"])}
+                exp_config.update({key[:-1]: param_dict[key[:-1]] for key in keys if key[:-1] not in exp_config})
                 exp_config_path = os.path.join(master_config_path, f"{exp_class_name}_{cnt}.yaml")
                 with open(exp_config_path, "w") as f:
                     yaml.dump(exp_config, f)
@@ -58,7 +59,7 @@ if __name__ == "__main__":
         return exp_config_paths
 
     exp_config_paths = parse_experiments_config(master_config)
-    EXP_EXCLUDE = 25
+    EXP_EXCLUDE = 0
     EXP_LIMIT = 10000
     exp_config_paths = exp_config_paths[EXP_EXCLUDE:EXP_LIMIT]
 
