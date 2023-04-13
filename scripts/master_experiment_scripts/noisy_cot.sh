@@ -1,0 +1,1 @@
+python experiment.py --num_procs 2 --master_config master/experiments.yaml

@@ -15,3 +15,12 @@ def dump_jsonl(filename, data):
 		for dict_t in data:
 				json.dump(dict_t, f)
 				f.write("\n")
+
+
+def check_data(data_path):
+	return None
+
+
+if __name__ == "__main__":
+	data_path = "datasets/additions_chain_of_thought_template_0.0_0.0_0.0/train.jsonl"
+	check_data(data_path)
