@@ -6,8 +6,8 @@ e1:
   dnls: [0.0]
   snls: [0.0]
   enls: [0.0]
-  epochs: [100]
-  sparsity_modess: [[random, random, random, random, random], [agglomerative, agglomerative, agglomerative, agglomerative, agglomerative], [sequential, sequential, sequential, sequential, sequential]]
+  epochs: [200]
+  sparsity_modess: [[sequential, sequential, sequential, sequential, sequential]]
   sparsity_schemes: [[2, 10, 25, 45, 70]]
 
   

@@ -1,6 +1,7 @@
 from torch.utils.data import Dataset
 import torch
 from tqdm import tqdm
+import numpy as np
 
 
 # Only predicts on response tokens
