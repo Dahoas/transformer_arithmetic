@@ -91,14 +91,21 @@ class TInt:
       while x != O or y != O:
         num1 = x[O]
         num2 = y[O]
+        x = x.drop()
+        y = y.drop()
         ds = num1 + num2
         ds = ds + carry
         res = ds[O] | res
         carry = copy(O) if ds.len() <= I else copy(I)
-        x = x.drop()
-        y = y.drop()
       res = carry | res
       return res
+
+  def __lshift__(x, y, vis=False):
+    """
+    Implements left shifting for TInt
+    Note 0 -> 00
+    """
+    return TInt(x.val + "0")
 
   def __mul(x, y, vis=False):
     """
@@ -111,40 +118,48 @@ class TInt:
     return TInt(int(x) * int(y))
 
   def __mul__(x, y, vis=True):
-    # Base case: both numbers are single digit
-    if x.len() <= I and y.len() <= I:
-      return x.__mul(y)
     # If x shorter than y swap x and y. x is now always larger
     if x.len() < y.len():
       t = x
-      y = x
       x = y
+      y = t
+    # Base case: both numbers are single digit
+    if x.len() <= I and y.len() <= I:
+      return x.__mul(y)
     else:
-      res = copy(O)
+      out_res = copy(O)
       carry = copy(O)
       mag = copy(O)
       # Outer loop for multiplying with each digit of y
       while y != O:
-        fac = y[0]
+        print("y ", y)
+        fac = y[O]
         y = y.drop()
         x_c = copy(x)
+        in_res = copy(O)
         # Inner loop for multiplying
         while x_c != O:
-          mult = y[O]
-          ds = num1 + num2
-          ds = ds + carry
-          res = ds[O] | res
-          carry = copy(O) if ds.len() <= I else copy(I)
-          x = x.drop()
-          y = y.drop()
-      res = carry | res
-      return res
+          print("x_c ", x_c)
+          term = x_c[O]
+          x_c = x_c.drop()
+          dm = fac * term
+          dm = dm + carry
+          in_res = dm[O] | in_res
+          carry = copy(O) if dm.len() <= I else dm[I]
+        # Add any residual carry
+        in_res = carry | in_res
+        carry = copy(O)
+        # Shift in_res by mag and add to out_res
+        in_res = in_res | mag
+        mag = mag << I
+        out_res = out_res + in_res
+      return out_res
 
 
 O = TInt("")
 I = TInt("1")
 
-x = TInt(154)
-y = TInt(999)
-z = x + y
+x = TInt(45345)
+y = TInt(925634)
+z = x * y
 print(z)
