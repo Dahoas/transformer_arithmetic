@@ -19,13 +19,13 @@ class MaskedSFTDataset(Dataset):
             self.attn_masks = []
             self.labels = []
             self.prompts = []
-            max_length = min(1024, max([len(tokenizer.encode(ele["prompt"] + ele["sample"] + '<|endoftext|>')) for ele in data]))
+            max_length = min(1024, max([len(tokenizer.encode(ele["prompt"] + ele["response"] + '<|endoftext|>')) for ele in data]))
             self.max_length = max_length
             print("Max length: {}".format(max_length))
 
             # Data expected in prompt response pairs
             for ele in tqdm(data):
-                prompt, response = ele["prompt"], ele["sample"]
+                prompt, response = ele["prompt"], ele["response"]
                 prompt_encoding_len = len(tokenizer(prompt)["input_ids"])
                 encodings_dict = tokenizer(prompt + response + '<|endoftext|>', truncation=True,
                                         max_length=max_length, padding="max_length")

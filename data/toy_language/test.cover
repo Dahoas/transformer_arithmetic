@@ -1,0 +1,51 @@
+>>>>>> from primitive_types import *
+>>>>>> from primitive_ops import *
+       #from composite_ops import *
+       
+>>>>>> def addition(x, y):
+    1:   max_len = max(len(x), len(y))
+       
+    1:   x = x.ljust(max_len, "0")
+    1:   y = y.ljust(max_len, "0")
+       
+    1:   result = ''
+    1:   carry = 0
+       
+    5:   for i in range(max_len):
+    4:     digit_one = x[-1 - i]
+    4:     digit_two = y[-1 - i]
+           
+    4:     digit_sum = int(digit_one) + int(digit_two)
+    4:     digit_sum = digit_sum + carry
+       
+    4:     cur_digit = digit_sum % 10
+    4:     carry = digit_sum // 10
+       
+    4:     result = str(cur_digit) + result
+    1:   result = str(carry) + result
+    1:   return result
+       
+       
+>>>>>> def test_trace():
+>>>>>>   import sys
+>>>>>>   import trace
+       
+>>>>>>   tracer = trace.Trace()
+>>>>>>   tracer.runfunc(addition, '123', '1234')
+       
+>>>>>>   r = tracer.results()
+>>>>>>   r.write_results(show_missing=True, coverdir='.')
+       
+>>>>>> if __name__ == '__main__':
+>>>>>>     FSimpleAdd = TSimpleAdd()
+>>>>>>     FTotalAdd = TAddition()
+       
+>>>>>>     b0 = TVar(val = TInt(52))
+>>>>>>     b1 = TVar(val =TInt(59))
+>>>>>>     answer, trace = FTotalAdd.compute(b0, b1)
+           #print(answer)
+           #print(trace)
+           
+>>>>>>     test_trace()
+       
+       

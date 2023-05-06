@@ -78,7 +78,7 @@ def gen_noisy_dataset(prompt_template, noise_mode, dnl, snl, enl, num_samples=10
     terms = torch.randint(0, max_num, (num_samples, 2)).tolist()
     dataset = [prompt_template(term[0], term[1]) for term in terms]
     # Add static noise
-    dataste = corrupt_dataset(dataset, dnl, snl, enl)
+    dataset = corrupt_dataset(dataset, dnl, snl, enl)
     return dataset
 
 
