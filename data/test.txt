@@ -1,0 +1,4287 @@
+x =  1 2 3 4 , y =  1 2 , vis = True
+def __floordiv__(x, y, vis=True):
+assert y != O
+res = copy(O)
+res = 
+remainder = copy(O)
+remainder = 
+div_len = y.len()
+div_len =  2
+while x >= y:
+factor_mag = I
+factor_mag =  1
+while factor_mag * y <= x:
+x =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+t = x
+t =  1
+x = y
+x =  1 2
+y = t
+y =  1
+if x.len() <= I and y.len() <= I:
+out_res = copy(O)
+out_res = 
+carry = copy(O)
+carry = 
+mag = copy(O)
+mag = 
+while y != O:
+fac = y[O]
+fac =  1
+y = y.drop()
+y = 
+x_c = copy(x)
+x_c =  1 2
+in_res = copy(O)
+in_res = 
+while x_c != O:
+term = x_c[O]
+term =  2
+x_c = x_c.drop()
+x_c =  1
+dm = fac * term
+x =  1 , y =  2
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 2 , y = , t =  1 , out_res = , carry = , mag = , fac =  1 , x_c =  1 , in_res = , term =  2 , dm =  2
+dm = dm + carry
+x =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 2 , t =  1 , out_res = , carry = , mag = , fac =  1 , x_c =  1 , in_res = , term =  2 , dm =  2
+in_res = dm[O] | in_res
+in_res =  2
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  1
+x_c = x_c.drop()
+x_c = 
+dm = fac * term
+x =  1 , y =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 2 , y = , t =  1 , out_res = , carry = , mag = , fac =  1 , x_c = , in_res =  2 , term =  1 , dm =  1
+dm = dm + carry
+x =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 2 , t =  1 , out_res = , carry = , mag = , fac =  1 , x_c = , in_res =  2 , term =  1 , dm =  1
+in_res = dm[O] | in_res
+in_res =  1 2
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+in_res = carry | in_res
+in_res =  1 2
+carry = copy(O)
+carry = 
+in_res = in_res | mag
+in_res =  1 2
+mag = mag << I
+mag =  0
+out_res = out_res + in_res
+x = , y =  1 2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+res = copy(O)
+res = 
+carry = copy(O)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  2
+x = x.drop()
+x = 
+y = y.drop()
+y =  1
+ds = digx + digy
+y =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  1 , res = , carry = , digx = , digy =  2 , ds =  2
+ds = ds + carry
+x =  2 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , y =  1 , res = , carry = , digx = , digy =  2 , ds =  2
+res = ds[O] | res
+res =  2
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  1
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+ds = digx + digy
+y =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y = , res =  2 , carry = , digx = , digy =  1 , ds =  1
+ds = ds + carry
+x =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , res =  2 , carry = , digx = , digy =  1 , ds =  1
+res = ds[O] | res
+res =  1 2
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+res = carry | res
+res =  1 2
+return res
+return res
+x =  1 2 , t =  1 , out_res =  1 2 , mag =  0 , fac =  1 , x_c = , in_res =  1 2 , term =  1 , dm =  1
+while y != O:
+return out_res
+return out_res
+x =  1 2 3 4 , y =  1 2 , res = , remainder = , div_len =  2 , factor_mag =  1
+factor_mag = factor_mag | TInt(" 0 ")
+factor_mag =  1 0
+while factor_mag * y <= x:
+x =  1 0
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+out_res = copy(O)
+out_res = 
+carry = copy(O)
+carry = 
+mag = copy(O)
+mag = 
+while y != O:
+fac = y[O]
+fac =  2
+y = y.drop()
+y =  1
+x_c = copy(x)
+x_c =  1 0
+in_res = copy(O)
+in_res = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  1
+dm = fac * term
+x =  2 , y =  0
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  1 , in_res = , term =  0 , dm =  0
+dm = dm + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  1 , in_res = , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  1
+x_c = x_c.drop()
+x_c = 
+dm = fac * term
+x =  2
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 , out_res = , carry = , mag = , fac =  2 , x_c = , in_res =  0 , term =  1 , dm =  2
+dm = dm + carry
+x =  2 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c = , in_res =  0 , term =  1 , dm =  2
+in_res = dm[O] | in_res
+in_res =  2 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+in_res = carry | in_res
+in_res =  2 0
+carry = copy(O)
+carry = 
+in_res = in_res | mag
+in_res =  2 0
+mag = mag << I
+mag =  0
+out_res = out_res + in_res
+x = , y =  2 0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+res = copy(O)
+res = 
+carry = copy(O)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  0
+x = x.drop()
+x = 
+y = y.drop()
+y =  2
+ds = digx + digy
+y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  2 , res = , carry = , digx = , digy =  0 , ds =  0
+ds = ds + carry
+y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  2 , res = , carry = , digx = , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  2
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+ds = digx + digy
+y =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y = , res =  0 , carry = , digx = , digy =  2 , ds =  2
+ds = ds + carry
+x =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , res =  0 , carry = , digx = , digy =  2 , ds =  2
+res = ds[O] | res
+res =  2 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+res = carry | res
+res =  2 0
+return res
+return res
+x =  1 0 , y =  1 , out_res =  2 0 , mag =  0 , fac =  2 , x_c = , in_res =  2 0 , term =  1 , dm =  2
+while y != O:
+fac = y[O]
+fac =  1
+y = y.drop()
+y = 
+x_c = copy(x)
+x_c =  1 0
+in_res = copy(O)
+in_res = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  1
+dm = fac * term
+x =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 , out_res =  2 0 , carry = , mag =  0 , fac =  1 , x_c =  1 , in_res = , term =  0 , dm =  0
+dm = dm + carry
+x =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 , out_res =  2 0 , carry = , mag =  0 , fac =  1 , x_c =  1 , in_res = , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  1
+x_c = x_c.drop()
+x_c = 
+dm = fac * term
+x =  1 , y =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 , y = , out_res =  2 0 , carry = , mag =  0 , fac =  1 , x_c = , in_res =  0 , term =  1 , dm =  1
+dm = dm + carry
+x =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 , out_res =  2 0 , carry = , mag =  0 , fac =  1 , x_c = , in_res =  0 , term =  1 , dm =  1
+in_res = dm[O] | in_res
+in_res =  1 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+in_res = carry | in_res
+in_res =  1 0
+carry = copy(O)
+carry = 
+in_res = in_res | mag
+in_res =  1 0 0
+mag = mag << I
+mag =  0 0
+out_res = out_res + in_res
+x =  2 0 , y =  1 0 0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+res = copy(O)
+res = 
+carry = copy(O)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  0
+digy = y[O]
+digy =  0
+x = x.drop()
+x =  2
+y = y.drop()
+y =  1 0
+ds = digx + digy
+x =  0 , y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 , y =  1 0 , res = , carry = , digx =  0 , digy =  0 , ds =  0
+ds = ds + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 , y =  1 0 , res = , carry = , digx =  0 , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  2
+digy = y[O]
+digy =  0
+x = x.drop()
+x = 
+y = y.drop()
+y =  1
+ds = digx + digy
+x =  2 , y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , y =  1 , res =  0 , carry = , digx =  2 , digy =  0 , ds =  2
+ds = ds + carry
+x =  2 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , y =  1 , res =  0 , carry = , digx =  2 , digy =  0 , ds =  2
+res = ds[O] | res
+res =  2 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  1
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+ds = digx + digy
+y =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y = , res =  2 0 , carry = , digx = , digy =  1 , ds =  1
+ds = ds + carry
+x =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , res =  2 0 , carry = , digx = , digy =  1 , ds =  1
+res = ds[O] | res
+res =  1 2 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+res = carry | res
+res =  1 2 0
+return res
+return res
+x =  1 0 , out_res =  1 2 0 , mag =  0 0 , fac =  1 , x_c = , in_res =  1 0 0 , term =  1 , dm =  1
+while y != O:
+return out_res
+return out_res
+x =  1 2 3 4 , y =  1 2 , res = , remainder = , div_len =  2 , factor_mag =  1 0
+factor_mag = factor_mag | TInt(" 0 ")
+factor_mag =  1 0 0
+while factor_mag * y <= x:
+x =  1 0 0
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+out_res = copy(O)
+out_res = 
+carry = copy(O)
+carry = 
+mag = copy(O)
+mag = 
+while y != O:
+fac = y[O]
+fac =  2
+y = y.drop()
+y =  1
+x_c = copy(x)
+x_c =  1 0 0
+in_res = copy(O)
+in_res = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  1 0
+dm = fac * term
+x =  2 , y =  0
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  1 0 , in_res = , term =  0 , dm =  0
+dm = dm + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  1 0 , in_res = , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  1
+dm = fac * term
+x =  2 , y =  0
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  1 , in_res =  0 , term =  0 , dm =  0
+dm = dm + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  1 , in_res =  0 , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  1
+x_c = x_c.drop()
+x_c = 
+dm = fac * term
+x =  2
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 , out_res = , carry = , mag = , fac =  2 , x_c = , in_res =  0 0 , term =  1 , dm =  2
+dm = dm + carry
+x =  2 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c = , in_res =  0 0 , term =  1 , dm =  2
+in_res = dm[O] | in_res
+in_res =  2 0 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+in_res = carry | in_res
+in_res =  2 0 0
+carry = copy(O)
+carry = 
+in_res = in_res | mag
+in_res =  2 0 0
+mag = mag << I
+mag =  0
+out_res = out_res + in_res
+x = , y =  2 0 0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+res = copy(O)
+res = 
+carry = copy(O)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  0
+x = x.drop()
+x = 
+y = y.drop()
+y =  2 0
+ds = digx + digy
+y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  2 0 , res = , carry = , digx = , digy =  0 , ds =  0
+ds = ds + carry
+y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  2 0 , res = , carry = , digx = , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  0
+x = x.drop()
+x = 
+y = y.drop()
+y =  2
+ds = digx + digy
+y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  2 , res =  0 , carry = , digx = , digy =  0 , ds =  0
+ds = ds + carry
+y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  2 , res =  0 , carry = , digx = , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  2
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+ds = digx + digy
+y =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y = , res =  0 0 , carry = , digx = , digy =  2 , ds =  2
+ds = ds + carry
+x =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , res =  0 0 , carry = , digx = , digy =  2 , ds =  2
+res = ds[O] | res
+res =  2 0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+res = carry | res
+res =  2 0 0
+return res
+return res
+x =  1 0 0 , y =  1 , out_res =  2 0 0 , mag =  0 , fac =  2 , x_c = , in_res =  2 0 0 , term =  1 , dm =  2
+while y != O:
+fac = y[O]
+fac =  1
+y = y.drop()
+y = 
+x_c = copy(x)
+x_c =  1 0 0
+in_res = copy(O)
+in_res = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  1 0
+dm = fac * term
+x =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 , out_res =  2 0 0 , carry = , mag =  0 , fac =  1 , x_c =  1 0 , in_res = , term =  0 , dm =  0
+dm = dm + carry
+x =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 , out_res =  2 0 0 , carry = , mag =  0 , fac =  1 , x_c =  1 0 , in_res = , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  1
+dm = fac * term
+x =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 , out_res =  2 0 0 , carry = , mag =  0 , fac =  1 , x_c =  1 , in_res =  0 , term =  0 , dm =  0
+dm = dm + carry
+x =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 , out_res =  2 0 0 , carry = , mag =  0 , fac =  1 , x_c =  1 , in_res =  0 , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  1
+x_c = x_c.drop()
+x_c = 
+dm = fac * term
+x =  1 , y =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 , y = , out_res =  2 0 0 , carry = , mag =  0 , fac =  1 , x_c = , in_res =  0 0 , term =  1 , dm =  1
+dm = dm + carry
+x =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 , out_res =  2 0 0 , carry = , mag =  0 , fac =  1 , x_c = , in_res =  0 0 , term =  1 , dm =  1
+in_res = dm[O] | in_res
+in_res =  1 0 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+in_res = carry | in_res
+in_res =  1 0 0
+carry = copy(O)
+carry = 
+in_res = in_res | mag
+in_res =  1 0 0 0
+mag = mag << I
+mag =  0 0
+out_res = out_res + in_res
+x =  2 0 0 , y =  1 0 0 0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+res = copy(O)
+res = 
+carry = copy(O)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  0
+digy = y[O]
+digy =  0
+x = x.drop()
+x =  2 0
+y = y.drop()
+y =  1 0 0
+ds = digx + digy
+x =  0 , y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 0 , y =  1 0 0 , res = , carry = , digx =  0 , digy =  0 , ds =  0
+ds = ds + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 0 , y =  1 0 0 , res = , carry = , digx =  0 , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  0
+digy = y[O]
+digy =  0
+x = x.drop()
+x =  2
+y = y.drop()
+y =  1 0
+ds = digx + digy
+x =  0 , y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 , y =  1 0 , res =  0 , carry = , digx =  0 , digy =  0 , ds =  0
+ds = ds + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 , y =  1 0 , res =  0 , carry = , digx =  0 , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  2
+digy = y[O]
+digy =  0
+x = x.drop()
+x = 
+y = y.drop()
+y =  1
+ds = digx + digy
+x =  2 , y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , y =  1 , res =  0 0 , carry = , digx =  2 , digy =  0 , ds =  2
+ds = ds + carry
+x =  2 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , y =  1 , res =  0 0 , carry = , digx =  2 , digy =  0 , ds =  2
+res = ds[O] | res
+res =  2 0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  1
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+ds = digx + digy
+y =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y = , res =  2 0 0 , carry = , digx = , digy =  1 , ds =  1
+ds = ds + carry
+x =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , res =  2 0 0 , carry = , digx = , digy =  1 , ds =  1
+res = ds[O] | res
+res =  1 2 0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+res = carry | res
+res =  1 2 0 0
+return res
+return res
+x =  1 0 0 , out_res =  1 2 0 0 , mag =  0 0 , fac =  1 , x_c = , in_res =  1 0 0 0 , term =  1 , dm =  1
+while y != O:
+return out_res
+return out_res
+x =  1 2 3 4 , y =  1 2 , res = , remainder = , div_len =  2 , factor_mag =  1 0 0
+factor_mag = factor_mag | TInt(" 0 ")
+factor_mag =  1 0 0 0
+while factor_mag * y <= x:
+x =  1 0 0 0
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+out_res = copy(O)
+out_res = 
+carry = copy(O)
+carry = 
+mag = copy(O)
+mag = 
+while y != O:
+fac = y[O]
+fac =  2
+y = y.drop()
+y =  1
+x_c = copy(x)
+x_c =  1 0 0 0
+in_res = copy(O)
+in_res = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  1 0 0
+dm = fac * term
+x =  2 , y =  0
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  1 0 0 , in_res = , term =  0 , dm =  0
+dm = dm + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  1 0 0 , in_res = , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  1 0
+dm = fac * term
+x =  2 , y =  0
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  1 0 , in_res =  0 , term =  0 , dm =  0
+dm = dm + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  1 0 , in_res =  0 , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  1
+dm = fac * term
+x =  2 , y =  0
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  1 , in_res =  0 0 , term =  0 , dm =  0
+dm = dm + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  1 , in_res =  0 0 , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0 0 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  1
+x_c = x_c.drop()
+x_c = 
+dm = fac * term
+x =  2
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 0 , out_res = , carry = , mag = , fac =  2 , x_c = , in_res =  0 0 0 , term =  1 , dm =  2
+dm = dm + carry
+x =  2 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c = , in_res =  0 0 0 , term =  1 , dm =  2
+in_res = dm[O] | in_res
+in_res =  2 0 0 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+in_res = carry | in_res
+in_res =  2 0 0 0
+carry = copy(O)
+carry = 
+in_res = in_res | mag
+in_res =  2 0 0 0
+mag = mag << I
+mag =  0
+out_res = out_res + in_res
+x = , y =  2 0 0 0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+res = copy(O)
+res = 
+carry = copy(O)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  0
+x = x.drop()
+x = 
+y = y.drop()
+y =  2 0 0
+ds = digx + digy
+y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  2 0 0 , res = , carry = , digx = , digy =  0 , ds =  0
+ds = ds + carry
+y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  2 0 0 , res = , carry = , digx = , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  0
+x = x.drop()
+x = 
+y = y.drop()
+y =  2 0
+ds = digx + digy
+y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  2 0 , res =  0 , carry = , digx = , digy =  0 , ds =  0
+ds = ds + carry
+y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  2 0 , res =  0 , carry = , digx = , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  0
+x = x.drop()
+x = 
+y = y.drop()
+y =  2
+ds = digx + digy
+y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  2 , res =  0 0 , carry = , digx = , digy =  0 , ds =  0
+ds = ds + carry
+y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  2 , res =  0 0 , carry = , digx = , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0 0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  2
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+ds = digx + digy
+y =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y = , res =  0 0 0 , carry = , digx = , digy =  2 , ds =  2
+ds = ds + carry
+x =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , res =  0 0 0 , carry = , digx = , digy =  2 , ds =  2
+res = ds[O] | res
+res =  2 0 0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+res = carry | res
+res =  2 0 0 0
+return res
+return res
+x =  1 0 0 0 , y =  1 , out_res =  2 0 0 0 , mag =  0 , fac =  2 , x_c = , in_res =  2 0 0 0 , term =  1 , dm =  2
+while y != O:
+fac = y[O]
+fac =  1
+y = y.drop()
+y = 
+x_c = copy(x)
+x_c =  1 0 0 0
+in_res = copy(O)
+in_res = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  1 0 0
+dm = fac * term
+x =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 0 , out_res =  2 0 0 0 , carry = , mag =  0 , fac =  1 , x_c =  1 0 0 , in_res = , term =  0 , dm =  0
+dm = dm + carry
+x =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 0 , out_res =  2 0 0 0 , carry = , mag =  0 , fac =  1 , x_c =  1 0 0 , in_res = , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  1 0
+dm = fac * term
+x =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 0 , out_res =  2 0 0 0 , carry = , mag =  0 , fac =  1 , x_c =  1 0 , in_res =  0 , term =  0 , dm =  0
+dm = dm + carry
+x =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 0 , out_res =  2 0 0 0 , carry = , mag =  0 , fac =  1 , x_c =  1 0 , in_res =  0 , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  1
+dm = fac * term
+x =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 0 , out_res =  2 0 0 0 , carry = , mag =  0 , fac =  1 , x_c =  1 , in_res =  0 0 , term =  0 , dm =  0
+dm = dm + carry
+x =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 0 , out_res =  2 0 0 0 , carry = , mag =  0 , fac =  1 , x_c =  1 , in_res =  0 0 , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0 0 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  1
+x_c = x_c.drop()
+x_c = 
+dm = fac * term
+x =  1 , y =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 0 , y = , out_res =  2 0 0 0 , carry = , mag =  0 , fac =  1 , x_c = , in_res =  0 0 0 , term =  1 , dm =  1
+dm = dm + carry
+x =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 0 , out_res =  2 0 0 0 , carry = , mag =  0 , fac =  1 , x_c = , in_res =  0 0 0 , term =  1 , dm =  1
+in_res = dm[O] | in_res
+in_res =  1 0 0 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+in_res = carry | in_res
+in_res =  1 0 0 0
+carry = copy(O)
+carry = 
+in_res = in_res | mag
+in_res =  1 0 0 0 0
+mag = mag << I
+mag =  0 0
+out_res = out_res + in_res
+x =  2 0 0 0 , y =  1 0 0 0 0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+res = copy(O)
+res = 
+carry = copy(O)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  0
+digy = y[O]
+digy =  0
+x = x.drop()
+x =  2 0 0
+y = y.drop()
+y =  1 0 0 0
+ds = digx + digy
+x =  0 , y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 0 0 , y =  1 0 0 0 , res = , carry = , digx =  0 , digy =  0 , ds =  0
+ds = ds + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 0 0 , y =  1 0 0 0 , res = , carry = , digx =  0 , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  0
+digy = y[O]
+digy =  0
+x = x.drop()
+x =  2 0
+y = y.drop()
+y =  1 0 0
+ds = digx + digy
+x =  0 , y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 0 , y =  1 0 0 , res =  0 , carry = , digx =  0 , digy =  0 , ds =  0
+ds = ds + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 0 , y =  1 0 0 , res =  0 , carry = , digx =  0 , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  0
+digy = y[O]
+digy =  0
+x = x.drop()
+x =  2
+y = y.drop()
+y =  1 0
+ds = digx + digy
+x =  0 , y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 , y =  1 0 , res =  0 0 , carry = , digx =  0 , digy =  0 , ds =  0
+ds = ds + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 , y =  1 0 , res =  0 0 , carry = , digx =  0 , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0 0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  2
+digy = y[O]
+digy =  0
+x = x.drop()
+x = 
+y = y.drop()
+y =  1
+ds = digx + digy
+x =  2 , y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , y =  1 , res =  0 0 0 , carry = , digx =  2 , digy =  0 , ds =  2
+ds = ds + carry
+x =  2 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , y =  1 , res =  0 0 0 , carry = , digx =  2 , digy =  0 , ds =  2
+res = ds[O] | res
+res =  2 0 0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  1
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+ds = digx + digy
+y =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y = , res =  2 0 0 0 , carry = , digx = , digy =  1 , ds =  1
+ds = ds + carry
+x =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , res =  2 0 0 0 , carry = , digx = , digy =  1 , ds =  1
+res = ds[O] | res
+res =  1 2 0 0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+res = carry | res
+res =  1 2 0 0 0
+return res
+return res
+x =  1 0 0 0 , out_res =  1 2 0 0 0 , mag =  0 0 , fac =  1 , x_c = , in_res =  1 0 0 0 0 , term =  1 , dm =  1
+while y != O:
+return out_res
+return out_res
+x =  1 2 3 4 , y =  1 2 , res = , remainder = , div_len =  2 , factor_mag =  1 0 0 0
+factor_mag = factor_mag.drop()
+factor_mag =  1 0 0
+factor = factor_mag
+factor =  1 0 0
+while factor * y <= x:
+x =  1 0 0
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+out_res = copy(O)
+out_res = 
+carry = copy(O)
+carry = 
+mag = copy(O)
+mag = 
+while y != O:
+fac = y[O]
+fac =  2
+y = y.drop()
+y =  1
+x_c = copy(x)
+x_c =  1 0 0
+in_res = copy(O)
+in_res = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  1 0
+dm = fac * term
+x =  2 , y =  0
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  1 0 , in_res = , term =  0 , dm =  0
+dm = dm + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  1 0 , in_res = , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  1
+dm = fac * term
+x =  2 , y =  0
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  1 , in_res =  0 , term =  0 , dm =  0
+dm = dm + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  1 , in_res =  0 , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  1
+x_c = x_c.drop()
+x_c = 
+dm = fac * term
+x =  2
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 , out_res = , carry = , mag = , fac =  2 , x_c = , in_res =  0 0 , term =  1 , dm =  2
+dm = dm + carry
+x =  2 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c = , in_res =  0 0 , term =  1 , dm =  2
+in_res = dm[O] | in_res
+in_res =  2 0 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+in_res = carry | in_res
+in_res =  2 0 0
+carry = copy(O)
+carry = 
+in_res = in_res | mag
+in_res =  2 0 0
+mag = mag << I
+mag =  0
+out_res = out_res + in_res
+x = , y =  2 0 0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+res = copy(O)
+res = 
+carry = copy(O)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  0
+x = x.drop()
+x = 
+y = y.drop()
+y =  2 0
+ds = digx + digy
+y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  2 0 , res = , carry = , digx = , digy =  0 , ds =  0
+ds = ds + carry
+y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  2 0 , res = , carry = , digx = , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  0
+x = x.drop()
+x = 
+y = y.drop()
+y =  2
+ds = digx + digy
+y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  2 , res =  0 , carry = , digx = , digy =  0 , ds =  0
+ds = ds + carry
+y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  2 , res =  0 , carry = , digx = , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  2
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+ds = digx + digy
+y =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y = , res =  0 0 , carry = , digx = , digy =  2 , ds =  2
+ds = ds + carry
+x =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , res =  0 0 , carry = , digx = , digy =  2 , ds =  2
+res = ds[O] | res
+res =  2 0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+res = carry | res
+res =  2 0 0
+return res
+return res
+x =  1 0 0 , y =  1 , out_res =  2 0 0 , mag =  0 , fac =  2 , x_c = , in_res =  2 0 0 , term =  1 , dm =  2
+while y != O:
+fac = y[O]
+fac =  1
+y = y.drop()
+y = 
+x_c = copy(x)
+x_c =  1 0 0
+in_res = copy(O)
+in_res = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  1 0
+dm = fac * term
+x =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 , out_res =  2 0 0 , carry = , mag =  0 , fac =  1 , x_c =  1 0 , in_res = , term =  0 , dm =  0
+dm = dm + carry
+x =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 , out_res =  2 0 0 , carry = , mag =  0 , fac =  1 , x_c =  1 0 , in_res = , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  1
+dm = fac * term
+x =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 , out_res =  2 0 0 , carry = , mag =  0 , fac =  1 , x_c =  1 , in_res =  0 , term =  0 , dm =  0
+dm = dm + carry
+x =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 , out_res =  2 0 0 , carry = , mag =  0 , fac =  1 , x_c =  1 , in_res =  0 , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  1
+x_c = x_c.drop()
+x_c = 
+dm = fac * term
+x =  1 , y =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 , y = , out_res =  2 0 0 , carry = , mag =  0 , fac =  1 , x_c = , in_res =  0 0 , term =  1 , dm =  1
+dm = dm + carry
+x =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 , out_res =  2 0 0 , carry = , mag =  0 , fac =  1 , x_c = , in_res =  0 0 , term =  1 , dm =  1
+in_res = dm[O] | in_res
+in_res =  1 0 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+in_res = carry | in_res
+in_res =  1 0 0
+carry = copy(O)
+carry = 
+in_res = in_res | mag
+in_res =  1 0 0 0
+mag = mag << I
+mag =  0 0
+out_res = out_res + in_res
+x =  2 0 0 , y =  1 0 0 0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+res = copy(O)
+res = 
+carry = copy(O)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  0
+digy = y[O]
+digy =  0
+x = x.drop()
+x =  2 0
+y = y.drop()
+y =  1 0 0
+ds = digx + digy
+x =  0 , y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 0 , y =  1 0 0 , res = , carry = , digx =  0 , digy =  0 , ds =  0
+ds = ds + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 0 , y =  1 0 0 , res = , carry = , digx =  0 , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  0
+digy = y[O]
+digy =  0
+x = x.drop()
+x =  2
+y = y.drop()
+y =  1 0
+ds = digx + digy
+x =  0 , y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 , y =  1 0 , res =  0 , carry = , digx =  0 , digy =  0 , ds =  0
+ds = ds + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 , y =  1 0 , res =  0 , carry = , digx =  0 , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  2
+digy = y[O]
+digy =  0
+x = x.drop()
+x = 
+y = y.drop()
+y =  1
+ds = digx + digy
+x =  2 , y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , y =  1 , res =  0 0 , carry = , digx =  2 , digy =  0 , ds =  2
+ds = ds + carry
+x =  2 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , y =  1 , res =  0 0 , carry = , digx =  2 , digy =  0 , ds =  2
+res = ds[O] | res
+res =  2 0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  1
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+ds = digx + digy
+y =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y = , res =  2 0 0 , carry = , digx = , digy =  1 , ds =  1
+ds = ds + carry
+x =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , res =  2 0 0 , carry = , digx = , digy =  1 , ds =  1
+res = ds[O] | res
+res =  1 2 0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+res = carry | res
+res =  1 2 0 0
+return res
+return res
+x =  1 0 0 , out_res =  1 2 0 0 , mag =  0 0 , fac =  1 , x_c = , in_res =  1 0 0 0 , term =  1 , dm =  1
+while y != O:
+return out_res
+return out_res
+x =  1 2 3 4 , y =  1 2 , res = , remainder = , div_len =  2 , factor_mag =  1 0 0 , factor =  1 0 0
+factor = factor + factor_mag
+x =  1 0 0 , y =  1 0 0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+res = copy(O)
+res = 
+carry = copy(O)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  0
+digy = y[O]
+digy =  0
+x = x.drop()
+x =  1 0
+y = y.drop()
+y =  1 0
+ds = digx + digy
+x =  0 , y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 , y =  1 0 , res = , carry = , digx =  0 , digy =  0 , ds =  0
+ds = ds + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 , y =  1 0 , res = , carry = , digx =  0 , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  0
+digy = y[O]
+digy =  0
+x = x.drop()
+x =  1
+y = y.drop()
+y =  1
+ds = digx + digy
+x =  0 , y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 , y =  1 , res =  0 , carry = , digx =  0 , digy =  0 , ds =  0
+ds = ds + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 , y =  1 , res =  0 , carry = , digx =  0 , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  1
+digy = y[O]
+digy =  1
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+ds = digx + digy
+x =  1 , y =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , y = , res =  0 0 , carry = , digx =  1 , digy =  1 , ds =  2
+ds = ds + carry
+x =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , res =  0 0 , carry = , digx =  1 , digy =  1 , ds =  2
+res = ds[O] | res
+res =  2 0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+res = carry | res
+res =  2 0 0
+return res
+return res
+x =  1 2 3 4 , y =  1 2 , res = , remainder = , div_len =  2 , factor_mag =  1 0 0 , factor =  2 0 0
+while factor * y <= x:
+x =  2 0 0
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+out_res = copy(O)
+out_res = 
+carry = copy(O)
+carry = 
+mag = copy(O)
+mag = 
+while y != O:
+fac = y[O]
+fac =  2
+y = y.drop()
+y =  1
+x_c = copy(x)
+x_c =  2 0 0
+in_res = copy(O)
+in_res = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  2 0
+dm = fac * term
+x =  2 , y =  0
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  2 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  2 0 , in_res = , term =  0 , dm =  0
+dm = dm + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  2 0 , in_res = , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  2
+dm = fac * term
+x =  2 , y =  0
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  2 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  2 , in_res =  0 , term =  0 , dm =  0
+dm = dm + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  2 , in_res =  0 , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  2
+x_c = x_c.drop()
+x_c = 
+dm = fac * term
+x =  2 , y =  2
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  2 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c = , in_res =  0 0 , term =  2 , dm =  4
+dm = dm + carry
+x =  4 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c = , in_res =  0 0 , term =  2 , dm =  4
+in_res = dm[O] | in_res
+in_res =  4 0 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+in_res = carry | in_res
+in_res =  4 0 0
+carry = copy(O)
+carry = 
+in_res = in_res | mag
+in_res =  4 0 0
+mag = mag << I
+mag =  0
+out_res = out_res + in_res
+x = , y =  4 0 0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+res = copy(O)
+res = 
+carry = copy(O)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  0
+x = x.drop()
+x = 
+y = y.drop()
+y =  4 0
+ds = digx + digy
+y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  4 0 , res = , carry = , digx = , digy =  0 , ds =  0
+ds = ds + carry
+y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  4 0 , res = , carry = , digx = , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  0
+x = x.drop()
+x = 
+y = y.drop()
+y =  4
+ds = digx + digy
+y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  4 , res =  0 , carry = , digx = , digy =  0 , ds =  0
+ds = ds + carry
+y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  4 , res =  0 , carry = , digx = , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  4
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+ds = digx + digy
+y =  4
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y = , res =  0 0 , carry = , digx = , digy =  4 , ds =  4
+ds = ds + carry
+x =  4
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , res =  0 0 , carry = , digx = , digy =  4 , ds =  4
+res = ds[O] | res
+res =  4 0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+res = carry | res
+res =  4 0 0
+return res
+return res
+x =  2 0 0 , y =  1 , out_res =  4 0 0 , mag =  0 , fac =  2 , x_c = , in_res =  4 0 0 , term =  2 , dm =  4
+while y != O:
+fac = y[O]
+fac =  1
+y = y.drop()
+y = 
+x_c = copy(x)
+x_c =  2 0 0
+in_res = copy(O)
+in_res = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  2 0
+dm = fac * term
+x =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  2 0 0 , out_res =  4 0 0 , carry = , mag =  0 , fac =  1 , x_c =  2 0 , in_res = , term =  0 , dm =  0
+dm = dm + carry
+x =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 0 0 , out_res =  4 0 0 , carry = , mag =  0 , fac =  1 , x_c =  2 0 , in_res = , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  2
+dm = fac * term
+x =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  2 0 0 , out_res =  4 0 0 , carry = , mag =  0 , fac =  1 , x_c =  2 , in_res =  0 , term =  0 , dm =  0
+dm = dm + carry
+x =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 0 0 , out_res =  4 0 0 , carry = , mag =  0 , fac =  1 , x_c =  2 , in_res =  0 , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  2
+x_c = x_c.drop()
+x_c = 
+dm = fac * term
+x =  1 , y =  2
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  2 0 0 , y = , out_res =  4 0 0 , carry = , mag =  0 , fac =  1 , x_c = , in_res =  0 0 , term =  2 , dm =  2
+dm = dm + carry
+x =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 0 0 , out_res =  4 0 0 , carry = , mag =  0 , fac =  1 , x_c = , in_res =  0 0 , term =  2 , dm =  2
+in_res = dm[O] | in_res
+in_res =  2 0 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+in_res = carry | in_res
+in_res =  2 0 0
+carry = copy(O)
+carry = 
+in_res = in_res | mag
+in_res =  2 0 0 0
+mag = mag << I
+mag =  0 0
+out_res = out_res + in_res
+x =  4 0 0 , y =  2 0 0 0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+res = copy(O)
+res = 
+carry = copy(O)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  0
+digy = y[O]
+digy =  0
+x = x.drop()
+x =  4 0
+y = y.drop()
+y =  2 0 0
+ds = digx + digy
+x =  0 , y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  4 0 , y =  2 0 0 , res = , carry = , digx =  0 , digy =  0 , ds =  0
+ds = ds + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  4 0 , y =  2 0 0 , res = , carry = , digx =  0 , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  0
+digy = y[O]
+digy =  0
+x = x.drop()
+x =  4
+y = y.drop()
+y =  2 0
+ds = digx + digy
+x =  0 , y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  4 , y =  2 0 , res =  0 , carry = , digx =  0 , digy =  0 , ds =  0
+ds = ds + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  4 , y =  2 0 , res =  0 , carry = , digx =  0 , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  4
+digy = y[O]
+digy =  0
+x = x.drop()
+x = 
+y = y.drop()
+y =  2
+ds = digx + digy
+x =  4 , y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , y =  2 , res =  0 0 , carry = , digx =  4 , digy =  0 , ds =  4
+ds = ds + carry
+x =  4 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , y =  2 , res =  0 0 , carry = , digx =  4 , digy =  0 , ds =  4
+res = ds[O] | res
+res =  4 0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  2
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+ds = digx + digy
+y =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y = , res =  4 0 0 , carry = , digx = , digy =  2 , ds =  2
+ds = ds + carry
+x =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , res =  4 0 0 , carry = , digx = , digy =  2 , ds =  2
+res = ds[O] | res
+res =  2 4 0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+res = carry | res
+res =  2 4 0 0
+return res
+return res
+x =  2 0 0 , out_res =  2 4 0 0 , mag =  0 0 , fac =  1 , x_c = , in_res =  2 0 0 0 , term =  2 , dm =  2
+while y != O:
+return out_res
+return out_res
+x =  1 2 3 4 , y =  1 2 , res = , remainder = , div_len =  2 , factor_mag =  1 0 0 , factor =  2 0 0
+factor = factor - factor_mag
+x =  2 0 0 , y =  1 0 0
+def __sub__(x, y, vis = True):
+assert x >= y
+if x <= TInt( 1 8 ) and y <= TInt( 1 8 ):
+res = copy(O)
+res = 
+borrow = copy(O)
+borrow = 
+while y != O:
+digx = x[O]
+digx =  0
+digy = y[O]
+digy =  0
+x = x.drop()
+x =  2 0
+y = y.drop()
+y =  1 0
+if borrow > O:
+if digx < digx:
+dd = digx - digy
+x =  0 , y =  0
+def __sub__(x, y, vis = True):
+assert x >= y
+if x <= TInt( 1 8 ) and y <= TInt( 1 8 ):
+return x.__sub(y)
+return x.__sub(y)
+x =  2 0 , y =  1 0 , res = , borrow = , digx =  0 , digy =  0 , dd =  0
+res = dd | res
+res =  0
+while y != O:
+digx = x[O]
+digx =  0
+digy = y[O]
+digy =  0
+x = x.drop()
+x =  2
+y = y.drop()
+y =  1
+if borrow > O:
+if digx < digx:
+dd = digx - digy
+x =  0 , y =  0
+def __sub__(x, y, vis = True):
+assert x >= y
+if x <= TInt( 1 8 ) and y <= TInt( 1 8 ):
+return x.__sub(y)
+return x.__sub(y)
+x =  2 , y =  1 , res =  0 , borrow = , digx =  0 , digy =  0 , dd =  0
+res = dd | res
+res =  0 0
+while y != O:
+digx = x[O]
+digx =  2
+digy = y[O]
+digy =  1
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+if borrow > O:
+if digx < digx:
+dd = digx - digy
+x =  2 , y =  1
+def __sub__(x, y, vis = True):
+assert x >= y
+if x <= TInt( 1 8 ) and y <= TInt( 1 8 ):
+return x.__sub(y)
+return x.__sub(y)
+x = , y = , res =  0 0 , borrow = , digx =  2 , digy =  1 , dd =  1
+res = dd | res
+res =  1 0 0
+while y != O:
+while borrow != O:
+res = x | res
+res =  1 0 0
+return res
+return res
+x =  1 2 3 4 , y =  1 2 , res = , remainder = , div_len =  2 , factor_mag =  1 0 0 , factor =  1 0 0
+res = res + factor
+x = , y =  1 0 0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+res = copy(O)
+res = 
+carry = copy(O)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  0
+x = x.drop()
+x = 
+y = y.drop()
+y =  1 0
+ds = digx + digy
+y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  1 0 , res = , carry = , digx = , digy =  0 , ds =  0
+ds = ds + carry
+y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  1 0 , res = , carry = , digx = , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  0
+x = x.drop()
+x = 
+y = y.drop()
+y =  1
+ds = digx + digy
+y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  1 , res =  0 , carry = , digx = , digy =  0 , ds =  0
+ds = ds + carry
+y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  1 , res =  0 , carry = , digx = , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  1
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+ds = digx + digy
+y =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y = , res =  0 0 , carry = , digx = , digy =  1 , ds =  1
+ds = ds + carry
+x =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , res =  0 0 , carry = , digx = , digy =  1 , ds =  1
+res = ds[O] | res
+res =  1 0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+res = carry | res
+res =  1 0 0
+return res
+return res
+x =  1 2 3 4 , y =  1 2 , remainder = , div_len =  2 , factor_mag =  1 0 0 , factor =  1 0 0
+x = x - factor * y
+x =  1 0 0
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+out_res = copy(O)
+out_res = 
+carry = copy(O)
+carry = 
+mag = copy(O)
+mag = 
+while y != O:
+fac = y[O]
+fac =  2
+y = y.drop()
+y =  1
+x_c = copy(x)
+x_c =  1 0 0
+in_res = copy(O)
+in_res = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  1 0
+dm = fac * term
+x =  2 , y =  0
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  1 0 , in_res = , term =  0 , dm =  0
+dm = dm + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  1 0 , in_res = , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  1
+dm = fac * term
+x =  2 , y =  0
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  1 , in_res =  0 , term =  0 , dm =  0
+dm = dm + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  1 , in_res =  0 , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  1
+x_c = x_c.drop()
+x_c = 
+dm = fac * term
+x =  2
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 , out_res = , carry = , mag = , fac =  2 , x_c = , in_res =  0 0 , term =  1 , dm =  2
+dm = dm + carry
+x =  2 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c = , in_res =  0 0 , term =  1 , dm =  2
+in_res = dm[O] | in_res
+in_res =  2 0 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+in_res = carry | in_res
+in_res =  2 0 0
+carry = copy(O)
+carry = 
+in_res = in_res | mag
+in_res =  2 0 0
+mag = mag << I
+mag =  0
+out_res = out_res + in_res
+x = , y =  2 0 0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+res = copy(O)
+res = 
+carry = copy(O)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  0
+x = x.drop()
+x = 
+y = y.drop()
+y =  2 0
+ds = digx + digy
+y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  2 0 , res = , carry = , digx = , digy =  0 , ds =  0
+ds = ds + carry
+y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  2 0 , res = , carry = , digx = , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  0
+x = x.drop()
+x = 
+y = y.drop()
+y =  2
+ds = digx + digy
+y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  2 , res =  0 , carry = , digx = , digy =  0 , ds =  0
+ds = ds + carry
+y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  2 , res =  0 , carry = , digx = , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  2
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+ds = digx + digy
+y =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y = , res =  0 0 , carry = , digx = , digy =  2 , ds =  2
+ds = ds + carry
+x =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , res =  0 0 , carry = , digx = , digy =  2 , ds =  2
+res = ds[O] | res
+res =  2 0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+res = carry | res
+res =  2 0 0
+return res
+return res
+x =  1 0 0 , y =  1 , out_res =  2 0 0 , mag =  0 , fac =  2 , x_c = , in_res =  2 0 0 , term =  1 , dm =  2
+while y != O:
+fac = y[O]
+fac =  1
+y = y.drop()
+y = 
+x_c = copy(x)
+x_c =  1 0 0
+in_res = copy(O)
+in_res = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  1 0
+dm = fac * term
+x =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 , out_res =  2 0 0 , carry = , mag =  0 , fac =  1 , x_c =  1 0 , in_res = , term =  0 , dm =  0
+dm = dm + carry
+x =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 , out_res =  2 0 0 , carry = , mag =  0 , fac =  1 , x_c =  1 0 , in_res = , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  1
+dm = fac * term
+x =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 , out_res =  2 0 0 , carry = , mag =  0 , fac =  1 , x_c =  1 , in_res =  0 , term =  0 , dm =  0
+dm = dm + carry
+x =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 , out_res =  2 0 0 , carry = , mag =  0 , fac =  1 , x_c =  1 , in_res =  0 , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  1
+x_c = x_c.drop()
+x_c = 
+dm = fac * term
+x =  1 , y =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 0 , y = , out_res =  2 0 0 , carry = , mag =  0 , fac =  1 , x_c = , in_res =  0 0 , term =  1 , dm =  1
+dm = dm + carry
+x =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 0 , out_res =  2 0 0 , carry = , mag =  0 , fac =  1 , x_c = , in_res =  0 0 , term =  1 , dm =  1
+in_res = dm[O] | in_res
+in_res =  1 0 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+in_res = carry | in_res
+in_res =  1 0 0
+carry = copy(O)
+carry = 
+in_res = in_res | mag
+in_res =  1 0 0 0
+mag = mag << I
+mag =  0 0
+out_res = out_res + in_res
+x =  2 0 0 , y =  1 0 0 0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+res = copy(O)
+res = 
+carry = copy(O)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  0
+digy = y[O]
+digy =  0
+x = x.drop()
+x =  2 0
+y = y.drop()
+y =  1 0 0
+ds = digx + digy
+x =  0 , y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 0 , y =  1 0 0 , res = , carry = , digx =  0 , digy =  0 , ds =  0
+ds = ds + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 0 , y =  1 0 0 , res = , carry = , digx =  0 , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  0
+digy = y[O]
+digy =  0
+x = x.drop()
+x =  2
+y = y.drop()
+y =  1 0
+ds = digx + digy
+x =  0 , y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 , y =  1 0 , res =  0 , carry = , digx =  0 , digy =  0 , ds =  0
+ds = ds + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 , y =  1 0 , res =  0 , carry = , digx =  0 , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  2
+digy = y[O]
+digy =  0
+x = x.drop()
+x = 
+y = y.drop()
+y =  1
+ds = digx + digy
+x =  2 , y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , y =  1 , res =  0 0 , carry = , digx =  2 , digy =  0 , ds =  2
+ds = ds + carry
+x =  2 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , y =  1 , res =  0 0 , carry = , digx =  2 , digy =  0 , ds =  2
+res = ds[O] | res
+res =  2 0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  1
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+ds = digx + digy
+y =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y = , res =  2 0 0 , carry = , digx = , digy =  1 , ds =  1
+ds = ds + carry
+x =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , res =  2 0 0 , carry = , digx = , digy =  1 , ds =  1
+res = ds[O] | res
+res =  1 2 0 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+res = carry | res
+res =  1 2 0 0
+return res
+return res
+x =  1 0 0 , out_res =  1 2 0 0 , mag =  0 0 , fac =  1 , x_c = , in_res =  1 0 0 0 , term =  1 , dm =  1
+while y != O:
+return out_res
+return out_res
+x =  1 2 3 4 , y =  1 2 0 0
+def __sub__(x, y, vis = True):
+assert x >= y
+if x <= TInt( 1 8 ) and y <= TInt( 1 8 ):
+res = copy(O)
+res = 
+borrow = copy(O)
+borrow = 
+while y != O:
+digx = x[O]
+digx =  4
+digy = y[O]
+digy =  0
+x = x.drop()
+x =  1 2 3
+y = y.drop()
+y =  1 2 0
+if borrow > O:
+if digx < digx:
+dd = digx - digy
+x =  4 , y =  0
+def __sub__(x, y, vis = True):
+assert x >= y
+if x <= TInt( 1 8 ) and y <= TInt( 1 8 ):
+return x.__sub(y)
+return x.__sub(y)
+x =  1 2 3 , y =  1 2 0 , res = , borrow = , digx =  4 , digy =  0 , dd =  4
+res = dd | res
+res =  4
+while y != O:
+digx = x[O]
+digx =  3
+digy = y[O]
+digy =  0
+x = x.drop()
+x =  1 2
+y = y.drop()
+y =  1 2
+if borrow > O:
+if digx < digx:
+dd = digx - digy
+x =  3 , y =  0
+def __sub__(x, y, vis = True):
+assert x >= y
+if x <= TInt( 1 8 ) and y <= TInt( 1 8 ):
+return x.__sub(y)
+return x.__sub(y)
+x =  1 2 , y =  1 2 , res =  4 , borrow = , digx =  3 , digy =  0 , dd =  3
+res = dd | res
+res =  3 4
+while y != O:
+digx = x[O]
+digx =  2
+digy = y[O]
+digy =  2
+x = x.drop()
+x =  1
+y = y.drop()
+y =  1
+if borrow > O:
+if digx < digx:
+dd = digx - digy
+x =  2 , y =  2
+def __sub__(x, y, vis = True):
+assert x >= y
+if x <= TInt( 1 8 ) and y <= TInt( 1 8 ):
+return x.__sub(y)
+return x.__sub(y)
+x =  1 , y =  1 , res =  3 4 , borrow = , digx =  2 , digy =  2 , dd =  0
+res = dd | res
+res =  0 3 4
+while y != O:
+digx = x[O]
+digx =  1
+digy = y[O]
+digy =  1
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+if borrow > O:
+if digx < digx:
+dd = digx - digy
+x =  1 , y =  1
+def __sub__(x, y, vis = True):
+assert x >= y
+if x <= TInt( 1 8 ) and y <= TInt( 1 8 ):
+return x.__sub(y)
+return x.__sub(y)
+x = , y = , res =  0 3 4 , borrow = , digx =  1 , digy =  1 , dd =  0
+res = dd | res
+res =  0 0 3 4
+while y != O:
+while borrow != O:
+res = x | res
+res =  0 0 3 4
+return res
+return res
+x =  0 0 3 4 , y =  1 2 , res =  1 0 0 , remainder = , div_len =  2 , factor_mag =  1 0 0 , factor =  1 0 0
+while x >= y:
+factor_mag = I
+factor_mag =  1
+while factor_mag * y <= x:
+x =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+t = x
+t =  1
+x = y
+x =  1 2
+y = t
+y =  1
+if x.len() <= I and y.len() <= I:
+out_res = copy(O)
+out_res = 
+carry = copy(O)
+carry = 
+mag = copy(O)
+mag = 
+while y != O:
+fac = y[O]
+fac =  1
+y = y.drop()
+y = 
+x_c = copy(x)
+x_c =  1 2
+in_res = copy(O)
+in_res = 
+while x_c != O:
+term = x_c[O]
+term =  2
+x_c = x_c.drop()
+x_c =  1
+dm = fac * term
+x =  1 , y =  2
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 2 , y = , t =  1 , out_res = , carry = , mag = , fac =  1 , x_c =  1 , in_res = , term =  2 , dm =  2
+dm = dm + carry
+x =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 2 , t =  1 , out_res = , carry = , mag = , fac =  1 , x_c =  1 , in_res = , term =  2 , dm =  2
+in_res = dm[O] | in_res
+in_res =  2
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  1
+x_c = x_c.drop()
+x_c = 
+dm = fac * term
+x =  1 , y =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 2 , y = , t =  1 , out_res = , carry = , mag = , fac =  1 , x_c = , in_res =  2 , term =  1 , dm =  1
+dm = dm + carry
+x =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 2 , t =  1 , out_res = , carry = , mag = , fac =  1 , x_c = , in_res =  2 , term =  1 , dm =  1
+in_res = dm[O] | in_res
+in_res =  1 2
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+in_res = carry | in_res
+in_res =  1 2
+carry = copy(O)
+carry = 
+in_res = in_res | mag
+in_res =  1 2
+mag = mag << I
+mag =  0
+out_res = out_res + in_res
+x = , y =  1 2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+res = copy(O)
+res = 
+carry = copy(O)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  2
+x = x.drop()
+x = 
+y = y.drop()
+y =  1
+ds = digx + digy
+y =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  1 , res = , carry = , digx = , digy =  2 , ds =  2
+ds = ds + carry
+x =  2 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , y =  1 , res = , carry = , digx = , digy =  2 , ds =  2
+res = ds[O] | res
+res =  2
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  1
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+ds = digx + digy
+y =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y = , res =  2 , carry = , digx = , digy =  1 , ds =  1
+ds = ds + carry
+x =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , res =  2 , carry = , digx = , digy =  1 , ds =  1
+res = ds[O] | res
+res =  1 2
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+res = carry | res
+res =  1 2
+return res
+return res
+x =  1 2 , t =  1 , out_res =  1 2 , mag =  0 , fac =  1 , x_c = , in_res =  1 2 , term =  1 , dm =  1
+while y != O:
+return out_res
+return out_res
+x =  0 0 3 4 , y =  1 2 , res =  1 0 0 , remainder = , div_len =  2 , factor_mag =  1 , factor =  1 0 0
+factor_mag = factor_mag | TInt(" 0 ")
+factor_mag =  1 0
+while factor_mag * y <= x:
+x =  1 0
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+out_res = copy(O)
+out_res = 
+carry = copy(O)
+carry = 
+mag = copy(O)
+mag = 
+while y != O:
+fac = y[O]
+fac =  2
+y = y.drop()
+y =  1
+x_c = copy(x)
+x_c =  1 0
+in_res = copy(O)
+in_res = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  1
+dm = fac * term
+x =  2 , y =  0
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  1 , in_res = , term =  0 , dm =  0
+dm = dm + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c =  1 , in_res = , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  1
+x_c = x_c.drop()
+x_c = 
+dm = fac * term
+x =  2
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 , out_res = , carry = , mag = , fac =  2 , x_c = , in_res =  0 , term =  1 , dm =  2
+dm = dm + carry
+x =  2 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 , y =  1 , out_res = , carry = , mag = , fac =  2 , x_c = , in_res =  0 , term =  1 , dm =  2
+in_res = dm[O] | in_res
+in_res =  2 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+in_res = carry | in_res
+in_res =  2 0
+carry = copy(O)
+carry = 
+in_res = in_res | mag
+in_res =  2 0
+mag = mag << I
+mag =  0
+out_res = out_res + in_res
+x = , y =  2 0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+res = copy(O)
+res = 
+carry = copy(O)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  0
+x = x.drop()
+x = 
+y = y.drop()
+y =  2
+ds = digx + digy
+y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  2 , res = , carry = , digx = , digy =  0 , ds =  0
+ds = ds + carry
+y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  2 , res = , carry = , digx = , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  2
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+ds = digx + digy
+y =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y = , res =  0 , carry = , digx = , digy =  2 , ds =  2
+ds = ds + carry
+x =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , res =  0 , carry = , digx = , digy =  2 , ds =  2
+res = ds[O] | res
+res =  2 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+res = carry | res
+res =  2 0
+return res
+return res
+x =  1 0 , y =  1 , out_res =  2 0 , mag =  0 , fac =  2 , x_c = , in_res =  2 0 , term =  1 , dm =  2
+while y != O:
+fac = y[O]
+fac =  1
+y = y.drop()
+y = 
+x_c = copy(x)
+x_c =  1 0
+in_res = copy(O)
+in_res = 
+while x_c != O:
+term = x_c[O]
+term =  0
+x_c = x_c.drop()
+x_c =  1
+dm = fac * term
+x =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 , out_res =  2 0 , carry = , mag =  0 , fac =  1 , x_c =  1 , in_res = , term =  0 , dm =  0
+dm = dm + carry
+x =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 , out_res =  2 0 , carry = , mag =  0 , fac =  1 , x_c =  1 , in_res = , term =  0 , dm =  0
+in_res = dm[O] | in_res
+in_res =  0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  1
+x_c = x_c.drop()
+x_c = 
+dm = fac * term
+x =  1 , y =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 0 , y = , out_res =  2 0 , carry = , mag =  0 , fac =  1 , x_c = , in_res =  0 , term =  1 , dm =  1
+dm = dm + carry
+x =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 , out_res =  2 0 , carry = , mag =  0 , fac =  1 , x_c = , in_res =  0 , term =  1 , dm =  1
+in_res = dm[O] | in_res
+in_res =  1 0
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+in_res = carry | in_res
+in_res =  1 0
+carry = copy(O)
+carry = 
+in_res = in_res | mag
+in_res =  1 0 0
+mag = mag << I
+mag =  0 0
+out_res = out_res + in_res
+x =  2 0 , y =  1 0 0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+res = copy(O)
+res = 
+carry = copy(O)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  0
+digy = y[O]
+digy =  0
+x = x.drop()
+x =  2
+y = y.drop()
+y =  1 0
+ds = digx + digy
+x =  0 , y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 , y =  1 0 , res = , carry = , digx =  0 , digy =  0 , ds =  0
+ds = ds + carry
+x =  0 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  2 , y =  1 0 , res = , carry = , digx =  0 , digy =  0 , ds =  0
+res = ds[O] | res
+res =  0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  2
+digy = y[O]
+digy =  0
+x = x.drop()
+x = 
+y = y.drop()
+y =  1
+ds = digx + digy
+x =  2 , y =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , y =  1 , res =  0 , carry = , digx =  2 , digy =  0 , ds =  2
+ds = ds + carry
+x =  2 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , y =  1 , res =  0 , carry = , digx =  2 , digy =  0 , ds =  2
+res = ds[O] | res
+res =  2 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  1
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+ds = digx + digy
+y =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y = , res =  2 0 , carry = , digx = , digy =  1 , ds =  1
+ds = ds + carry
+x =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , res =  2 0 , carry = , digx = , digy =  1 , ds =  1
+res = ds[O] | res
+res =  1 2 0
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+res = carry | res
+res =  1 2 0
+return res
+return res
+x =  1 0 , out_res =  1 2 0 , mag =  0 0 , fac =  1 , x_c = , in_res =  1 0 0 , term =  1 , dm =  1
+while y != O:
+return out_res
+return out_res
+x =  0 0 3 4 , y =  1 2 , res =  1 0 0 , remainder = , div_len =  2 , factor_mag =  1 0 , factor =  1 0 0
+factor_mag = factor_mag.drop()
+factor_mag =  1
+factor = factor_mag
+factor =  1
+while factor * y <= x:
+x =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+t = x
+t =  1
+x = y
+x =  1 2
+y = t
+y =  1
+if x.len() <= I and y.len() <= I:
+out_res = copy(O)
+out_res = 
+carry = copy(O)
+carry = 
+mag = copy(O)
+mag = 
+while y != O:
+fac = y[O]
+fac =  1
+y = y.drop()
+y = 
+x_c = copy(x)
+x_c =  1 2
+in_res = copy(O)
+in_res = 
+while x_c != O:
+term = x_c[O]
+term =  2
+x_c = x_c.drop()
+x_c =  1
+dm = fac * term
+x =  1 , y =  2
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 2 , y = , t =  1 , out_res = , carry = , mag = , fac =  1 , x_c =  1 , in_res = , term =  2 , dm =  2
+dm = dm + carry
+x =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 2 , t =  1 , out_res = , carry = , mag = , fac =  1 , x_c =  1 , in_res = , term =  2 , dm =  2
+in_res = dm[O] | in_res
+in_res =  2
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  1
+x_c = x_c.drop()
+x_c = 
+dm = fac * term
+x =  1 , y =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 2 , y = , t =  1 , out_res = , carry = , mag = , fac =  1 , x_c = , in_res =  2 , term =  1 , dm =  1
+dm = dm + carry
+x =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 2 , t =  1 , out_res = , carry = , mag = , fac =  1 , x_c = , in_res =  2 , term =  1 , dm =  1
+in_res = dm[O] | in_res
+in_res =  1 2
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+in_res = carry | in_res
+in_res =  1 2
+carry = copy(O)
+carry = 
+in_res = in_res | mag
+in_res =  1 2
+mag = mag << I
+mag =  0
+out_res = out_res + in_res
+x = , y =  1 2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+res = copy(O)
+res = 
+carry = copy(O)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  2
+x = x.drop()
+x = 
+y = y.drop()
+y =  1
+ds = digx + digy
+y =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  1 , res = , carry = , digx = , digy =  2 , ds =  2
+ds = ds + carry
+x =  2 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , y =  1 , res = , carry = , digx = , digy =  2 , ds =  2
+res = ds[O] | res
+res =  2
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  1
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+ds = digx + digy
+y =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y = , res =  2 , carry = , digx = , digy =  1 , ds =  1
+ds = ds + carry
+x =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , res =  2 , carry = , digx = , digy =  1 , ds =  1
+res = ds[O] | res
+res =  1 2
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+res = carry | res
+res =  1 2
+return res
+return res
+x =  1 2 , t =  1 , out_res =  1 2 , mag =  0 , fac =  1 , x_c = , in_res =  1 2 , term =  1 , dm =  1
+while y != O:
+return out_res
+return out_res
+x =  0 0 3 4 , y =  1 2 , res =  1 0 0 , remainder = , div_len =  2 , factor_mag =  1 , factor =  1
+factor = factor + factor_mag
+x =  1 , y =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  0 0 3 4 , y =  1 2 , res =  1 0 0 , remainder = , div_len =  2 , factor_mag =  1 , factor =  2
+while factor * y <= x:
+x =  2
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+t = x
+t =  2
+x = y
+x =  1 2
+y = t
+y =  2
+if x.len() <= I and y.len() <= I:
+out_res = copy(O)
+out_res = 
+carry = copy(O)
+carry = 
+mag = copy(O)
+mag = 
+while y != O:
+fac = y[O]
+fac =  2
+y = y.drop()
+y = 
+x_c = copy(x)
+x_c =  1 2
+in_res = copy(O)
+in_res = 
+while x_c != O:
+term = x_c[O]
+term =  2
+x_c = x_c.drop()
+x_c =  1
+dm = fac * term
+x =  2 , y =  2
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 2 , y = , t =  2 , out_res = , carry = , mag = , fac =  2 , x_c =  1 , in_res = , term =  2 , dm =  4
+dm = dm + carry
+x =  4
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 2 , t =  2 , out_res = , carry = , mag = , fac =  2 , x_c =  1 , in_res = , term =  2 , dm =  4
+in_res = dm[O] | in_res
+in_res =  4
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  1
+x_c = x_c.drop()
+x_c = 
+dm = fac * term
+x =  2 , y =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 2 , y = , t =  2 , out_res = , carry = , mag = , fac =  2 , x_c = , in_res =  4 , term =  1 , dm =  2
+dm = dm + carry
+x =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 2 , t =  2 , out_res = , carry = , mag = , fac =  2 , x_c = , in_res =  4 , term =  1 , dm =  2
+in_res = dm[O] | in_res
+in_res =  2 4
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+in_res = carry | in_res
+in_res =  2 4
+carry = copy(O)
+carry = 
+in_res = in_res | mag
+in_res =  2 4
+mag = mag << I
+mag =  0
+out_res = out_res + in_res
+x = , y =  2 4
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+res = copy(O)
+res = 
+carry = copy(O)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  4
+x = x.drop()
+x = 
+y = y.drop()
+y =  2
+ds = digx + digy
+y =  4
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  2 , res = , carry = , digx = , digy =  4 , ds =  4
+ds = ds + carry
+x =  4 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , y =  2 , res = , carry = , digx = , digy =  4 , ds =  4
+res = ds[O] | res
+res =  4
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  2
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+ds = digx + digy
+y =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y = , res =  4 , carry = , digx = , digy =  2 , ds =  2
+ds = ds + carry
+x =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , res =  4 , carry = , digx = , digy =  2 , ds =  2
+res = ds[O] | res
+res =  2 4
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+res = carry | res
+res =  2 4
+return res
+return res
+x =  1 2 , t =  2 , out_res =  2 4 , mag =  0 , fac =  2 , x_c = , in_res =  2 4 , term =  1 , dm =  2
+while y != O:
+return out_res
+return out_res
+x =  0 0 3 4 , y =  1 2 , res =  1 0 0 , remainder = , div_len =  2 , factor_mag =  1 , factor =  2
+factor = factor + factor_mag
+x =  2 , y =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  0 0 3 4 , y =  1 2 , res =  1 0 0 , remainder = , div_len =  2 , factor_mag =  1 , factor =  3
+while factor * y <= x:
+x =  3
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+t = x
+t =  3
+x = y
+x =  1 2
+y = t
+y =  3
+if x.len() <= I and y.len() <= I:
+out_res = copy(O)
+out_res = 
+carry = copy(O)
+carry = 
+mag = copy(O)
+mag = 
+while y != O:
+fac = y[O]
+fac =  3
+y = y.drop()
+y = 
+x_c = copy(x)
+x_c =  1 2
+in_res = copy(O)
+in_res = 
+while x_c != O:
+term = x_c[O]
+term =  2
+x_c = x_c.drop()
+x_c =  1
+dm = fac * term
+x =  3 , y =  2
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 2 , y = , t =  3 , out_res = , carry = , mag = , fac =  3 , x_c =  1 , in_res = , term =  2 , dm =  6
+dm = dm + carry
+x =  6
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 2 , t =  3 , out_res = , carry = , mag = , fac =  3 , x_c =  1 , in_res = , term =  2 , dm =  6
+in_res = dm[O] | in_res
+in_res =  6
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  1
+x_c = x_c.drop()
+x_c = 
+dm = fac * term
+x =  3 , y =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 2 , y = , t =  3 , out_res = , carry = , mag = , fac =  3 , x_c = , in_res =  6 , term =  1 , dm =  3
+dm = dm + carry
+x =  3
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 2 , t =  3 , out_res = , carry = , mag = , fac =  3 , x_c = , in_res =  6 , term =  1 , dm =  3
+in_res = dm[O] | in_res
+in_res =  3 6
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+in_res = carry | in_res
+in_res =  3 6
+carry = copy(O)
+carry = 
+in_res = in_res | mag
+in_res =  3 6
+mag = mag << I
+mag =  0
+out_res = out_res + in_res
+x = , y =  3 6
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+res = copy(O)
+res = 
+carry = copy(O)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  6
+x = x.drop()
+x = 
+y = y.drop()
+y =  3
+ds = digx + digy
+y =  6
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  3 , res = , carry = , digx = , digy =  6 , ds =  6
+ds = ds + carry
+x =  6 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , y =  3 , res = , carry = , digx = , digy =  6 , ds =  6
+res = ds[O] | res
+res =  6
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  3
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+ds = digx + digy
+y =  3
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y = , res =  6 , carry = , digx = , digy =  3 , ds =  3
+ds = ds + carry
+x =  3
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , res =  6 , carry = , digx = , digy =  3 , ds =  3
+res = ds[O] | res
+res =  3 6
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+res = carry | res
+res =  3 6
+return res
+return res
+x =  1 2 , t =  3 , out_res =  3 6 , mag =  0 , fac =  3 , x_c = , in_res =  3 6 , term =  1 , dm =  3
+while y != O:
+return out_res
+return out_res
+x =  0 0 3 4 , y =  1 2 , res =  1 0 0 , remainder = , div_len =  2 , factor_mag =  1 , factor =  3
+factor = factor - factor_mag
+x =  3 , y =  1
+def __sub__(x, y, vis = True):
+assert x >= y
+if x <= TInt( 1 8 ) and y <= TInt( 1 8 ):
+return x.__sub(y)
+return x.__sub(y)
+x =  0 0 3 4 , y =  1 2 , res =  1 0 0 , remainder = , div_len =  2 , factor_mag =  1 , factor =  2
+res = res + factor
+x =  1 0 0 , y =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+res = copy(O)
+res = 
+carry = copy(O)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  0
+digy = y[O]
+digy =  2
+x = x.drop()
+x =  1 0
+y = y.drop()
+y = 
+ds = digx + digy
+x =  0 , y =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 , y = , res = , carry = , digx =  0 , digy =  2 , ds =  2
+ds = ds + carry
+x =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 0 , res = , carry = , digx =  0 , digy =  2 , ds =  2
+res = ds[O] | res
+res =  2
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  0
+digy = y[O]
+digy = 
+x = x.drop()
+x =  1
+y = y.drop()
+y = 
+ds = digx + digy
+x =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 , res =  2 , carry = , digx =  0 , digy = , ds =  0
+ds = ds + carry
+x =  0
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 , res =  2 , carry = , digx =  0 , digy = , ds =  0
+res = ds[O] | res
+res =  0 2
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx =  1
+digy = y[O]
+digy = 
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+ds = digx + digy
+x =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , res =  0 2 , carry = , digx =  1 , digy = , ds =  1
+ds = ds + carry
+x =  1
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , res =  0 2 , carry = , digx =  1 , digy = , ds =  1
+res = ds[O] | res
+res =  1 0 2
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+res = carry | res
+res =  1 0 2
+return res
+return res
+x =  0 0 3 4 , y =  1 2 , remainder = , div_len =  2 , factor_mag =  1 , factor =  2
+x = x - factor * y
+x =  2
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+t = x
+t =  2
+x = y
+x =  1 2
+y = t
+y =  2
+if x.len() <= I and y.len() <= I:
+out_res = copy(O)
+out_res = 
+carry = copy(O)
+carry = 
+mag = copy(O)
+mag = 
+while y != O:
+fac = y[O]
+fac =  2
+y = y.drop()
+y = 
+x_c = copy(x)
+x_c =  1 2
+in_res = copy(O)
+in_res = 
+while x_c != O:
+term = x_c[O]
+term =  2
+x_c = x_c.drop()
+x_c =  1
+dm = fac * term
+x =  2 , y =  2
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 2 , y = , t =  2 , out_res = , carry = , mag = , fac =  2 , x_c =  1 , in_res = , term =  2 , dm =  4
+dm = dm + carry
+x =  4
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 2 , t =  2 , out_res = , carry = , mag = , fac =  2 , x_c =  1 , in_res = , term =  2 , dm =  4
+in_res = dm[O] | in_res
+in_res =  4
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+term = x_c[O]
+term =  1
+x_c = x_c.drop()
+x_c = 
+dm = fac * term
+x =  2 , y =  1
+def __mul__(x, y, vis=True):
+if x.len() < y.len():
+if x.len() <= I and y.len() <= I:
+return x.__mul(y)
+return x.__mul(y)
+x =  1 2 , y = , t =  2 , out_res = , carry = , mag = , fac =  2 , x_c = , in_res =  4 , term =  1 , dm =  2
+dm = dm + carry
+x =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x =  1 2 , t =  2 , out_res = , carry = , mag = , fac =  2 , x_c = , in_res =  4 , term =  1 , dm =  2
+in_res = dm[O] | in_res
+in_res =  2 4
+carry = copy(O) if dm.len() <= I else dm[I]
+carry = 
+while x_c != O:
+in_res = carry | in_res
+in_res =  2 4
+carry = copy(O)
+carry = 
+in_res = in_res | mag
+in_res =  2 4
+mag = mag << I
+mag =  0
+out_res = out_res + in_res
+x = , y =  2 4
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+res = copy(O)
+res = 
+carry = copy(O)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  4
+x = x.drop()
+x = 
+y = y.drop()
+y =  2
+ds = digx + digy
+y =  4
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y =  2 , res = , carry = , digx = , digy =  4 , ds =  4
+ds = ds + carry
+x =  4 , y = 
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , y =  2 , res = , carry = , digx = , digy =  4 , ds =  4
+res = ds[O] | res
+res =  4
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+digx = x[O]
+digx = 
+digy = y[O]
+digy =  2
+x = x.drop()
+x = 
+y = y.drop()
+y = 
+ds = digx + digy
+y =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+y = , res =  4 , carry = , digx = , digy =  2 , ds =  2
+ds = ds + carry
+x =  2
+def __add__(x, y, vis=True):
+if x.len() <= I and y.len() <= I:
+return x.__add(y)
+return x.__add(y)
+x = , res =  4 , carry = , digx = , digy =  2 , ds =  2
+res = ds[O] | res
+res =  2 4
+carry = copy(O) if ds.len() <= I else copy(I)
+carry = 
+while x != O or y != O:
+res = carry | res
+res =  2 4
+return res
+return res
+x =  1 2 , t =  2 , out_res =  2 4 , mag =  0 , fac =  2 , x_c = , in_res =  2 4 , term =  1 , dm =  2
+while y != O:
+return out_res
+return out_res
+x =  0 0 3 4 , y =  2 4
+def __sub__(x, y, vis = True):
+assert x >= y
+if x <= TInt( 1 8 ) and y <= TInt( 1 8 ):
+res = copy(O)
+res = 
+borrow = copy(O)
+borrow = 
+while y != O:
+digx = x[O]
+digx =  4
+digy = y[O]
+digy =  4
+x = x.drop()
+x =  0 0 3
+y = y.drop()
+y =  2
+if borrow > O:
+if digx < digx:
+dd = digx - digy
+x =  4 , y =  4
+def __sub__(x, y, vis = True):
+assert x >= y
+if x <= TInt( 1 8 ) and y <= TInt( 1 8 ):
+return x.__sub(y)
+return x.__sub(y)
+x =  0 0 3 , y =  2 , res = , borrow = , digx =  4 , digy =  4 , dd =  0
+res = dd | res
+res =  0
+while y != O:
+digx = x[O]
+digx =  3
+digy = y[O]
+digy =  2
+x = x.drop()
+x =  0 0
+y = y.drop()
+y = 
+if borrow > O:
+if digx < digx:
+dd = digx - digy
+x =  3 , y =  2
+def __sub__(x, y, vis = True):
+assert x >= y
+if x <= TInt( 1 8 ) and y <= TInt( 1 8 ):
+return x.__sub(y)
+return x.__sub(y)
+x =  0 0 , y = , res =  0 , borrow = , digx =  3 , digy =  2 , dd =  1
+res = dd | res
+res =  1 0
+while y != O:
+while borrow != O:
+res = x | res
+res =  0 0 1 0
+return res
+return res
+x =  0 0 1 0 , y =  1 2 , res =  1 0 2 , remainder = , div_len =  2 , factor_mag =  1 , factor =  2
+while x >= y:
+return res
+return res
+ANSWER:  1 0 2

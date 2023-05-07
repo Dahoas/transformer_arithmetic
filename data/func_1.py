@@ -132,14 +132,12 @@ class TInt:
       mag = copy(O)
       # Outer loop for multiplying with each digit of y
       while y != O:
-        print("y ", y)
         fac = y[O]
         y = y.drop()
         x_c = copy(x)
         in_res = copy(O)
         # Inner loop for multiplying
         while x_c != O:
-          print("x_c ", x_c)
           term = x_c[O]
           x_c = x_c.drop()
           dm = fac * term
@@ -155,6 +153,16 @@ class TInt:
         out_res = out_res + in_res
       return out_res
 
+  def __floordiv__(x, y, vis=False):
+    """
+      Implements x // y using grade-school long division
+    """
+    quo = copy(O)
+    div_len = y.len()
+    while x >= y:
+      mag_diff = x.len() - div_len
+      
+    return quo
 
 O = TInt("")
 I = TInt("1")
