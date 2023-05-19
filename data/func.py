@@ -34,7 +34,8 @@ class TInt:
 
     Note 0 has length 0.
     """
-    return TInt(len(x.val))
+    if x.val == '': return 0
+    return TInt(len(str(int(x.val))))
 
   def __int__(self, vis=False):
     """
@@ -70,39 +71,46 @@ class TInt:
     else:
       return TInt(self.val[len(self.val) - int(ind) - 1])
 
-  def drop(x, vis=False):
-    """
-    Drops the units digit from x. Dropping 0 gives 0.
-    """
-    if x.len() == I:
-      return copy(O)
-    return TInt(x.val[:-1])
-
   def __add(x, y, vis=False):
     """
     Implements basic addition. __ denotes hidden from user.
     """
-    assert x.len() <= I
-    assert y.len() <= I
     return TInt(int(x) + int(y))
 
   def __add__(x, y, vis=True):
-    if x.len() <= I and y.len() <= I:
-      res = x.__add(y)
-    else:
-      res = copy(O)
-      carry = copy(O)
-      while x != O or y != O:
-        digx = x[O]
-        digy = y[O]
-        x = x.drop()
-        y = y.drop()
-        ds = digx + digy
-        ds = ds + carry
-        res = ds[O] | res
-        carry = copy(O) if ds.len() <= I else copy(I)
+    res = copy(E)
+    carry = copy(O)
+    while x != O or y != O:
+      #print(x, y, res)
+      digx = x[O]
+      digy = y[O]
+      x = x >> I
+      y = y >> I
+      ds = digx.__add(digy)
+      ds = ds.__add(carry)
+      res = ds[O] | res
+      if ds.len() <= I:
+        carry = copy(O)
+      else:
+        carry = copy(I)
+      #print(x, y, res)
+    if carry > O:
       res = carry | res
     return res
+
+  def __rshift__(x, y, vis=False):
+    """
+    Drops the units digit from x. Dropping 0 gives 0.
+    """
+    #print("rsh", x, y)
+    if x.len() <= y:
+      #print("rsh xlen <= y -> return 0")
+      return copy(O)
+    elif y == O:
+      return copy(x)
+    #print("rsh ", str(int(x.val))[:-1 * int(y)])
+    return TInt(str(int(x.val))[:-1 * int(y)])
+
 
   def __lshift__(x, y, vis=False):
     """
@@ -131,20 +139,20 @@ class TInt:
     if x.len() <= I and y.len() <= I:
       out_res = x.__mul(y)
     else:
-      out_res = copy(O)
+      out_res = copy(E)
       carry = copy(O)
-      mag = copy(O)
+      mag = copy(E)
       # Outer loop for multiplying with each digit of y
       while y != O:
         fac = y[O]
-        y = y.drop()
+        y = y >> I
         x_c = copy(x)
-        in_res = copy(O)
+        in_res = copy(E)
         # Inner loop for multiplying
         while x_c != O:
           term = x_c[O]
-          x_c = x_c.drop()
-          dm = fac * term
+          x_c = x_c >> I
+          dm = fac.__mul(term)
           dm = dm + carry
           in_res = dm[O] | in_res
           carry = copy(O) if dm.len() <= I else dm[I]
@@ -158,59 +166,48 @@ class TInt:
     return out_res
 
   def __sub(x, y, vis=False):
-    assert x <= TInt(18)
-    assert y <= TInt(18)
     return TInt(int(x) - int(y))
 
   def __sub__(x, y, vis=True):
     #print("SUBTRACT: ", x, y)
     assert x >= y
-    if x <= TInt(18) and y <= TInt(18):
-      #print("basecase")
-      res = x.__sub(y)
-    #print("not basecase")
-    else:
-      res = copy(O)
-      borrow = copy(O)
-      while y != O:
-        #print("looping...", x, y, borrow, res)
-        # get next digis
-        digx = x[O]
-        digy = y[O]
-        x = x.drop()
-        y = y.drop()
-        # factor in borrow
-        #print("got digx, digy, borrow: ", digx, digy, borrow)
-        if borrow > O:
-          if digx > O:
-            digx = digx - I
-            borrow = O
-          else:
-            digx = I | TInt(0)
-            digx = digx - I
-        #print("facored in borrow: digx, borrow", digx, borrow)
-        # subtract
-        if digx < digy:
-          assert borrow == O
-          digx = I | digx
-          borrow = I
-        #print("borrowed as needed digx, borrow", digx, borrow)
-        dd = digx - digy
-        res = dd | res
-        #print("loop done. x, y, borrow, res:", x, y, borrow, res)
-      while borrow != O:
-        digx = x[O]
-        x = x.drop()
+    res = copy(E)
+    borrow = copy(O)
+    while y != O:
+      #print("looping...", x, y, borrow, res)
+      # get next digis
+      digx = x[O]
+      digy = y[O]
+      x = x >> I
+      y = y >> I
+      # factor in borrow
+      #print("got digx, digy, borrow: ", digx, digy, borrow)
+      if borrow > O:
         if digx > O:
-          digx = digx - I
+          digx = digx.__sub(I)
           borrow = O
         else:
           digx = I | TInt(0)
-          digx = digx - I
-        res = digx | res
-      res = x | res
-    #print("got res:", res)
+          digx = digx.__sub(I)
+      #print("facored in borrow: digx, borrow", digx, borrow)
+      # subtract
+      if digx < digy:
+        assert borrow == O
+        digx = I | digx
+        borrow = I
+      #print("borrowed as needed digx, borrow", digx, borrow)
+      dd = digx.__sub(digy)
+      res = dd | res
+      #print("loop done. x, y, borrow, res:", x, y, borrow, res)
+    if borrow != O:
+      dd = x.__sub(I)
+    else:
+      dd = x
+    if dd > O:
+      res = dd | res
     return res
+
+
 
   def __floordiv__(x, y, vis=True):
     """
@@ -220,41 +217,44 @@ class TInt:
     while x >= y:
       # choose factor
       #print("div x, y, res: ", x, y, res)
-      """factor_mag = x.len() - y.len() - I # TODO - this require
-      if (y << (factor_mag)) > x:
+      len_x = x.len()
+      len_y = y.len()
+      # we know len_x >= len_y
+      factor_mag = len_x - len_y
+      if (y << factor_mag) > x:
         factor_mag = factor_mag - I
-      #print(y << factor_mag, x)"""
-      factor_mag = I
-      while (y << factor_mag) <= x:
-        factor_mag = factor_mag + I
-        #print(y << factor_mag)
-      factor_mag = factor_mag - I
       #print(x, y, factor_mag)
       dig = I
       sum_div = y
-      #print("found_mag, dig, sum_div: ", factor_mag, dig, sum_div)
-      while (sum_div + y) << factor_mag <= x:
-        #print("finding dig, sum_div: ", dig, sum_div)
-        #print(sum_div | factor_mag)
+      sub_x = x >> factor_mag
+      # TODO make below process of dig guess better
+      while sum_div <= sub_x:
         dig = dig + I
         sum_div = sum_div + y
+        #print("iter", x, y, sum_div + y, sub_x)
+      if sum_div > sub_x:
+        dig = dig - I
+        sum_div = sum_div - y
       #print("factor sum_div, dig: ", sum_div << factor_mag, dig)
       factor = dig << factor_mag
       # add factor to res
       res = res + factor
       x = x - (sum_div << factor_mag)
-      #print("factor, res, x:", factor, res, x)
     return res
 
-Of = TInt("0")
-O = TInt("")
+O = TInt("0")
+E = TInt("")
 I = TInt("1")
+if __name__ == "__main__":
+  tests = [(324, 6), (6, 324), (199, 1), (199, 2), (500, 200), (970, 30), (907, 93), (9, 2)]
+  #print("024 >> '0' = ", TInt("024") >> TInt("0"))
+  for x, y in tests:
+    x = TInt(x)
+    y = TInt(y)
+    print(x, y)
+    print("x + y = ", x + y)
+    if x >= y: print("x - y = ", x - y)
+    else: print("y - x = ", y - x)
+    print("x * y = ", x * y)
+    print("x // y = ", x // y)
 
-#x = TInt(405600)
-#y = TInt(39)
-#print(x - y)
-
-x = TInt(409500040)
-y = TInt(17)
-z = x // y
-print(z)

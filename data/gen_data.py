@@ -83,9 +83,9 @@ def gen_noisy_dataset(prompt_template, noise_mode, dnl, snl, enl, num_samples=10
 
 
 if __name__ == "__main__":
-    dnls = np.linspace(0.1, 0.8, num=5)
-    snls = dnls
-    enls = dnls
+    dnls = [0.0]#np.linspace(0.1, 0.8, num=5)
+    snls = [0.0]#dnls
+    enls = [0.0]#dnls
     dataset_dir = "datasets/"
 
     prompt_template = chain_of_thought_template
@@ -95,8 +95,7 @@ if __name__ == "__main__":
     num_samples = 100000
     print("Creating dataset with dnl: {}, snl: {}, enl: {}...".format(dnl, snl, enl))
     file_name = dataset_dir + "additions_{}_{}_{}_{}_{}".format(prompt_template.__name__, num_samples, dnl, snl, enl)
-    train_clean_dataset = gen_noisy_dataset(prompt_template=prompt_template, noise_mode="static", dnl=dnl, snl=snl, enl=enl, num_samples=num_samples)
-    test_clean_dataset = gen_noisy_dataset(prompt_template=prompt_template, noise_mode="static", dnl=dnl, snl=snl, enl=enl, num_samples=1000)
+    test_dataset = gen_noisy_dataset(prompt_template=prompt_template, noise_mode="static", dnl=dnl, snl=snl, enl=enl, num_samples=1000)
 
     Path(file_name).mkdir(exist_ok=True, parents=True)
     dump_jsonl(os.path.join(file_name, "train.jsonl"), train_clean_dataset)
@@ -111,4 +110,4 @@ if __name__ == "__main__":
 
                 Path(file_name).mkdir(exist_ok=True, parents=True)
                 dump_jsonl(os.path.join(file_name, "train.jsonl"), dataset)
-                dump_jsonl(os.path.join(file_name, "test.jsonl"), test_clean_dataset)
+                dump_jsonl(os.path.join(file_name, "test.jsonl"), test_dataset)

@@ -15,12 +15,13 @@ class MaskedSFTDataset(Dataset):
             self.preprocess(data, tokenizer)
 
         def preprocess(self, data, tokenizer):
+            self.SEP = " ;"
             self.input_ids = []
             self.attn_masks = []
             self.labels = []
             self.prompts = []
             self.responses = []
-            max_length = max([len(tokenizer.encode(ele["prompt"] + ele["response"] + '<|endoftext|>')) for ele in tqdm(data)])
+            max_length = max([len(tokenizer.encode(ele["prompt"] + self.SEP + ele["response"] + '<|endoftext|>')) for ele in tqdm(data)])
             self.max_length = max_length
             print("Max length: {}".format(max_length))
 
@@ -28,7 +29,7 @@ class MaskedSFTDataset(Dataset):
             for ele in tqdm(data):
                 prompt, response = ele["prompt"], ele["response"]
                 prompt_encoding_len = len(tokenizer(prompt)["input_ids"])
-                encodings_dict = tokenizer(prompt + response + '<|endoftext|>', truncation=True,
+                encodings_dict = tokenizer(prompt + self.SEP + response + '<|endoftext|>', truncation=True,
                                         max_length=max_length, padding="max_length")
                 input_id = torch.tensor(encodings_dict['input_ids'])
                 attn_mask = torch.tensor(encodings_dict['attention_mask'])
@@ -40,6 +41,7 @@ class MaskedSFTDataset(Dataset):
                 else:
                     first_eos = first_eos[0, 0]
                 label_mask[first_eos] = 0  # Want to predict on first eos_token
+                assert(prompt_encoding_len >= 1)
                 label_mask[:prompt_encoding_len] = 1  # Do not predict on prompt
                 flipped_mask = 1 - label_mask
                 self.input_ids.append(input_id)

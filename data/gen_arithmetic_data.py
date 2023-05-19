@@ -2,11 +2,12 @@ import sys, trace, re
 import torch
 from util import load_jsonl, dump_jsonl
 from pathlib import Path
-import os
+import os, random
 from tqdm import tqdm
 import numpy as np
 from func import *
 import operator
+from transformers import AutoTokenizer
 
 codefile = "func.py"
 f = open(codefile)
@@ -17,12 +18,12 @@ prev_changed_var = ''
 trace = ''
 
 def insert_number_spaces(s):
-    space_after = re.sub(r"(\d)", r"\1 ", s)
+    space_after = re.sub(r"(\d)([^\s])", r"\1 \2", s)
     space_before = re.sub(r"([^\s])(\d)", r"\1 \2", space_after)
     return space_before
 
 def replace_bases(t):
-    t = t.replace("x.__add(y)", "x + y")
+    t = re.sub(r"([a-zA-Z0-9_]+).__add\(([a-zA-Z0-9_]+)\)", r"\1 + \2", t)
     t = t.replace("x.__mul(y)", "x * y")
     t = t.replace("x.__sub(y)", "x - y")
     t = t.replace("x.__floordiv(y)", "x / y")
@@ -61,6 +62,7 @@ def custom_trace(frame, event, arg = None):
   if not codefile in frame.f_code.co_filename: 
     return custom_trace
   code_line = lines[line_no - 1].strip()
+  if "def" in code_line: return custom_trace
   local_vars = frame.f_locals
   if not local_vars["vis"]: 
     return custom_trace
@@ -74,18 +76,40 @@ def custom_trace(frame, event, arg = None):
   trace += code_line + '\n'
   return custom_trace
 
-def chain_of_thought_template(arg1, arg2, op_string = "add"):
+def chain_of_thought_template(op_string, *args):
     global trace
 
     ops = {"add": operator.add,
             "sub": operator.sub,
             "mul": operator.mul,
-            "div": operator.floordiv
+            "div": operator.floordiv,
+            "len": lambda x: x.len(),
+            "rsh": operator.rshift,
+            "rind": operator.getitem,
     }
+    op_to_prompt = {
+                    "add": "{} + {} = ",
+                    "sub": "{} - {} = ",
+                    "mul": "{} * {} = ",
+                    "div": "{} / {} = ",
+                    "len": "len({}) = ",
+                    "rsh": "{} >> {} = ",
+                    "rind": "{}[{}] = "
+                }
+
+    # switch args if x < y
+    if op_string == "sub":
+        if args[0] < args[1]:
+            args = args[::-1]
+    if op_string == "div":
+        if args[0] < args[1]:
+            sample = np.random.random_sample()
+            if sample < .9:
+              args = args[::-1]
 
     sys.settrace(custom_trace)
     #ret = addition('123', '1234')
-    ret = ops[op_string](arg1, arg2)
+    ret = ops[op_string](*args)
     sys.settrace(None)
 
     # Post-process trace
@@ -107,8 +131,8 @@ def chain_of_thought_template(arg1, arg2, op_string = "add"):
     # Switch order of function call and input vars
     trace = swap_func_call(trace)
 
-    prompt = f"{op_string}({arg1}, {arg2})="
-    response = trace + f"ANSWER: {ret}"
+    prompt = op_to_prompt[op_string].format(*args)
+    response = trace + f"{prompt} {ret}"
 
     prompt = insert_number_spaces(prompt)
     response = insert_number_spaces(response)
@@ -128,24 +152,105 @@ def gen_dataset(prompt_template, num_samples=100000, max_num=int(1e5), min_len =
         dataset.append(prompt_template(l))
     return dataset
 
+# returns inclusive uniform random sample of len then digit
+# inclusive of max len
+def sample_by_len(num_samples, min_len, max_len):
+    lens = torch.randint(min_len, max_len + 1, (num_samples,)).tolist()
+    nums = []
+    for l in lens:
+        num = torch.randint(1, 10, (1,)).tolist() + torch.randint(0, 10, (l-1,)).tolist()
+        num = TInt("".join([str(e) for e in num]))
+        nums.append(num)
+    return nums
+
+def sample_by_magnitude(num_samples, min_int, max_int):
+    nums = torch.randint(min_int, max_int, (num_samples,))
+    sample = []
+    for num in nums:
+        sample.append(TInt(num.item()))
+    return sample
+
+# Generate dataset by sampling lengths then digits
+def sample_terms(arg_sampling, num_samples = 100000):
+    # args per sample
+    args_per_sample = len(arg_sampling)
+    arg_list = [[] for s in range(num_samples)]
+    for arg in range(args_per_sample):
+        sample_method = arg_sampling[arg]
+        sample_type = sample_method[0]
+        if sample_type == "len":
+            len_min = sample_method[1]
+            len_max = sample_method[2]
+            arg_sample = sample_by_len(num_samples, len_min, len_max)
+        elif sample_type == "mag":
+            min_num = sample_method[1]
+            max_num = sample_method[2]
+            arg_sample = sample_by_magnitude(num_samples, min_num, max_num)
+        else: 
+            print("unrecognized sampling: ", sample_type)
+            exit()
+        # add args
+        for s in range(num_samples):
+            arg_list[s].append(arg_sample[s])
+    return arg_list
+        
+def generate_op_data(op_string, prompt_template, num_samples, arg_sampling):
+    samples = sample_terms(arg_sampling, num_samples = num_samples)
+    data = []
+    for sample in tqdm(samples):
+        data.append(prompt_template(op_string, *sample))
+    return data
+
+def generate_mix_data(prompt_template, num_samples):
+    arg_sampling = [(), ()]
+    arg_sampling = [("add", [["len", 1, 5], ["len", 1, 5]]), 
+                    ("sub", [["len", 1, 5], ["len", 1, 5]]), 
+                    ("mul", [["len", 1, 3], ["len", 1, 3]]), 
+                    ("div", [["len", 1, 3], ["len", 1, 3]])]
+    data = []
+    for op, sample in arg_sampling:
+      data += generate_op_data(op, prompt_template, num_samples // 4, sample) 
+    return data
 
 if __name__ == "__main__":
-    x = TInt(12345)
-    y = TInt(23535)
-    #print(chain_of_thought_template(x, y, op_string="div")["response"])
-    print(chain_of_thought_template(x, y, op_string="add")["response"])
-    """dataset_dir = "datasets/"
+    test = True
+    if test:
+        x = TInt(99455565)
+        y = TInt(99923416)
+        res = chain_of_thought_template("sub", y, x)
+        resp = res["response"]
+        print(resp)
+        tok = AutoTokenizer.from_pretrained("EleutherAI/pythia-410m")
+        print(len(tok(resp).input_ids))
+        tok = AutoTokenizer.from_pretrained("gpt2")
+        print(len(tok(resp).input_ids))
+
+        exit()
+
+    dataset_dir = "datasets/"
 
     prompt_template = chain_of_thought_template
     #prompt_template = simple_template
     # First make clean dataset
     num_train_samples = 100000
     num_test_samples = 1000
-    file_name = dataset_dir + "sort_{}_{}".format(prompt_template.__name__, num_train_samples)
-    train_clean_dataset = gen_dataset(prompt_template=prompt_template, num_samples=num_train_samples)
-    test_clean_dataset = gen_dataset(prompt_template=prompt_template, num_samples=num_test_samples)
+    train_digit_size = 4
+    test_digit_size = 4
+    op_string = "div"
+    file_name = dataset_dir + "{}_{}_{}_{}_{}".format(op_string, train_digit_size, test_digit_size, prompt_template.__name__, num_train_samples)
+
+    if op_string == "mix":
+        train_clean_dataset = generate_mix_data(prompt_template, num_train_samples)
+        test_clean_dataset = generate_mix_data(prompt_template, num_test_samples)
+    else: 
+        train_sampling = [["len", 1, train_digit_size], ["len", 1, train_digit_size]]
+        test_sampling = [["len", 1, test_digit_size], ["len", 1, test_digit_size]]
+        train_clean_dataset = generate_op_data(op_string, prompt_template, num_train_samples, train_sampling)
+        #print(train_clean_dataset)
+        test_clean_dataset = generate_op_data(op_string, prompt_template, num_test_samples, test_sampling)
+
+    
 
     Path(file_name).mkdir(exist_ok=True, parents=True)
     dump_jsonl(os.path.join(file_name, "train.jsonl"), train_clean_dataset)
-    dump_jsonl(os.path.join(file_name, "test.jsonl"), test_clean_dataset)"""
-
+    dump_jsonl(os.path.join(file_name, "test.jsonl"), test_clean_dataset)

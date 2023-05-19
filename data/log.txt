@@ -1,189 +1,80 @@
 24088237
 def __add__(x, y):
-x = 1 2 3 4 5 , y = 2 3 5 3 5 
+x = 5 1 2 3 4 , y = 2 3 5 6 2 
 if x.len() <= 1  and y.len() <= 1 :
 res = 0 
 carry = 0 
-while x != 0  or y != 0 :
-digx = x[ 0 ]
-digx = 5 
-digy = y[ 0 ]
-digy = 5 
-x = x.drop()
-x = 1 2 3 4 
-y = y.drop()
-y = 2 3 5 3 
-ds = digx + digy
-def __add__(x, y):
-x = 5 , y = 5 
-if x.len() <= 1  and y.len() <= 1 :
-res = x + y
-res = 1 0 
-return res
-x = 1 2 3 4 , y = 2 3 5 3 , res = 0 , carry = 0 , digx = 5 , digy = 5 , ds = 1 0 
-ds = ds + carry
-def __add__(x, y):
-x = 1 0 , y = 0 
-if x.len() <= 1  and y.len() <= 1 :
-res = 0 
-carry = 0 
-while x != 0  or y != 0 :
-digx = x[ 0 ]
-digx = 0 
-digy = y[ 0 ]
-digy = 0 
-x = x.drop()
-x = 1 
-y = y.drop()
-y = 0 
-ds = digx + digy
-def __add__(x, y):
-x = 0 
-if x.len() <= 1  and y.len() <= 1 :
-res = x + y
-res = 0 
-return res
-x = 1 , carry = 0 , digx = 0 , digy = 0 , ds = 0 
-ds = ds + carry
-def __add__(x, y):
-x = 0 
-if x.len() <= 1  and y.len() <= 1 :
-res = x + y
-res = 0 
-return res
-x = 1 , carry = 0 , digx = 0 , digy = 0 , ds = 0 
-res = ds[ 0 ] | res
-res = 0 
-carry = 0  if ds.len() <= 1  else 1 
-carry = 0 
-while x != 0  or y != 0 :
-digx = x[ 0 ]
-digx = 1 
-digy = y[ 0 ]
-digy = 0 
-x = x.drop()
-x = 0 
-y = y.drop()
-y = 0 
-ds = digx + digy
-def __add__(x, y):
-x = 1 
-if x.len() <= 1  and y.len() <= 1 :
-res = x + y
-res = 1 
-return res
-x = 0 , res = 0 , carry = 0 , digx = 1 , digy = 0 , ds = 1 
-ds = ds + carry
-def __add__(x, y):
-x = 1 
-if x.len() <= 1  and y.len() <= 1 :
-res = x + y
-res = 1 
-return res
-x = 0 , res = 0 , carry = 0 , digx = 1 , digy = 0 , ds = 1 
-res = ds[ 0 ] | res
-res = 1 0 
-carry = 0  if ds.len() <= 1  else 1 
-carry = 0 
-while x != 0  or y != 0 :
-res = carry | res
-res = 1 0 
-return res
-x = 1 2 3 4 , y = 2 3 5 3 , res = 0 , digx = 5 , digy = 5 , ds = 1 0 
-res = ds[ 0 ] | res
-res = 0 
-carry = 0  if ds.len() <= 1  else 1 
-carry = 1 
 while x != 0  or y != 0 :
 digx = x[ 0 ]
 digx = 4 
 digy = y[ 0 ]
-digy = 3 
+digy = 2 
 x = x.drop()
-x = 1 2 3 
+x = 5 1 2 3 
 y = y.drop()
-y = 2 3 5 
+y = 2 3 5 6 
 ds = digx + digy
-def __add__(x, y):
-x = 4 , y = 3 
-if x.len() <= 1  and y.len() <= 1 :
-res = x + y
-res = 7 
-return res
-x = 1 2 3 , y = 2 3 5 , res = 0 , carry = 1 , digx = 4 , digy = 3 , ds = 7 
+ds = 6 
 ds = ds + carry
-def __add__(x, y):
-x = 7 , y = 1 
-if x.len() <= 1  and y.len() <= 1 :
-res = x + y
-res = 8 
-return res
-x = 1 2 3 , y = 2 3 5 , res = 0 , carry = 1 , digx = 4 , digy = 3 , ds = 8 
+ds = 6 
 res = ds[ 0 ] | res
-res = 8 0 
-carry = 0  if ds.len() <= 1  else 1 
+res = 6 
+if ds.len() <= 1 :
 carry = 0 
 while x != 0  or y != 0 :
 digx = x[ 0 ]
 digx = 3 
 digy = y[ 0 ]
-digy = 5 
+digy = 6 
 x = x.drop()
-x = 1 2 
+x = 5 1 2 
 y = y.drop()
-y = 2 3 
+y = 2 3 5 
 ds = digx + digy
-def __add__(x, y):
-x = 3 , y = 5 
-if x.len() <= 1  and y.len() <= 1 :
-res = x + y
-res = 8 
-return res
-x = 1 2 , y = 2 3 , res = 8 0 , carry = 0 , digx = 3 , digy = 5 , ds = 8 
+ds = 9 
 ds = ds + carry
-def __add__(x, y):
-x = 8 , y = 0 
-if x.len() <= 1  and y.len() <= 1 :
-res = x + y
-res = 8 
-return res
-x = 1 2 , y = 2 3 , res = 8 0 , carry = 0 , digx = 3 , digy = 5 , ds = 8 
+ds = 9 
 res = ds[ 0 ] | res
-res = 8 8 0 
-carry = 0  if ds.len() <= 1  else 1 
+res = 9 6 
+if ds.len() <= 1 :
 carry = 0 
 while x != 0  or y != 0 :
 digx = x[ 0 ]
 digx = 2 
 digy = y[ 0 ]
-digy = 3 
+digy = 5 
 x = x.drop()
-x = 1 
+x = 5 1 
 y = y.drop()
-y = 2 
+y = 2 3 
 ds = digx + digy
-def __add__(x, y):
-x = 2 , y = 3 
-if x.len() <= 1  and y.len() <= 1 :
-res = x + y
-res = 5 
-return res
-x = 1 , y = 2 , res = 8 8 0 , carry = 0 , digx = 2 , digy = 3 , ds = 5 
+ds = 7 
 ds = ds + carry
-def __add__(x, y):
-x = 5 , y = 0 
-if x.len() <= 1  and y.len() <= 1 :
-res = x + y
-res = 5 
-return res
-x = 1 , y = 2 , res = 8 8 0 , carry = 0 , digx = 2 , digy = 3 , ds = 5 
+ds = 7 
 res = ds[ 0 ] | res
-res = 5 8 8 0 
-carry = 0  if ds.len() <= 1  else 1 
+res = 7 9 6 
+if ds.len() <= 1 :
 carry = 0 
 while x != 0  or y != 0 :
 digx = x[ 0 ]
 digx = 1 
+digy = y[ 0 ]
+digy = 3 
+x = x.drop()
+x = 5 
+y = y.drop()
+y = 2 
+ds = digx + digy
+ds = 4 
+ds = ds + carry
+ds = 4 
+res = ds[ 0 ] | res
+res = 4 7 9 6 
+if ds.len() <= 1 :
+carry = 0 
+while x != 0  or y != 0 :
+digx = x[ 0 ]
+digx = 5 
 digy = y[ 0 ]
 digy = 2 
 x = x.drop()
@@ -191,27 +82,16 @@ x = 0
 y = y.drop()
 y = 0 
 ds = digx + digy
-def __add__(x, y):
-x = 1 , y = 2 
-if x.len() <= 1  and y.len() <= 1 :
-res = x + y
-res = 3 
-return res
-x = 0 , y = 0 , res = 5 8 8 0 , carry = 0 , digx = 1 , digy = 2 , ds = 3 
+ds = 7 
 ds = ds + carry
-def __add__(x, y):
-x = 3 
-if x.len() <= 1  and y.len() <= 1 :
-res = x + y
-res = 3 
-return res
-x = 0 , res = 5 8 8 0 , carry = 0 , digx = 1 , digy = 2 , ds = 3 
+ds = 7 
 res = ds[ 0 ] | res
-res = 3 5 8 8 0 
-carry = 0  if ds.len() <= 1  else 1 
+res = 7 4 7 9 6 
+if ds.len() <= 1 :
 carry = 0 
 while x != 0  or y != 0 :
 res = carry | res
-res = 3 5 8 8 0 
+res = 7 4 7 9 6 
 return res
-ANSWER: 3 5 8 8 0 
+ANSWER: 7 4 7 9 6 
+695
