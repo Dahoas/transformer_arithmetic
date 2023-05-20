@@ -9,6 +9,7 @@ from func import *
 import operator
 from transformers import AutoTokenizer
 import multiprocessing as mp
+from func import INVIS, VIS, CALL
 
 codefile = "func.py"
 f = open(codefile)
@@ -232,31 +233,31 @@ def sample_terms(arg_sampling, num_samples = 100000):
             arg_list[s].append(arg_sample[s])
     return arg_list
         
-def generate_op_data(op_string, prompt_template, num_samples, arg_sampling, rank, save_dict):
+def generate_op_data(op_string, prompt_template, num_samples, arg_sampling):
     samples = sample_terms(arg_sampling, num_samples = num_samples)
     data = []
     for sample in tqdm(samples):
         #data.append(prompt_template(op_string, *sample))
         data.append(prompt_template(op_string, *sample))
+    return data
+
+def generate_mix_data(prompt_template, sampling_dict, rank, save_dict):
+    data = []
+    for op, sampling_params in sampling_dict.items():
+      TInt.update_vis(sampling_dict["visibility"])
+      data += generate_op_data(op, prompt_template, sampling_params["num_samples"], sampling_params["arg_sampling"])
     save_dict[rank] = data
     return data
 
-def generate_mix_data(prompt_template, num_samples):
-    arg_sampling = [(), ()]
-    arg_sampling = [("add", [["len", 1, 5], ["len", 1, 5]]), 
-                    ("sub", [["len", 1, 5], ["len", 1, 5]]), 
-                    ("mul", [["len", 1, 3], ["len", 1, 3]]), 
-                    ("div", [["len", 1, 3], ["len", 1, 3]])]
-    data = []
-    for op, sample in arg_sampling:
-      data += generate_op_data(op, prompt_template, num_samples // 4, sample) 
-    return data
-
 if __name__ == "__main__":
-    test = False
+    test = True
     if test:
+        TInt.update_vis("__add__", CALL)
         x = TInt(94832)
         y = TInt(38245)
+        print(getattr(TInt, "__add__"))
+        z = x + y
+        exit()
         test_ops = ["mul"]#["add", "sub", "mul", "div"]
         for op in test_ops:
             res = chain_of_thought_template(op, x, y)
@@ -275,39 +276,84 @@ if __name__ == "__main__":
     prompt_template = chain_of_thought_template
     #prompt_template = simple_template
     # First make clean dataset
-    num_train_samples = 100000
-    assert num_train_samples % num_procs == 0
-    num_test_samples = 1000
-    train_digit_size = 5
-    test_digit_size = 5
-    op_string = "mul"
-    file_name = dataset_dir + "{}_{}_{}_{}_{}".format(op_string, train_digit_size, test_digit_size, prompt_template.__name__, num_train_samples)
+    train_sampling_dict = {
+                            "add": {
+                                        "num_samples": 25000,
+                                        "arg_sampling": [["len", 1, 10], ["len", 1, 10]],
+                                   },
+                            "sub": {
+                                        "num_samples": 25000,
+                                        "arg_sampling": [["len", 1, 10], ["len", 1, 10]],
+                                   },
+                            "mul": {
+                                        "num_samples": 25000,
+                                        "arg_sampling": [["len", 1, 5], ["len", 1, 5]],
+                                        "visibility": {
+                                                        "__add__": CALL,
+                                                      },
+                                   },
+                            "div": {
+                                        "num_samples": 25000,
+                                        "arg_sampling": [["len", 1, 5], ["len", 1, 5]],
+                                        "visibility": {
+                                                        "__add__": CALL,
+                                                        "__sub__": CALL,
+                                                      },
+                                   },
+                          }
+    test_sampling_dict = {
+                            "add": {
+                                        "num_samples": 250,
+                                        "arg_sampling": [["len", 1, 10], ["len", 1, 10]],
+                                   },
+                            "sub": {
+                                        "num_samples": 250,
+                                        "arg_sampling": [["len", 1, 10], ["len", 1, 10]],
+                                   },
+                            "mul": {
+                                        "num_samples": 250,
+                                        "arg_sampling": [["len", 1, 5], ["len", 1, 5]],
+                                        "visibility": {
+                                                        "__add__": CALL,
+                                                      },
+                                   },
+                            "div": {
+                                        "num_samples": 250,
+                                        "arg_sampling": [["len", 1, 5], ["len", 1, 5]],
+                                        "visibility": {
+                                                        "__add__": CALL,
+                                                        "__sub__": CALL,
+                                                      },
+                                   },
+                          }
+
+    file_name = os.path.join(dataset_dir, prompt_template.__name__)
+    for op_string, d in train_sampling_dict.items():
+        d_train = d["arg_sampling"]
+        d_test = test_sampling_dict[op_string]["arg_sampling"]
+        file_name += "_{}_{}_{}_{}_{}".format(op_string, d_train[0][0], d_train[0][2], d_test[0][0], d_test[0][2])
+    #file_name = dataset_dir + "{}_{}_{}_{}_{}".format(op_string, train_digit_size, test_digit_size, prompt_template.__name__, num_train_samples)
     print(f"Dumping dataset in {file_name}")
 
-    if op_string == "mix":
-        train_clean_dataset = generate_mix_data(prompt_template, num_train_samples)
-        test_clean_dataset = generate_mix_data(prompt_template, num_test_samples)
-    else: 
-        train_sampling = [["len", 1, train_digit_size], ["len", 1, train_digit_size]]
-        test_sampling = [["len", 1, test_digit_size], ["len", 1, test_digit_size]]
-        manager = mp.Manager()
-        train_dict = manager.dict()
-        procs = []
-        for i in range(num_procs):
-            proc_train_samples = num_train_samples // num_procs
-            p = mp.Process(target=generate_op_data, args=(op_string, prompt_template, proc_train_samples, train_sampling, i, train_dict))
-            procs.append(p)
-            p.start()
-            #train_clean_dataset = generate_op_data(op_string, prompt_template, num_train_samples, train_sampling)
-        for p in procs:
-            p.join()
-        #print(train_clean_dataset)
-        train_clean_dataset = [s for l in train_dict.values() for s in l]
-        print("train len {}".format(len(train_clean_dataset)))
-        test_clean_dataset = generate_op_data(op_string, prompt_template, num_test_samples, test_sampling, 0, train_dict)
-        print("test len {}".format(len(test_clean_dataset)))
+    manager = mp.Manager()
+    save_dict = manager.dict()
+    procs = []
+    for d in train_sampling_dict.values():
+        assert d["num_samples"] % num_procs == 0
+        d["num_samples"] = d["num_samples"] // num_procs
+    for i in range(num_procs):
+        p = mp.Process(target=generate_mix_data, args=(prompt_template, train_sampling_dict, i, save_dict))
+        procs.append(p)
+        p.start()
+        #train_clean_dataset = generate_op_data(op_string, prompt_template, num_train_samples, train_sampling)
+    for p in procs:
+        p.join()
+    #print(train_clean_dataset)
+    train_clean_dataset = [s for l in save_dict.values() for s in l]
+    print("train len {}".format(len(train_clean_dataset)))
+    test_clean_dataset = generate_mix_data(prompt_template, test_sampling_dict, 0, save_dict)
+    print("test len {}".format(len(test_clean_dataset)))
     
-
     Path(file_name).mkdir(exist_ok=True, parents=True)
     dump_jsonl(os.path.join(file_name, "train.jsonl"), train_clean_dataset)
     dump_jsonl(os.path.join(file_name, "test.jsonl"), test_clean_dataset)

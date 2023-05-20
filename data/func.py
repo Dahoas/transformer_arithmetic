@@ -1,6 +1,7 @@
 from copy import copy
 import re
 from enum import Enum
+import functools
 
 
 """
@@ -17,10 +18,32 @@ VIS = 1
 # Called functions are wrapped in call(...) with no trace
 CALL = 2
 
+
 class TInt:
   # Dict tracking list of functions to make visible in trace
-  visibility = {}
   #val = "0"
+  VIS_DICT = {
+              "__repr__": INVIS,
+              "__str__": INVIS,
+              "len": INVIS,
+              "__int__": INVIS,
+              "__eq__": INVIS,
+              "__ne__": INVIS,
+              "__gt__": INVIS,
+              "__ge__": INVIS,
+              "__or__": INVIS,
+              "__is_zero": INVIS,
+              "__getitem__": INVIS,
+              "__add": INVIS,
+              "__add__": VIS,
+              "__rshift__": INVIS,
+              "__lshift__": INVIS,
+              "__mul": INVIS,
+              "__mul__": VIS,
+              "__sub": INVIS,
+              "__sub__": VIS,
+              "__floordiv__": VIS,
+            }
 
   def __init__(self, val, vis=INVIS):
     """
@@ -28,6 +51,17 @@ class TInt:
     Note "" is 0 is 00000
     """
     self.val = str(val)
+
+  @classmethod
+  def update_vis(cls, f_name, vis):
+    """Updates default visibility of input function f_name
+    """
+    setattr(TInt, f_name, functools.partial(getattr(TInt, f_name), vis=vis))
+
+  @classmethod
+  def reset_vis(cls):
+    for f_name, vis in cls.VIS_DICT:
+      cls.update_vis(f_name, vis)
 
   def __repr__(self, vis=INVIS):
     if self.val == '': return "0"
@@ -87,7 +121,7 @@ class TInt:
     """
     return TInt(int(x) + int(y))
 
-  def __add__(x, y, vis=CALL):
+  def __add__(x, y, vis=VIS):
     res = copy(E)
     carry = copy(O)
     while x != O or y != O:
@@ -178,7 +212,7 @@ class TInt:
   def __sub(x, y, vis=INVIS):
     return TInt(int(x) - int(y))
 
-  def __sub__(x, y, vis=CALL):
+  def __sub__(x, y, vis=VIS):
     #print("SUBTRACT: ", x, y)
     assert x >= y
     res = copy(E)
