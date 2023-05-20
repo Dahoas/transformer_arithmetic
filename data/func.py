@@ -1,5 +1,6 @@
 from copy import copy
 import re
+from enum import Enum
 
 
 """
@@ -9,25 +10,34 @@ Things to remove in processing
 3. base function names
 """
 
+# Invis functions generate no trace
+INVIS = 0
+# Visible functions generate a trace
+VIS = 1
+# Called functions are wrapped in call(...) with no trace
+CALL = 2
+
 class TInt:
   # Dict tracking list of functions to make visible in trace
   visibility = {}
   #val = "0"
 
-  def __init__(self, val, vis=False):
+  def __init__(self, val, vis=INVIS):
     """
     Remove leading 0s and store in val
     Note "" is 0 is 00000
     """
     self.val = str(val)
 
-  def __repr__(self, vis=False):
+  def __repr__(self, vis=INVIS):
+    if self.val == '': return "0"
     return self.val
 
-  def __str__(self, vis=False):
+  def __str__(self, vis=INVIS):
+    if self.val == '': return "0"
     return self.val
 
-  def len(x, vis=False):
+  def len(x, vis=INVIS):
     """
     Implements len for TInt to return a TInt. Must be defined this way as
     __len__ expects an int to be returned
@@ -37,47 +47,47 @@ class TInt:
     if x.val == '': return 0
     return TInt(len(str(int(x.val))))
 
-  def __int__(self, vis=False):
+  def __int__(self, vis=INVIS):
     """
     Converts TInt to int. Adds 0 in front
     to deal with equality of 0 and ""
     """
     return int(self.val) if self.val != "" else 0
 
-  def __eq__(x, y, vis=False):
+  def __eq__(x, y, vis=INVIS):
     return int(x) == int(y)
 
-  def __ne__(x, y, vis=False):
+  def __ne__(x, y, vis=INVIS):
     return int(x) != int(y)
 
-  def __gt__(x, y, vis=False):
+  def __gt__(x, y, vis=INVIS):
     return int(x) > int(y)
 
-  def __ge__(x, y, vis=False):
+  def __ge__(x, y, vis=INVIS):
     return int(x) >= int(y)
 
-  def __or__(x, y, vis=False):
+  def __or__(x, y, vis=INVIS):
     """
     Implements TInt concatenation
     """
     return TInt(x.val + y.val)
 
-  def __is_zero(self):
+  def __is_zero(self, vis=INVIS):
     return self.val == ""
 
-  def __getitem__(self, ind, vis=False):
+  def __getitem__(self, ind, vis=INVIS):
     if ind >= self.len():
       return copy(O)
     else:
       return TInt(self.val[len(self.val) - int(ind) - 1])
 
-  def __add(x, y, vis=False):
+  def __add(x, y, vis=INVIS):
     """
     Implements basic addition. __ denotes hidden from user.
     """
     return TInt(int(x) + int(y))
 
-  def __add__(x, y, vis=True):
+  def __add__(x, y, vis=CALL):
     res = copy(E)
     carry = copy(O)
     while x != O or y != O:
@@ -98,7 +108,7 @@ class TInt:
       res = carry | res
     return res
 
-  def __rshift__(x, y, vis=False):
+  def __rshift__(x, y, vis=INVIS):
     """
     Drops the units digit from x. Dropping 0 gives 0.
     """
@@ -112,14 +122,14 @@ class TInt:
     return TInt(str(int(x.val))[:-1 * int(y)])
 
 
-  def __lshift__(x, y, vis=False):
+  def __lshift__(x, y, vis=INVIS):
     """
     Implements left shifting for TInt
     Note 0 -> 00
     """
     return TInt(x.val + ("0" * int(y)))
 
-  def __mul(x, y, vis=False):
+  def __mul(x, y, vis=INVIS):
     """
     Implements basic multiplication. __ denotes hidden from user.
 
@@ -129,7 +139,7 @@ class TInt:
     assert y.len() <= I
     return TInt(int(x) * int(y))
 
-  def __mul__(x, y, vis=True):
+  def __mul__(x, y, vis=VIS):
     # If x shorter than y swap x and y. x is now always larger
     if x.len() < y.len():
       t = x
@@ -165,10 +175,10 @@ class TInt:
         out_res = out_res + in_res
     return out_res
 
-  def __sub(x, y, vis=False):
+  def __sub(x, y, vis=INVIS):
     return TInt(int(x) - int(y))
 
-  def __sub__(x, y, vis=True):
+  def __sub__(x, y, vis=CALL):
     #print("SUBTRACT: ", x, y)
     assert x >= y
     res = copy(E)
@@ -207,9 +217,7 @@ class TInt:
       res = dd | res
     return res
 
-
-
-  def __floordiv__(x, y, vis=True):
+  def __floordiv__(x, y, vis=VIS):
     """
       Implements x // y using grade-school long division
     """
@@ -239,14 +247,17 @@ class TInt:
       factor = dig << factor_mag
       # add factor to res
       res = res + factor
-      x = x - (sum_div << factor_mag)
+      remove = sum_div << factor_mag
+      x = x - remove
     return res
+
 
 O = TInt("0")
 E = TInt("")
 I = TInt("1")
+
 if __name__ == "__main__":
-  tests = [(324, 6), (6, 324), (199, 1), (199, 2), (500, 200), (970, 30), (907, 93), (9, 2)]
+  tests = [(324, 6), (6, 324), (199, 1), (199, 2), (500, 200), (970, 30), (907, 93), (9, 2), ("0023", "152")]
   #print("024 >> '0' = ", TInt("024") >> TInt("0"))
   for x, y in tests:
     x = TInt(x)

@@ -27,3 +27,12 @@ Then the following script may be run:
 ./scripts/train.sh
 ```
 
+### Notes
+
+We can distill via sequential sparsification
+
+Removing code lines significantly improves performance and decreases size
+
+Fine-tuning on addition then subtraction might improve subtraction performance.
+
+Plus and minus overwrite each other if not training on mixed dataset

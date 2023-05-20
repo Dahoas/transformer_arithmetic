@@ -37,7 +37,7 @@ def call_model(prompts, gts, batch_size=16, max_length=500):
         batch = batch.to(f"cuda:{RANK}")
         output = model.generate(batch, max_length=max_length)
         output = tok.batch_decode(output)
-        answer = [o.split("ANSWER: ")[-1].split("<|endoftext|>")[0] for o in output]
+        answer = [o.split("<|endoftext|>")[0].split("\n")[-1] for o in output]
         answers += answer
         inputs += tok.batch_decode(batch)
         responses += output
@@ -53,7 +53,7 @@ def compute_metrics(eval_preds):
     prompts = [tok(prompt, return_tensors="pt").input_ids[0] for prompt in prompts]
     prompts_per_gpu = (len(prompts) + torch.cuda.device_count() - 1) // torch.cuda.device_count()
     responses = val_dataset.responses[RANK * prompts_per_gpu : (RANK + 1) * prompts_per_gpu]
-    answers = [r.split("ANSWER: ")[-1] for r in responses]
+    answers = [r.split("\n")[-1] for r in responses]
     outputs = call_model(prompts, responses, batch_size=metric_batch_size, max_length=metric_max_length)
     is_correct = torch.tensor([int(outputs[i] == answers[i]) for i in range(len(outputs))], device=f"cuda:{RANK}")
     #print("\n\n\nRANK=0!", is_correct)
@@ -103,7 +103,6 @@ def train(args):
     random.shuffle(train_data)
     train_data = train_data[:args.train_data_size]
     val_data = load_jsonl(os.path.join(args.data_path, "test.jsonl"))
-    random.shuffle(val_data)
     val_data = val_data[:args.metric_data_size]
     #val_data = load_jsonl(os.path.join(args.data_path, "test.jsonl"))[:args.metric_data_size]
     train_dataset = MaskedSFTDataset(train_data, tok)
@@ -121,7 +120,7 @@ def train(args):
     training_args = TrainingArguments(output_dir="out1/",
                                       num_train_epochs=args.epochs,
                                       logging_steps=100,
-                                      #save_strategy="no",
+                                      save_strategy="no",
                                       per_device_train_batch_size=batch_size,
                                       per_device_eval_batch_size=metric_batch_size,
                                       warmup_steps=100,
@@ -133,7 +132,6 @@ def train(args):
                                       evaluation_strategy="steps",
                                       eval_steps=eval_steps,
                                       save_steps=eval_steps, #test
-                                      load_best_model_at_end=True, #test
                                       eval_accumulation_steps=2,
                                       include_inputs_for_metrics=True,
                                       fp16_full_eval=True,
@@ -146,7 +144,7 @@ def train(args):
             eval_dataset=val_dataset, data_collator=data_collator, callbacks=[SparsityCallback])
     trainer.train()
     #trainer.save_model('{}_{}_{}'.format(args.data_path, args.train_data_size, args.epochs))
-    model.save_pretrained('{}_{}_{}'.format(args.data_path, args.train_data_size, args.epochs))
+    model.save_pretrained('ckpts/{}_{}_{}_{}'.format(args.model_path, args.data_path, args.train_data_size, args.epochs))
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()

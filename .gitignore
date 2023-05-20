@@ -3,3 +3,4 @@ data/datasets/
 *.jsonl
 wandb/
 logs/*
+ckpts/

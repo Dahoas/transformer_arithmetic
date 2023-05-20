@@ -8,7 +8,6 @@ import numpy as np
 from func import *
 import operator
 from transformers import AutoTokenizer
-import multiprocessing as mp
 
 codefile = "func.py"
 f = open(codefile)
@@ -65,43 +64,42 @@ def custom_trace(frame, event, arg = None):
   line_no = frame.f_lineno
   #print(frame.f_code.co_filename)
   if not codefile in frame.f_code.co_filename: 
-    subbed_line = ""
     return custom_trace
   code_line = lines[line_no - 1].strip()
+  if event == "call": 
+    exec_depth += 1
+  elif event == "return":
+    exec_depth -= 1
 
   local_vars = frame.f_locals
   if local_vars["vis"] == INVIS:
-    subbed_line = ""
     return custom_trace
   elif local_vars["vis"] == VIS:
     if event == "call":
       if len(subbed_line) > 0: trace += subbed_line + "\n"
-    subbed_line = ""
+      subbed_line = ""
     pass # keep trace
   elif local_vars["vis"] == CALL:
     #if exec_depth > 2: return custom_trace
     if event == "call":
+      #print(code_line, exec_depth)
       # Only keep trace for top level call of function
+      #if exec_depth == 2:
       if len(subbed_line) > 0: trace += subbed_line + "\n"
-    subbed_line = ""
+      subbed_line = ""
     return custom_trace
   else:
     raise ValueError("Unknown visibility {}".format(local_vars["vis"]))
   #print(prev_vars, local_vars)
 
   relevant_vars = {k:v for (k,v) in local_vars.items() if k not in prev_vars or not prev_vars[k] == local_vars[k] or k == prev_changed_var}
-  if len(relevant_vars) > 0:
-    formatted_vars = [str(k) + " = " + str(v) for (k, v) in relevant_vars.items() if k != "vis"]
-    if len(prev_vars) == 0 or len(formatted_vars) == 1:
-      trace += ", ".join(formatted_vars) + '\n'
-
   prev_changed_var = code_line.split("=")[0].strip()
   prev_vars = local_vars.copy()
+  if len(relevant_vars) > 0:
+    trace += ", ".join([str(k) + " = " + str(v) for (k, v) in relevant_vars.items()]) + '\n'
   # add some code line with rhs substituted in
   sides = code_line.split("=")
-  if len(sides) != 2: 
-    subbed_line = ""
-    return custom_trace
+  if len(sides) != 2: return custom_trace
   [code_lhs, code_rhs] = sides
   vars_list_by_length = list(local_vars.keys())
   vars_list_by_length.sort(key=len, reverse=True)
@@ -123,13 +121,13 @@ def chain_of_thought_template(op_string, *args):
             "rind": operator.getitem,
     }
     op_to_prompt = {
-                    "add": "{} + {}",
-                    "sub": "{} - {}",
-                    "mul": "{} * {}",
-                    "div": "{} / {}",
-                    "len": "len({})",
-                    "rsh": "{} >> {}",
-                    "rind": "{}[{}]"
+                    "add": "{} + {} = ",
+                    "sub": "{} - {} = ",
+                    "mul": "{} * {} = ",
+                    "div": "{} / {} = ",
+                    "len": "len({}) = ",
+                    "rsh": "{} >> {} = ",
+                    "rind": "{}[{}] = "
                 }
 
     # switch args if x < y
@@ -169,8 +167,8 @@ def chain_of_thought_template(op_string, *args):
     #var_names = "xyzabcdefghijklmnopqrstuvwxyz"
     #for i in range(len(args)):
     #    trace += "{} = {}\n".format(var_names[i], args[i])
-    prompt = op_to_prompt[op_string].format(*args) + "\n"
-    response = trace + f"{ret}"
+    prompt = op_to_prompt[op_string].format(*args)
+    response = trace + f"{prompt} {ret}"
 
     prompt = insert_number_spaces(prompt)
     response = insert_number_spaces(response)
@@ -232,13 +230,11 @@ def sample_terms(arg_sampling, num_samples = 100000):
             arg_list[s].append(arg_sample[s])
     return arg_list
         
-def generate_op_data(op_string, prompt_template, num_samples, arg_sampling, rank, save_dict):
+def generate_op_data(op_string, prompt_template, num_samples, arg_sampling):
     samples = sample_terms(arg_sampling, num_samples = num_samples)
     data = []
     for sample in tqdm(samples):
-        #data.append(prompt_template(op_string, *sample))
         data.append(prompt_template(op_string, *sample))
-    save_dict[rank] = data
     return data
 
 def generate_mix_data(prompt_template, num_samples):
@@ -253,36 +249,34 @@ def generate_mix_data(prompt_template, num_samples):
     return data
 
 if __name__ == "__main__":
-    test = False
+    test = True
     if test:
-        x = TInt(94832)
-        y = TInt(38245)
-        test_ops = ["mul"]#["add", "sub", "mul", "div"]
+        x = TInt(193)
+        y = TInt(3)
+        test_ops = ["add", "sub", "mul", "div"]
         for op in test_ops:
             res = chain_of_thought_template(op, x, y)
             resp = res["response"]
-            print(res["prompt"] + resp)
+            print(resp)
             tok = AutoTokenizer.from_pretrained("EleutherAI/pythia-410m")
-            print("Pythia tok len: ", len(tok(resp).input_ids))
+            print(len(tok(resp).input_ids))
             tok = AutoTokenizer.from_pretrained("gpt2")
-            print("gpt2 tok len: ", len(tok(resp).input_ids))
+            print(len(tok(resp).input_ids))
             print("\n")
+
         exit()
 
     dataset_dir = "datasets/"
-    num_procs = 20
 
     prompt_template = chain_of_thought_template
     #prompt_template = simple_template
     # First make clean dataset
     num_train_samples = 100000
-    assert num_train_samples % num_procs == 0
     num_test_samples = 1000
-    train_digit_size = 5
-    test_digit_size = 5
+    train_digit_size = 4
+    test_digit_size = 4
     op_string = "mul"
     file_name = dataset_dir + "{}_{}_{}_{}_{}".format(op_string, train_digit_size, test_digit_size, prompt_template.__name__, num_train_samples)
-    print(f"Dumping dataset in {file_name}")
 
     if op_string == "mix":
         train_clean_dataset = generate_mix_data(prompt_template, num_train_samples)
@@ -290,22 +284,10 @@ if __name__ == "__main__":
     else: 
         train_sampling = [["len", 1, train_digit_size], ["len", 1, train_digit_size]]
         test_sampling = [["len", 1, test_digit_size], ["len", 1, test_digit_size]]
-        manager = mp.Manager()
-        train_dict = manager.dict()
-        procs = []
-        for i in range(num_procs):
-            proc_train_samples = num_train_samples // num_procs
-            p = mp.Process(target=generate_op_data, args=(op_string, prompt_template, proc_train_samples, train_sampling, i, train_dict))
-            procs.append(p)
-            p.start()
-            #train_clean_dataset = generate_op_data(op_string, prompt_template, num_train_samples, train_sampling)
-        for p in procs:
-            p.join()
+        train_clean_dataset = generate_op_data(op_string, prompt_template, num_train_samples, train_sampling)
         #print(train_clean_dataset)
-        train_clean_dataset = [s for l in train_dict.values() for s in l]
-        print("train len {}".format(len(train_clean_dataset)))
-        test_clean_dataset = generate_op_data(op_string, prompt_template, num_test_samples, test_sampling, 0, train_dict)
-        print("test len {}".format(len(test_clean_dataset)))
+        test_clean_dataset = generate_op_data(op_string, prompt_template, num_test_samples, test_sampling)
+
     
 
     Path(file_name).mkdir(exist_ok=True, parents=True)

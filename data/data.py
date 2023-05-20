@@ -54,8 +54,7 @@ class MaskedSFTDataset(Dataset):
             return len(self.input_ids)
 
         def __getitem__(self, idx):
-            return self.input_ids[idx], self.attn_masks[idx], self.labels[idx], self.prompts[idx]
-
+            return self.input_ids[idx], self.attn_masks[idx], self.labels[idx], self.prompts[idx], self.responses[idx]
 
         def sparsify(self, mode=None):
             if mode is None:

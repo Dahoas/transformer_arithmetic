@@ -1,0 +1,88 @@
+Visible
+z = x + y
+z = 10 + 11
+10 + 11 = 
+...
+10 + 11 = 21
+z = 21
+
+Invisible
+z = x + y
+z = 10 + 11
+10 + 11 = 21
+z = 21
+
+Called
+z = x + y 
+z = 10 + 11
+z = call(10 + 11)
+# Strictly speaking we don't wanna backprop loss on this next line
+z = 21
+
+But really we want to SAVE LINES so will do something like this
+
+Visible
+z = x + y 
+10 + 11 =
+...
+10 + 11 = 21
+z = 21
+
+Invisible
+z = x + y 
+10 + 11 = 21
+z = 21
+
+Called
+z = x + y 
+z = call(10 + 11)
+z = 21
+
+or alternatively in the problem setup have:
+Vis
+x = 10
+y = 11
+z = x + y 
+...
+z = 21
+
+Called
+x = 10
+y = 11
+z = call(x + y)
+...
+z = 21
+
+Or maybe this is a bad idea because the model always sees x and y as the names of variables being added...
+- But I guess alternatively we can just format the input to the sub-routine
+
+We need to make this as practical as possible. Don't print code lines without substitutions.
+- note: printing code lines does seem useful for control flow...
+
+Final design decision:
+
+Variable names only on LHS, values only on RHS
+Will also cut control flow to preserve line number
+basically removing all code lines
+If we see a code line like z = x + y then we should only print:
+
+
+Vis:
+z = 10 + 11
+...
+z = 21
+
+Invis:
+z = 10 + 11
+z = 21
+
+Call:
+z = call(10 + 11)
+z = 21
+
+Starting prompt:
+10 + 11
+(And then the trace)
+x = 10, y = 11
+...
+21
