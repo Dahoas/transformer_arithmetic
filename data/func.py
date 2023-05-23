@@ -21,7 +21,7 @@ CALL = 2
 
 class TInt:
   # Dict tracking list of functions to make visible in trace
-  #val = "0"
+  val = "0"
   VIS_DICT = {
               "__repr__": INVIS,
               "__str__": INVIS,
@@ -32,15 +32,15 @@ class TInt:
               "__gt__": INVIS,
               "__ge__": INVIS,
               "__or__": INVIS,
-              "__is_zero": INVIS,
+              #"__is_zero": INVIS,
               "__getitem__": INVIS,
-              "__add": INVIS,
+              #"__add": INVIS,
               "__add__": VIS,
               "__rshift__": INVIS,
               "__lshift__": INVIS,
-              "__mul": INVIS,
+              #"__mul": INVIS,
               "__mul__": VIS,
-              "__sub": INVIS,
+              #"__sub": INVIS,
               "__sub__": VIS,
               "__floordiv__": VIS,
             }
@@ -56,12 +56,12 @@ class TInt:
   def update_vis(cls, f_name, vis):
     """Updates default visibility of input function f_name
     """
-    setattr(TInt, f_name, functools.partial(getattr(TInt, f_name), vis=vis))
+    setattr(cls, f_name, functools.partialmethod(getattr(TInt, f_name), vis=vis))
 
   @classmethod
   def reset_vis(cls):
-    for f_name, vis in cls.VIS_DICT:
-      cls.update_vis(f_name, vis)
+    for f_name in cls.VIS_DICT:
+      cls.update_vis(f_name, cls.VIS_DICT[f_name])
 
   def __repr__(self, vis=INVIS):
     if self.val == '': return "0"
@@ -291,7 +291,7 @@ E = TInt("")
 I = TInt("1")
 
 if __name__ == "__main__":
-  tests = [(324, 6), (6, 324), (199, 1), (199, 2), (500, 200), (970, 30), (907, 93), (9, 2), ("0023", "152")]
+  tests = [(324, 6), (6, 324), (199, 1), (199, 2), (500, 200), (970, 30), (907, 93), (9, 2), (0, 62), ("0023", "152")]
   #print("024 >> '0' = ", TInt("024") >> TInt("0"))
   for x, y in tests:
     x = TInt(x)

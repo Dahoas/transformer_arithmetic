@@ -19,3 +19,8 @@ experiments:
 oom ... *activation checkpointing*
 subroutine
 
+
+stopping criteria
+each model needs to be caled exactly the same number of times
+multiple copies of the model - one per gpu
+may need to have dummy ways of calling

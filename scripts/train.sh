@@ -1,7 +1,27 @@
 #!/bin/bash
 
-deepspeed --num_gpus=8 train.py --data_path data/datasets/mul_10_10_chain_of_thought_template_100000 \
---epochs 1 --train_data_size 10000 --metric_batch_size 1 \
+deepspeed --num_gpus=8 train.py --data_path data/datasets/no_template_add_len_10_len_10 \
+--epochs 50 --train_data_size 20000 --metric_batch_size 1 --metric_data_size 144 \
 --deepspeed configs/ds_config.json \
 --gradient_checkpointing 1
-#--model_path ckpts/add_10_10_chain_of_thought_template_100000_10000_1_model
+
+deepspeed --num_gpus=8 train.py --data_path data/datasets/no_template_sub_len_10_len_10 \
+--epochs 50 --train_data_size 20000 --metric_batch_size 1 --metric_data_size 144 \
+--deepspeed configs/ds_config.json \
+--gradient_checkpointing 1
+
+deepspeed --num_gpus=8 train.py --data_path data/datasets/no_template_mul_len_5_len_5 \
+--epochs 50 --train_data_size 20000 --metric_batch_size 1 --metric_data_size 144 \
+--deepspeed configs/ds_config.json \
+--gradient_checkpointing 1
+
+deepspeed --num_gpus=8 train.py --data_path data/datasets/no_template_div_len_5_len_5 \
+--epochs 50 --train_data_size 20000 --metric_batch_size 1 --metric_data_size 144 \
+--deepspeed configs/ds_config.json \
+--gradient_checkpointing 1
+
+deepspeed --num_gpus=8 train.py --data_path data/datasets/no_template_add_len_10_len_10_sub_len_10_len_10_mul_len_5_len_5_div_len_5_len_5 \
+--epochs 50 --train_data_size 20000 --metric_batch_size 1 --metric_data_size 144 \
+--deepspeed configs/ds_config.json \
+--gradient_checkpointing 1
+

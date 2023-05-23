@@ -15,7 +15,7 @@ class MaskedSFTDataset(Dataset):
             self.preprocess(data, tokenizer)
 
         def preprocess(self, data, tokenizer):
-            self.SEP = " ;"
+            self.SEP = ""#" ;"
             self.input_ids = []
             self.attn_masks = []
             self.labels = []

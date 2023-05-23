@@ -37,6 +37,7 @@ def call_model(prompts, gts, batch_size=16, max_length=500):
         batch = batch.to(f"cuda:{RANK}")
         output = model.generate(batch, max_length=max_length)
         output = tok.batch_decode(output)
+        #print(RANK, output)
         answer = [o.split("<|endoftext|>")[0].split("\n")[-1] for o in output]
         answers += answer
         inputs += tok.batch_decode(batch)
@@ -100,7 +101,6 @@ def train(args):
     model = AutoModelForCausalLM.from_pretrained(args.model_path).cuda()
 
     train_data = load_jsonl(os.path.join(args.data_path, "train.jsonl")) if args.train_data_size is None else load_jsonl(os.path.join(args.data_path, "train.jsonl"))
-    random.shuffle(train_data)
     train_data = train_data[:args.train_data_size]
     val_data = load_jsonl(os.path.join(args.data_path, "test.jsonl"))
     val_data = val_data[:args.metric_data_size]
@@ -119,7 +119,7 @@ def train(args):
 
     training_args = TrainingArguments(output_dir="out1/",
                                       num_train_epochs=args.epochs,
-                                      logging_steps=100,
+                                      logging_steps=20,
                                       save_strategy="no",
                                       per_device_train_batch_size=batch_size,
                                       per_device_eval_batch_size=metric_batch_size,
@@ -141,10 +141,10 @@ def train(args):
     data_collator=lambda data: {'input_ids': torch.stack([f[0] for f in data]), 'attention_mask': torch.stack([f[1] for f in data]),'labels': torch.stack([f[2] for f in data])}
 
     trainer = Trainer(model=model, args=training_args, train_dataset=train_dataset, compute_metrics=compute_metrics,
-            eval_dataset=val_dataset, data_collator=data_collator, callbacks=[SparsityCallback])
+            eval_dataset=val_dataset, data_collator=data_collator)#, callbacks=[SparsityCallback])
     trainer.train()
     #trainer.save_model('{}_{}_{}'.format(args.data_path, args.train_data_size, args.epochs))
-    model.save_pretrained('ckpts/{}_{}_{}_{}'.format(args.model_path, args.data_path, args.train_data_size, args.epochs))
+    model.save_pretrained('ckpts/{}_{}_{}'.format(args.model_path, args.data_path, args.epochs))
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
