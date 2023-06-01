@@ -9,6 +9,7 @@ class MaskedSFTDataset(Dataset):
         def __init__(self, data, tokenizer):
             self.random_clause_dropout = .2
             self.agglomeration_level = 0
+            self.num_omit = 8
             self.data = data
             self.tokenizer = tokenizer
             self.EOS_ID = tokenizer("<|endoftext|>")["input_ids"][0]
@@ -56,6 +57,9 @@ class MaskedSFTDataset(Dataset):
         def __getitem__(self, idx):
             return self.input_ids[idx], self.attn_masks[idx], self.labels[idx], self.prompts[idx], self.responses[idx]
 
+        def split_data(self, txt):
+            return txt.splitlines()
+
         def sparsify(self, mode=None):
             if mode is None:
                 pass
@@ -64,28 +68,36 @@ class MaskedSFTDataset(Dataset):
                 for sample in self.data:
                     prompt = sample["prompt"]
                     response = sample["response"]
-                    sentences = response.split(". ")
-                    suffix = sentences[-1]
+                    sentences = self.split_data(response)
+                    answer = sentences[-1]
                     core_response = sentences[:-1]
                     rands = np.random.rand(len(core_response))
                     include = (rands >= self.random_clause_dropout).nonzero()[0].tolist()
                     core_response = [core_response[i] for i in include]
-                    core_response.append(suffix)
-                    new_response = ". ".join(core_response)
+                    core_response.append(answer)
+                    new_response = "\n".join(core_response)
                     sparsified_x.append({"prompt": prompt, "response": new_response})
                 self.data = sparsified_x
             elif mode == "sequential":
                 sparsified_x = []
+                #num_omit = self.num_omit
+                # Take less than usual at the very first sparsification
+                #self.num_omit = 14
                 for sample in self.data:
+                    print(sample)
                     prompt = sample["prompt"]
                     response = sample["response"]
-                    split_string = "The carry is now"
-                    index = response[1:].find(split_string) + 1
-                    new_response = response
-                    if index > 0: 
-                        new_response = response[index:]
+                    sentences = self.split_data(response)
+                    answer = sentences[-1]
+                    core_response = sentences[:-1]
+                    '''if len(core_response) > num_omit:
+                        new_response = core_response[num_omit:]
                     else: 
-                        new_response = response[response.find("ANSWER: "):]
+                        new_response = []'''
+                    # Cut off first line and dump everything up to the next res
+                    new_response = "\n".join(core_response[1:])
+                    new_response = "res" + "res".join(new_response.split("res")[1:])
+                    new_response = new_response + "\n" + answer
                     sparsified_x.append({"prompt": prompt, "response": new_response})
                 self.data = sparsified_x
             elif mode == "agglomerative":

@@ -1,6 +1,6 @@
 import sys, trace, re, time, itertools
 import torch
-from util import load_jsonl, dump_jsonl
+from util import load_jsonl, dump_jsonl, null_noise, noise_by_digit
 from pathlib import Path
 import os, random
 from tqdm import tqdm
@@ -22,8 +22,9 @@ prev_changed_var = ''
 trace = ''
 exec_depth = 0
 subbed_line = ""
+include_code = False
 
-num_procs = 1
+num_procs = 20
 
 def reset_vars():
     global prev_vars, prev_changed_var, trace, exec_depth, subbed_line
@@ -75,7 +76,7 @@ def simple_template(l):
     return {"prompt": f"sort({list_l})=", "response": "ANSWER: " + sort_l}
 
 def custom_trace(frame, event, arg = None):
-  global codefile, prev_vars, prev_changed_var, trace, exec_depth, subbed_line
+  global codefile, prev_vars, prev_changed_var, trace, exec_depth, subbed_line, include_code
   #print(event, frame.f_lineno, frame.f_code, frame.f_locals)
   line_no = frame.f_lineno
   #print(frame.f_code.co_filename)
@@ -108,7 +109,8 @@ def custom_trace(frame, event, arg = None):
     raise ValueError("Unknown visibility {}".format(local_vars["vis"]))
   #print(prev_vars, local_vars)
 
-  #trace += "CODELINE " + code_line + "\n"
+  if include_code and event not in ["call"] and "return" not in code_line:
+    trace += code_line + "\n"
 
   relevant_vars = {k:v for (k,v) in local_vars.items() if k not in prev_vars or not prev_vars[k] == local_vars[k] or k == prev_changed_var}
   if len(relevant_vars) > 0:
@@ -132,23 +134,6 @@ def custom_trace(frame, event, arg = None):
   #trace += "SUBBED LINE: " + subbed_line + '\n'
   return custom_trace
 
-def null_noise(num):
-    return num
-
-def noise_by_digit(e_noise, c_noise_p, num):
-    # choose whether to noise number
-    p_corrupt_word = torch.rand(1)
-    if p_corrupt_word[0] >= e_noise: return num
-    s = str(num)
-    s_res = ''
-    for c in s:
-        p_corrupt_char = torch.rand(1)
-        if p_corrupt_char < c_noise_p:
-            s_res += str(torch.randint(0, 10, (1,)).item())
-        else:
-            s_res += c
-    return TInt(s_res)
-
 def no_template(op_string, noise_fn, *args):
     ops = {"add": operator.add,
             "sub": operator.sub,
@@ -157,6 +142,9 @@ def no_template(op_string, noise_fn, *args):
             "len": lambda x: x.len(),
             "rsh": operator.rshift,
             "rind": operator.getitem,
+            "sort": sort_ints,
+            "gcd": euclidean_alg,
+            "median": median,
     }
     op_to_prompt = {
                     "add": "{} + {}",
@@ -165,7 +153,10 @@ def no_template(op_string, noise_fn, *args):
                     "div": "{} / {}",
                     "len": "len({})",
                     "rsh": "{} >> {}",
-                    "rind": "{}[{}]"
+                    "rind": "{}[{}]",
+                    "sort": "sort({})",
+                    "gcd": "gcd({}, {})",
+                    "median": "median({})",
                 }
 
     # switch args if x < y
@@ -175,8 +166,14 @@ def no_template(op_string, noise_fn, *args):
     if op_string == "div":
         if args[0] < args[1] and args[0] > TInt(0):
             args = args[::-1]
+    if op_string == "sort":
+        args = [list(args)]
+    if op_string == "median":
+        args = [list(args)]
+
 
     ret = ops[op_string](*args)
+    ret = TInt(int(ret))
     ret = noise_fn(ret)
 
     prompt = op_to_prompt[op_string].format(*args) + "\n"
@@ -199,6 +196,9 @@ def chain_of_thought_template(op_string, noise_fn, *args):
             "len": lambda x: x.len(),
             "rsh": operator.rshift,
             "rind": operator.getitem,
+            "sort": sort_ints,
+            "gcd": euclidean_alg,
+            "median": median,
     }
     op_to_prompt = {
                     "add": "{} + {}",
@@ -207,7 +207,10 @@ def chain_of_thought_template(op_string, noise_fn, *args):
                     "div": "{} / {}",
                     "len": "len({})",
                     "rsh": "{} >> {}",
-                    "rind": "{}[{}]"
+                    "rind": "{}[{}]",
+                    "sort": "sort({})",
+                    "gcd": "gcd({} , {})",
+                    "median": "median({})"
                 }
 
     # switch args if x < y
@@ -217,10 +220,13 @@ def chain_of_thought_template(op_string, noise_fn, *args):
     if op_string == "div":
         if args[0] < args[1] and args[0] > TInt(0):
             args = args[::-1]
+    if op_string in ["sort", "median"]:
+        args = [list(args)]
 
     sys.settrace(custom_trace)
     ret = ops[op_string](*args)
     sys.settrace(None)
+    ret = TInt(int(ret))
 
     # Post-process trace
     ## Remove calls to copy
@@ -249,6 +255,8 @@ def chain_of_thought_template(op_string, noise_fn, *args):
     response = trace + f"{ret}"
 
     prompt = insert_number_spaces(prompt)
+    # Statically noise the response
+    response = noise_fn(response)
     response = insert_number_spaces(response)
 
     # Reset global trace
@@ -317,10 +325,23 @@ def sample_terms(arg_sampling, num_samples = 100000):
         for s in range(num_samples):
             arg_list[s].append(arg_sample[s])
     return arg_list
+
+def line_noise(datapoint, linenoise):
+    core = datapoint["response"].split("\n")[:-1]
+    answer = datapoint["response"].split("\n")[-1]
+    samples = np.random.rand(len(core))
+    new_core = []
+    for i, line in enumerate(core):
+        if samples[i] > linenoise:
+            new_core.append(line)
+    datapoint["response"] = "\n".join(new_core) + "\n" + answer
+    return datapoint
+
         
-def generate_op_data(op_string, prompt_template, num_samples, arg_sampling, doc_noise, sample_noise):
+def generate_op_data(op_string, prompt_template, num_samples, arg_sampling, doc_noise, sample_noise, linenoise):
     print(f"Sampling {op_string}...")
     samples = sample_terms(arg_sampling, num_samples = num_samples)
+    #print(arg_sampling, samples)
     data = []
     for sample in tqdm(samples):
         #print(sample)
@@ -330,47 +351,55 @@ def generate_op_data(op_string, prompt_template, num_samples, arg_sampling, doc_
             datapoint = prompt_template(op_string, null_noise, *sample)
         else:
             datapoint = prompt_template(op_string, sample_noise, *sample)
+            datapoint = line_noise(datapoint, linenoise)
         #print(datapoint)
         data.append(datapoint)
     return data
 
-def generate_mix_data(prompt_template, sampling_dict, rank, save_dict, doc_noise, sample_noise):
+def generate_mix_data(prompt_template, sampling_dict, rank, save_dict, doc_noise, sample_noise, linenoise=0):
     torch.random.seed()
     data = []
     for op, sampling_params in sampling_dict.items():
-      TInt.reset_vis()
-      for f in sampling_params["visibility"]:
-        TInt.update_vis(f, sampling_params["visibility"][f])
-      data += generate_op_data(op, prompt_template, sampling_params["num_samples"], sampling_params["arg_sampling"], doc_noise, sample_noise)
+      for sampling_param in sampling_params:
+        TInt.reset_vis()
+        for f in sampling_param["visibility"]:
+          TInt.update_vis(f, sampling_param["visibility"][f])
+        if sampling_param.get("dynamic_noise") is not None:
+          TInt.set_dynamic_noise(sampling_param["dynamic_noise"])
+        if sampling_param.get("linenoise") is not None:
+          linenoise = sampling_param.get("linenoise")
+        data += generate_op_data(op, prompt_template, sampling_param["num_samples"], sampling_param["arg_sampling"], doc_noise, sample_noise, linenoise)
     #print(data[0])
     save_dict[rank] = data
     return data
 
-def gen_noisy_dataset(prompt_template, doc_noise, noise_fn, word_noise_p, char_noise_p, train_sampling_dict, test_sampling_dict):
+def gen_noisy_dataset(prompt_template, doc_noise, noise_fn, char_noise_p, train_sampling_dict, test_sampling_dict):
     global num_procs
-    dataset_dir = "datasets/noisy_datasets/"
+    dataset_dir = "datasets/{}/noisy/".format("median")
 
     #prompt_template = no_template#chain_of_thought_template
     generic_noise_function = noise_fn
-    sample_noise = partial(generic_noise_function, word_noise_p, char_noise_p)
+    sample_noise = partial(generic_noise_function, char_noise_p) if noise_fn is not null_noise else null_noise
     #prompt_template = simple_template
     # First make clean dataset
 
     file_name = os.path.join(dataset_dir, prompt_template.__name__)
     for op_string, d in train_sampling_dict.items():
-        d_train = d["arg_sampling"]
-        d_test = test_sampling_dict[op_string]["arg_sampling"]
-        file_name += "_{}_{}_{}_{}_{}".format(op_string, d_train[0][0], d_train[0][2], d_test[0][0], d_test[0][2])
-    #file_name = dataset_dir + "{}_{}_{}_{}_{}".format(op_string, train_digit_size, test_digit_size, prompt_template.__name__, num_train_samples)
-    file_name += "_{}_{}_{}_{}".format(generic_noise_function.__name__, doc_noise, word_noise_p, char_noise_p)
+        d_train = d[0]["arg_sampling"]
+        d_test = test_sampling_dict[op_string][0]["arg_sampling"]
+        tr_string = "{}_{}_{}".format(d_train[0][0], d_train[0][1], d_train[0][2])
+        te_string = "{}_{}_{}".format(d_test[0][0], d_test[0][1], d_test[0][2])
+        file_name += "_{}_{}_{}_{}_{}".format(len(d_train), tr_string, te_string, d[0].get("dynamic_noise"), d[0].get('linenoise'))
+        #file_name += "_{}_{}_{}_{}_{}_{}_{}_{}_{}_dynamicnoise_{}_linenoise_{}".format(op_string, include_code, len(d_train), d_train[0][0], d_train[0][1], d_train[0][2], d_test[0][0], d_test[0][1], d_test[0][2], d.get("dynamic_noise"), d.get('linenoise'))
+    file_name += "_{}_{}_{}_{}".format(generic_noise_function.__name__, doc_noise, char_noise_p, include_code)
     print(f"Dumping dataset in {file_name}")
 
     manager = mp.Manager()
     save_dict = manager.dict()
     procs = []
-    for d in train_sampling_dict.values():
-        print(d["num_samples"], num_procs)
-        assert d["num_samples"] % num_procs == 0
+    #for d in train_sampling_dict.values():
+        #print(d["num_samples"], num_procs)
+        #assert d["num_samples"] % num_procs == 0
     for i in range(num_procs):
         p = mp.Process(target=generate_mix_data, args=(prompt_template, train_sampling_dict, i, save_dict, doc_noise, sample_noise))
         procs.append(p)
@@ -391,43 +420,69 @@ def gen_noisy_dataset(prompt_template, doc_noise, noise_fn, word_noise_p, char_n
     dump_jsonl(os.path.join(file_name, "test.jsonl"), test_clean_dataset)
 
 if __name__ == "__main__":
-    test = False
-    if test:
+    test_arithmetic = False
+    test_sort = False
+    if test_arithmetic:
         from inspect import signature
         TInt.update_vis("__add__", CALL)
         TInt.update_vis("__sub__", CALL)
-        x = TInt(623)
-        y = TInt(40)
+        #TInt.set_dynamic_noise(0.1)
+        x = torch.randint(0, 10, (6,)).tolist()
+        y = torch.randint(0, 10, (3,)).tolist()
+        x = TInt("".join([str(s) for s in x]))
+        y = TInt("".join([str(s) for s in y]))
+        #x = TInt(10719)
+        #y = TInt(4623)
         #print(getattr(TInt, "__add__"))
         #print(signature(getattr(TInt, "__add__")))
         #z = x.__floordiv__(y)
         #print(z)
-        test_ops = ["add", "sub", "mul", "div"]
+        TInt.update_vis("__add__", INVIS)
+        TInt.update_vis("__sub__", INVIS)
+        test_ops = ["gcd"]#, "sub", "mul", "div"]
         for op in test_ops:
-            res = chain_of_thought_template(op, x, y)
+            res = chain_of_thought_template(op,null_noise, x, y)
             resp = res["response"]
             print(res["prompt"] + resp)
-            #tok = AutoTokenizer.from_pretrained("EleutherAI/pythia-410m")
-            #print("Pythia tok len: ", len(tok(resp).input_ids))
-            #tok = AutoTokenizer.from_pretrained("gpt2")
-            #print("gpt2 tok len: ", len(tok(resp).input_ids))
+            tok = AutoTokenizer.from_pretrained("EleutherAI/pythia-410m")
+            print("Pythia tok len: ", len(tok(resp).input_ids))
+            tok = AutoTokenizer.from_pretrained("gpt2")
+            print("gpt2 tok len: ", len(tok(resp).input_ids))
             print("\n")
         exit()
+    if test_sort:
+        include_code = False
+        l = [199, 198, 197, 196, 195, 194, 193, 192, 191, 190, 189,188,187,186,185,184,183,182,181,180]
+        tIntL = [TInt(x) for x in l]
+        res = chain_of_thought_template("sort", null_noise, tIntL)
+        resp = res["response"]
+        print(res["prompt"] + resp)
+        tok = AutoTokenizer.from_pretrained("EleutherAI/pythia-410m")
+        print("Pythia tok len: ", len(tok(resp).input_ids))
+        tok = AutoTokenizer.from_pretrained("gpt2")
+        print("gpt2 tok len: ", len(tok(resp).input_ids))
+        print("\n")
+        exit()
 
-    num_train = 40000 // num_procs
+
+    num_train = 20000 // num_procs
     num_test = 1200
 
     dicts = []
-    add_sub_train_dict = {
-      "num_samples": num_train,
-      "arg_sampling": [["len", 1, 10], ["len", 1, 10]],
-      "visibility": {},
-    }
-    add_sub_test_dict = {
-      "num_samples": num_test,
-      "arg_sampling": [["len", 1, 10], ["len", 1, 10]],
-      "visibility": {},
-    }
+    """for i in range(10):
+        add_train_dict = {
+            "num_samples": num_train,
+            "arg_sampling": [["len", 1, 10], ["len", 1, 10]],
+            "visibility": {},
+            "dynamic_noise": 0.05 * i,
+        }
+        add_test_dict = {
+          "num_samples": num_test,
+          "arg_sampling": [["len", 1, 10], ["len", 1, 10]],
+          "visibility": {},
+          "dynamic_noise": 0,
+        }
+        dicts.append(({"add": add_train_dict}, {"add": add_test_dict}))
 
     mul_train_dict = {
       "num_samples": num_train,
@@ -438,27 +493,44 @@ if __name__ == "__main__":
       "num_samples": num_test,
       "arg_sampling": [["len", 1, 5], ["len", 1, 5]],
       "visibility": {"__add__": CALL},
-    }
+    }"""
 
-    div_train_dict = {
+    gcd_train_dict = [{
       "num_samples": num_train,
-      "arg_sampling": [["len", 1, 5], ["len", 1, 5, 1]],
-      "visibility": {"__add__": CALL,
-                    "__sub__": CALL},
-    }
-    div_test_dict = {
+      "arg_sampling": [["len", 1, 4], ["len", 1, 4]],
+      "visibility": {"__add__": INVIS,
+                    "__sub__": INVIS},
+    }]
+    gcd_test_dict = [{
       "num_samples": num_test,
-      "arg_sampling": [["len", 1, 5], ["len", 1, 5, 1]],
-      "visibility": {"__add__": CALL,
-                    "__sub__": CALL},
-    }
+      "arg_sampling": [["len", 1, 4], ["len", 1, 4]],
+      "visibility": {"__add__": INVIS,
+                    "__sub__": INVIS},
+    }]
+    
+    """lens = [x+5 for x in range(25)]
+    sort_train = {"sort": []}
+    sort_test = {"sort": []}
+    for x in lens:
+      sort_train_dict = {
+       "num_samples": num_train // len(lens),
+        "arg_sampling": [["len", 2, 10] for i in range(x)],
+        "visibility": {},
+      }
+      sort_test_dict = {
+        "num_samples": num_test // len(lens),
+        "arg_sampling": [["len", 2, 10] for i in range(x)],
+        "visibility": {},
+      }
+      sort_train["sort"].append( sort_train_dict)
+      sort_test["sort"].append( sort_test_dict)
 
-    dicts.append(({"add": add_sub_train_dict}, {"add": add_sub_test_dict}))
-    dicts.append(({"sub": add_sub_train_dict}, {"sub": add_sub_test_dict}))
-    dicts.append(({"mul": mul_train_dict}, {"mul": mul_test_dict}))
-    dicts.append(({"div": div_train_dict}, {"div": div_test_dict}))
+    dicts.append((sort_train, sort_test))"""
+    #dicts.append(({"add": add_train_dict}, {"add": add_test_dict}))
+    #dicts.append(({"mul": mul_train_dict}, {"mul": mul_test_dict}))
+    dicts.append(({"gcd": gcd_train_dict}, {"gcd": gcd_test_dict}))
 
-    mix_train_dict = {
+    """mix_train_dict = {
                             "add": {
                                         "num_samples": num_train // 4,
                                         "arg_sampling": [["len", 1, 10], ["len", 1, 10]],
@@ -511,17 +583,60 @@ if __name__ == "__main__":
                                                         "__sub__": CALL,
                                                       },
                                    },
-                          }
-    dicts.append((mix_train_dict, mix_test_dict))
+                          }"""
+    #dicts.append((mix_train_dict, mix_test_dict))
 
-    prompt_templates = [no_template]#, chain_of_thought_template]
+    """dicts = []
+    for i in range(3):
+        add_train_dict = {
+        "num_samples": num_train,
+        "arg_sampling": [["len", 1, 10], ["len", 1, 10]],
+        "linenoise": 0.05 * i + .9,
+        "visibility": {},
+        }
+        add_test_dict = {
+        "num_samples": num_test,
+        "arg_sampling": [["len", 1, 10], ["len", 1, 10]],
+        "visibility": {},
+        }
+        dicts.append(({"add": add_train_dict}, {"add": add_test_dict}))"""
 
-    d_noises = [0.05, 0.1, 0.2, 0.4, 0.6, 0.8]
-    w_noises = [0.5]
-    char_noises = [0.5]
+    dicts = []
 
-    for doc_noise, word_noise, char_noise in itertools.product(d_noises, w_noises, char_noises):
-        for train_samp, test_samp in dicts:
-            for prompt_template in prompt_templates:
-                gen_noisy_dataset(prompt_template, doc_noise, noise_by_digit, word_noise, char_noise, train_samp, test_samp)
+    lens = [x+4 for x in range(5)]
+    sort_train = {"median": []}
+    sort_test = {"median": []}
+    for x in lens:
+      sort_train_dict = {
+       "num_samples": num_train // len(lens),
+        "arg_sampling": [["len", 2, 8] for i in range(x)],
+        "visibility": {"__floordiv__": CALL,
+                       "__add__": CALL,
+                       "__sub__": CALL,
+                       "__mod__": CALL},
+      }
+      sort_test_dict = {
+        "num_samples": num_test // len(lens),
+        "arg_sampling": [["len", 2, 8] for i in range(x)],
+        "visibility": {"__floordiv__": CALL,
+                       "__add__": CALL,
+                       "__sub__": CALL,
+                       "__mod__": CALL},
+      }
+      sort_train["median"].append(sort_train_dict)
+      sort_test["median"].append(sort_test_dict)
+
+    dicts.append((sort_train, sort_test))
+
+    prompt_templates = [chain_of_thought_template, no_template]
+
+    d_noises = [1.0]
+    char_noises = [0.25, 0.5, 0.75, 1.0]
+
+    for prompt_template in prompt_templates:
+        for doc_noise, char_noise in itertools.product(d_noises, char_noises):
+            for train_samp, test_samp in dicts:
+                # For now just noising add
+                #if len(train_samp) == 1 and "add" in train_samp:
+                gen_noisy_dataset(prompt_template, doc_noise, null_noise, char_noise, train_samp, test_samp)
 
