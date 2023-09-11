@@ -2,6 +2,7 @@ from copy import copy
 import re
 from enum import Enum
 import functools
+import numpy as np
 
 
 """
@@ -44,6 +45,7 @@ class TInt:
               "__sub__": VIS,
               "__floordiv__": VIS,
             }
+  noise_pr = 0
 
   def __init__(self, val, vis=INVIS):
     """
@@ -51,6 +53,20 @@ class TInt:
     Note "" is 0 is 00000
     """
     self.val = str(val)
+    # noise
+    if self.noise_pr == 0: return
+    
+    samples = np.random.rand(len(self.val))
+    randoms = np.random.randint(0, 9, len(self.val))
+    corrupted_string = ''
+    found_nonzero = False
+    for i in range(len(self.val)):
+      if int(self.val[i]) > 0: found_nonzero = True
+      if found_nonzero: 
+        if samples[i] < self.noise_pr: corrupted_string += str(randoms[i])
+        else: corrupted_string += str(self.val[i])
+      else: corrupted_string += str(self.val[i])
+    self.val = corrupted_string
 
   @classmethod
   def update_vis(cls, f_name, vis):
@@ -62,6 +78,10 @@ class TInt:
   def reset_vis(cls):
     for f_name in cls.VIS_DICT:
       cls.update_vis(f_name, cls.VIS_DICT[f_name])
+
+  @classmethod
+  def set_dynamic_noise(cls, p):
+    cls.noise_pr = p
 
   def __repr__(self, vis=INVIS):
     if self.val == '': return "0"
@@ -285,21 +305,104 @@ class TInt:
       x = x - remove
     return res
 
+  def __mod__(x, y, vis=VIS):
+    """
+      Implements x // y using grade-school long division
+    """
+    while x >= y:
+      # choose factor
+      #print("div x, y, res: ", x, y, res)
+      len_x = x.len()
+      len_y = y.len()
+      # we know len_x >= len_y
+      factor_mag = len_x - len_y
+      if (y << factor_mag) > x:
+        factor_mag = factor_mag - I
+      #print(x, y, factor_mag)
+      sum_div = y
+      sub_x = x >> factor_mag
+      # TODO make below process of dig guess better
+      while sum_div <= sub_x:
+        sum_div = sum_div + y
+        #print("iter", x, y, sum_div + y, sub_x)
+      if sum_div > sub_x:
+        sum_div = sum_div - y
+      #print("factor sum_div, dig: ", sum_div << factor_mag, dig)
+      # add factor to res
+      remove = sum_div << factor_mag
+      x = x - remove
+    return x
+
+
 
 O = TInt("0")
 E = TInt("")
 I = TInt("1")
 
+def sort_ints(l, vis=VIS):
+  sorted_l = []
+  while len(l) > 0:
+    # find min selection sort style
+    min_item = l[0]
+    min_index = 0
+    for i in range(len(l)):
+      candidate = l[i]
+      if candidate < min_item:
+        min_item = candidate
+        min_index = i
+    sorted_l.append(min_item)
+    l = l[:min_index] + l[min_index+1:]
+  return sorted_l
+
+def euclidean_alg(x, y, vis = VIS):
+  """while x != y:
+    if x > y: 
+      x = x - y
+    else:
+      y = b - x
+  return x"""
+  while y != O:
+    t = y
+    y = x % y
+    x = t
+  return x
+
+def median(nums, vis=VIS):
+  nums_sorted = sort_ints(nums)
+  n = len(nums_sorted)
+  if n % 2 == 0:
+    # average mids
+    left_mid = nums_sorted[n // 2 - 1]
+    right_mid = nums_sorted[n // 2]
+    sum_mid = left_mid + right_mid
+    res = sum_mid // TInt(2)
+  else:
+    res = nums_sorted[n // 2]
+  return res
+
 if __name__ == "__main__":
-  tests = [(324, 6), (6, 324), (199, 1), (199, 2), (500, 200), (970, 30), (907, 93), (9, 2), (0, 62), ("0023", "152")]
-  #print("024 >> '0' = ", TInt("024") >> TInt("0"))
-  for x, y in tests:
-    x = TInt(x)
-    y = TInt(y)
-    print(x, y)
-    print("x + y = ", x + y)
-    if x >= y: print("x - y = ", x - y)
-    else: print("y - x = ", y - x)
-    print("x * y = ", x * y)
-    print("x // y = ", x // y)
+  test_arithmetic = False
+  test_sort = True
+  if test_arithmetic:
+    tests = [(324, 6), (6, 324), (199, 1), (199, 2), (500, 200), (970, 30), (907, 93), (9, 2), (0, 62), ("0023", "152")]
+    #print("024 >> '0' = ", TInt("024") >> TInt("0"))
+    for x, y in tests:
+      x = TInt(x)
+      y = TInt(y)
+      print(x, y)
+      print("x + y = ", x + y)
+      if x >= y: print("x - y = ", x - y)
+      else: print("y - x = ", y - x)
+      print("x * y = ", x * y)
+      print("x // y = ", x // y)
+      print("x % y = ", x % y)
+      print("gcd(x, y)", euclidean_alg(x, y))
+  if test_sort:
+    tests = [[1, 2, 3, 4], [5, 4, 32, 51], [1, 5, 3, 7, 2, 0, 0], [5, 4, 3, 2, 1], [0, 0, 1, 0, 2, 3], [0, 0, 2, 3, 1, 1]]
+    for l in tests:
+      TIntList = [TInt(x) for x in l]
+      print(TIntList)
+      print("sort = ", sort_ints(TIntList))
+      print("median = ", median(TIntList))
+      print("-"*50)
 

@@ -19,7 +19,7 @@ sparsity_scheme = None
 sparsity_modes = None
 val_dataset = None
 
-def call_model(prompts, gts, batch_size=16, max_length=500):
+def call_model(prompts, gts, val_answers, batch_size=16, max_length=500):
     answers = []
     inputs = []
     responses = []
@@ -38,12 +38,12 @@ def call_model(prompts, gts, batch_size=16, max_length=500):
         output = model.generate(batch, max_length=max_length)
         output = tok.batch_decode(output)
         #print(RANK, output)
-        answer = [o.split("<|endoftext|>")[0].split("\n")[-1] for o in output]
+        answer = ["".join((o.split("<|endoftext|>")[0].split("\n")[-1]).split()) for o in output]
         answers += answer
         inputs += tok.batch_decode(batch)
         responses += output
     if RANK == 0:
-        response_table = wandb.Table(columns=["inputs", "responses", "extractions", "gts"], data=[[inp, response, extraction, gt] for inp, response, extraction, gt in zip(inputs, responses, answers, gts)])
+        response_table = wandb.Table(columns=["inputs", "responses", "extractions", "gts", "val_answers"], data=[[inp, response, extraction, gt, val_answer] for inp, response, extraction, gt, val_answer in zip(inputs, responses, answers, gts, val_answers)])
         wandb.log({"generations": response_table})
     return answers
 
@@ -54,8 +54,8 @@ def compute_metrics(eval_preds):
     prompts = [tok(prompt, return_tensors="pt").input_ids[0] for prompt in prompts]
     prompts_per_gpu = (len(prompts) + torch.cuda.device_count() - 1) // torch.cuda.device_count()
     responses = val_dataset.responses[RANK * prompts_per_gpu : (RANK + 1) * prompts_per_gpu]
-    answers = [r.split("\n")[-1] for r in responses]
-    outputs = call_model(prompts, responses, batch_size=metric_batch_size, max_length=metric_max_length)
+    answers = ["".join((r.split("\n")[-1]).split()) for r in responses]
+    outputs = call_model(prompts, responses, answers, batch_size=metric_batch_size, max_length=metric_max_length)
     is_correct = torch.tensor([int(outputs[i] == answers[i]) for i in range(len(outputs))], device=f"cuda:{RANK}")
     #print("\n\n\nRANK=0!", is_correct)
     assert len(prompts) % torch.cuda.device_count() == 0
@@ -141,7 +141,7 @@ def train(args):
     data_collator=lambda data: {'input_ids': torch.stack([f[0] for f in data]), 'attention_mask': torch.stack([f[1] for f in data]),'labels': torch.stack([f[2] for f in data])}
 
     trainer = Trainer(model=model, args=training_args, train_dataset=train_dataset, compute_metrics=compute_metrics,
-            eval_dataset=val_dataset, data_collator=data_collator)#, callbacks=[SparsityCallback])
+            eval_dataset=val_dataset, data_collator=data_collator, callbacks=[SparsityCallback])
     trainer.train()
     #trainer.save_model('{}_{}_{}'.format(args.data_path, args.train_data_size, args.epochs))
     model.save_pretrained('ckpts/{}_{}_{}'.format(args.model_path, args.data_path, args.epochs))
@@ -174,11 +174,13 @@ if __name__ == "__main__":
     # Parsing data_path for logging purposes
     data_args = os.path.basename(args.data_path).split("_")
     task = data_args.pop(0)
-    dnl, snl, enl = data_args[-3:]
+    dnl, snl, enl = 0, 0, 0#data_args[-3:]
     prompt_template = "_".join(data_args[:-3])
     args.task = task
     args.dnl = dnl
     args.snl = snl
     args.enl = enl
     args.prompt_template = prompt_template
+    #args.sparsity_modes = [(i, "random") for i in range(5)]
+    #args.sparsity_scheme = [(0, 2), (1, 10), (2, 25), (3, 45), (4, 70)]
     train(args)
