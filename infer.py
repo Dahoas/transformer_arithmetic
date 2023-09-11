@@ -1,6 +1,5 @@
 import torch
 from data.util import load_jsonl
-from data.data import MaskedSFTDataset
 from accelerate import Accelerator
 import argparse
 from transformers import AutoModelForCausalLM, AutoTokenizer

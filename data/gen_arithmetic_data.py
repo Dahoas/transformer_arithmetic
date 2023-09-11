@@ -23,7 +23,7 @@ trace = ''
 exec_depth = 0
 subbed_line = ""
 
-num_procs = 1
+num_procs = 20
 
 def reset_vars():
     global prev_vars, prev_changed_var, trace, exec_depth, subbed_line
@@ -360,7 +360,7 @@ def gen_noisy_dataset(prompt_template, doc_noise, noise_fn, word_noise_p, char_n
     for op_string, d in train_sampling_dict.items():
         d_train = d["arg_sampling"]
         d_test = test_sampling_dict[op_string]["arg_sampling"]
-        file_name += "_{}_{}_{}_{}_{}".format(op_string, d_train[0][0], d_train[0][2], d_test[0][0], d_test[0][2])
+        file_name += "_{}_{}_{}_{}_{}_{}_{}".format(op_string, d_train[0][0], d_train[0][1], d_train[0][2], d_test[0][0], d_test[0][1], d_test[0][2])
     #file_name = dataset_dir + "{}_{}_{}_{}_{}".format(op_string, train_digit_size, test_digit_size, prompt_template.__name__, num_train_samples)
     file_name += "_{}_{}_{}_{}".format(generic_noise_function.__name__, doc_noise, word_noise_p, char_noise_p)
     print(f"Dumping dataset in {file_name}")
@@ -414,7 +414,7 @@ if __name__ == "__main__":
             print("\n")
         exit()
 
-    num_train = 40000 // num_procs
+    num_train = 20000 // num_procs
     num_test = 1200
 
     dicts = []
@@ -514,14 +514,76 @@ if __name__ == "__main__":
                           }
     dicts.append((mix_train_dict, mix_test_dict))
 
-    prompt_templates = [no_template]#, chain_of_thought_template]
 
-    d_noises = [0.05, 0.1, 0.2, 0.4, 0.6, 0.8]
-    w_noises = [0.5]
-    char_noises = [0.5]
+    dicts = []
+    add_sub_train_dict = {
+      "num_samples": num_train,
+      "arg_sampling": [["len", 9, 10], ["len", 9, 10]],
+      "visibility": {},
+    }
+    add_sub_test_dict = {
+      "num_samples": num_test,
+      "arg_sampling": [["len", 9, 10], ["len", 9, 10]],
+      "visibility": {},
+    }
+    dicts.append(({"add": add_sub_train_dict}, {"add": add_sub_test_dict}))
+    add_sub_train_dict = {
+      "num_samples": num_train,
+      "arg_sampling": [["len", 14, 15], ["len", 14, 15]],
+      "visibility": {},
+    }
+    add_sub_test_dict = {
+      "num_samples": num_test,
+      "arg_sampling": [["len", 14, 15], ["len", 14, 15]],
+      "visibility": {},
+    }
+    dicts.append(({"add": add_sub_train_dict}, {"add": add_sub_test_dict}))
+    add_sub_train_dict = {
+      "num_samples": num_train,
+      "arg_sampling": [["len", 19, 20], ["len", 19, 20]],
+      "visibility": {},
+    }
+    add_sub_test_dict = {
+      "num_samples": num_test,
+      "arg_sampling": [["len", 19, 20], ["len", 19, 20]],
+      "visibility": {},
+    }
+    dicts.append(({"add": add_sub_train_dict}, {"add": add_sub_test_dict}))
+
+
+    dicts = []
+    add_sub_train_dict = {
+      "num_samples": num_train,
+      "arg_sampling": [["len", 24, 25], ["len", 24, 25]],
+      "visibility": {},
+    }
+    add_sub_test_dict = {
+      "num_samples": num_test,
+      "arg_sampling": [["len", 24, 25], ["len", 24, 25]],
+      "visibility": {},
+    }
+    dicts.append(({"add": add_sub_train_dict}, {"add": add_sub_test_dict}))
+    add_sub_train_dict = {
+      "num_samples": num_train,
+      "arg_sampling": [["len", 1, 25], ["len", 1, 25]],
+      "visibility": {},
+    }
+    add_sub_test_dict = {
+      "num_samples": num_test,
+      "arg_sampling": [["len", 1, 25], ["len", 1, 25]],
+      "visibility": {},
+    }
+    dicts.append(({"add": add_sub_train_dict}, {"add": add_sub_test_dict}))
+
+
+    prompt_templates = [no_template]
+
+    d_noises = [0.0]
+    w_noises = [0.0]
+    char_noises = [0.0]
 
     for doc_noise, word_noise, char_noise in itertools.product(d_noises, w_noises, char_noises):
         for train_samp, test_samp in dicts:
             for prompt_template in prompt_templates:
-                gen_noisy_dataset(prompt_template, doc_noise, noise_by_digit, word_noise, char_noise, train_samp, test_samp)
+                gen_noisy_dataset(prompt_template, doc_noise, null_noise, word_noise, char_noise, train_samp, test_samp)
 
