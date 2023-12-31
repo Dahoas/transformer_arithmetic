@@ -1,0 +1,8 @@
+accelerate==0.19
+transformers==4.28.1
+wandb
+torch
+tqdm
+yaml
+numpy
+datasets

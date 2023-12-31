@@ -1,6 +1,0 @@
-e1:
-  models: [gpt2]
-  toks: [gpt2]
-  tasks: [sort]
-  prompt_templates: [simple_template, chain_of_thought_template]
-  epochs: [20]

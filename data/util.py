@@ -4,6 +4,8 @@ import torch
 from datasets import load_dataset
 
 
+############## Utilities ##############
+
 def load_jsonl(filename):
     data = []
     with open(filename, "r") as f:
@@ -12,6 +14,7 @@ def load_jsonl(filename):
             response = json.loads(line)
             data.append(response)
     return data
+
 
 def dump_jsonl(filename, data):
     with open(filename, "w") as f:
@@ -38,7 +41,7 @@ def check_data(data_path):
 
 
 
-##############Noise Patterns############
+############## Noise Patterns ##############
 
 def null_noise(num, *args, **kwargs):
     return num
@@ -65,18 +68,4 @@ def noise_by_digit(c_noise_p, num):
         t.append(" ".join(l))
     t = "\n".join(t)
     return t
-
-###########Dump Dataset###########
-def anthropic_hh_dump():
-    data = load_dataset("Dahoas/full-hh-rlhf")["train"]
-    print(len(data))
-    print(data[0])
-    dump_jsonl("train.jsonl", data)
-    
-
-
-if __name__ == "__main__":
-    data_path = "datasets/noisy_datasets/no_template_add_len_1_10_len_1_10_noise_by_digit_0.8_0.5/train.jsonl"
-    #check_data(data_path)
-    anthropic_hh_dump()
 
