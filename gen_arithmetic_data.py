@@ -445,7 +445,7 @@ def gen_noisy_dataset(save_folder,
                       n_args,
                       num_train,
                       num_test,
-                      num_procs,):
+                      num_procs=1,):
     torch.random.seed()
     # Reset op visibilities 
     TInt.reset_vis()
@@ -499,9 +499,11 @@ def gen_noisy_dataset(save_folder,
     random.shuffle(train_dataset)
     random.shuffle(test_dataset)
 
-    save_path = f"{save_folder}/{op_name}_{prompt_template.__name__}_\
+    save_path = os.path.join(save_folder, op_name)
+    save_file = f"{prompt_template.__name__}_\
 {doc_noise}_{line_noise}_{char_noise}_{dynamic_noise}_\
 {sampling_mode}_{arg_min_size}_{arg_max_size}"
+    save_path = os.path.join(save_path, save_file)
     print(f"Saving dataset in {save_path}...")
 
     Path(save_path).mkdir(exist_ok=True, parents=True)
@@ -511,7 +513,7 @@ def gen_noisy_dataset(save_folder,
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
-    parser.add_argument("--save_folder", type=str, default="datasets")
+    parser.add_argument("--save_folder", type=str, default="datasets/data/")
     parser.add_argument("--config_path", type=str, default=None)
     
     parser.add_argument("--prompt_template", type=str, default="chain_of_thought", choices=["chain_of_thought", "no_template"])
@@ -542,7 +544,8 @@ if __name__ == "__main__":
 
     config_path = args_dict.pop("config_path")
     if config_path is not None:
-       config = yaml.safe_load(config_path)
+       with open(config_path, "r") as f:
+        config = yaml.safe_load(f)
        args_dict.update(config)
 
     print("Settings: ")
