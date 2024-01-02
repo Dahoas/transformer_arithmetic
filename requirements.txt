@@ -6,3 +6,4 @@ tqdm
 yaml
 numpy
 datasets
+gptquery

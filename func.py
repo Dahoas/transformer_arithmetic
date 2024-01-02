@@ -12,17 +12,16 @@ Things to remove in processing
 3. base function names
 """
 
-# Invis functions generate no trace
-INVIS = 0
-# Visible functions generate a trace
-VIS = 1
-# Called functions are wrapped in call(...) with no trace
-CALL = 2
+
+INVIS = 0  # Invis functions generate no trace
+VIS = 1  # Visible functions generate a trace
+CALL = 2  # Called functions are wrapped in call(...) with no trace
 
 
 class TInt:
-  # Dict tracking list of functions to make visible in trace
   val = "0"
+  noise_pr = 0
+  # Dict tracking list of functions to make visible in trace
   VIS_DICT = {
               "__repr__": INVIS,
               "__str__": INVIS,
@@ -33,19 +32,14 @@ class TInt:
               "__gt__": INVIS,
               "__ge__": INVIS,
               "__or__": INVIS,
-              #"__is_zero": INVIS,
               "__getitem__": INVIS,
-              #"__add": INVIS,
               "__add__": VIS,
               "__rshift__": INVIS,
               "__lshift__": INVIS,
-              #"__mul": INVIS,
               "__mul__": VIS,
-              #"__sub": INVIS,
               "__sub__": VIS,
               "__floordiv__": VIS,
             }
-  noise_pr = 0
 
   def __init__(self, val, vis=INVIS):
     """
@@ -233,19 +227,16 @@ class TInt:
     return TInt(int(x) - int(y))
 
   def __sub__(x, y, vis=VIS):
-    #print("SUBTRACT: ", x, y)
     assert x >= y
     res = copy(E)
     borrow = copy(O)
     while y != O:
-      #print("looping...", x, y, borrow, res)
       # get next digis
       digx = x[O]
       digy = y[O]
       x = x >> I
       y = y >> I
       # factor in borrow
-      #print("got digx, digy, borrow: ", digx, digy, borrow)
       if borrow > O:
         if digx > O:
           digx = digx.__sub(I)
@@ -253,16 +244,13 @@ class TInt:
         else:
           digx = I | TInt(0)
           digx = digx.__sub(I)
-      #print("facored in borrow: digx, borrow", digx, borrow)
       # subtract
       if digx < digy:
         assert borrow == O
         digx = I | digx
         borrow = I
-      #print("borrowed as needed digx, borrow", digx, borrow)
       dd = digx.__sub(digy)
       res = dd | res
-      #print("loop done. x, y, borrow, res:", x, y, borrow, res)
     if borrow != O:
       dd = x.__sub(I)
     else:
@@ -278,14 +266,12 @@ class TInt:
     res = copy(O)
     while x >= y:
       # choose factor
-      #print("div x, y, res: ", x, y, res)
       len_x = x.len()
       len_y = y.len()
       # we know len_x >= len_y
       factor_mag = len_x - len_y
       if (y << factor_mag) > x:
         factor_mag = factor_mag - I
-      #print(x, y, factor_mag)
       dig = I
       sum_div = y
       sub_x = x >> factor_mag
@@ -293,11 +279,9 @@ class TInt:
       while sum_div <= sub_x:
         dig = dig + I
         sum_div = sum_div + y
-        #print("iter", x, y, sum_div + y, sub_x)
       if sum_div > sub_x:
         dig = dig - I
         sum_div = sum_div - y
-      #print("factor sum_div, dig: ", sum_div << factor_mag, dig)
       factor = dig << factor_mag
       # add factor to res
       res = res + factor
@@ -311,33 +295,33 @@ class TInt:
     """
     while x >= y:
       # choose factor
-      #print("div x, y, res: ", x, y, res)
       len_x = x.len()
       len_y = y.len()
       # we know len_x >= len_y
       factor_mag = len_x - len_y
       if (y << factor_mag) > x:
         factor_mag = factor_mag - I
-      #print(x, y, factor_mag)
       sum_div = y
       sub_x = x >> factor_mag
       # TODO make below process of dig guess better
       while sum_div <= sub_x:
         sum_div = sum_div + y
-        #print("iter", x, y, sum_div + y, sub_x)
       if sum_div > sub_x:
         sum_div = sum_div - y
-      #print("factor sum_div, dig: ", sum_div << factor_mag, dig)
       # add factor to res
       remove = sum_div << factor_mag
       x = x - remove
     return x
 
 
+######## Constants ########
 
 O = TInt("0")
 E = TInt("")
 I = TInt("1")
+
+
+######## TInt functions ########
 
 def sort_ints(l, vis=VIS):
   sorted_l = []
@@ -354,7 +338,8 @@ def sort_ints(l, vis=VIS):
     l = l[:min_index] + l[min_index+1:]
   return sorted_l
 
-def euclidean_alg(x, y, vis = VIS):
+
+def euclidean_alg(x, y, vis=VIS):
   """while x != y:
     if x > y: 
       x = x - y
@@ -366,6 +351,7 @@ def euclidean_alg(x, y, vis = VIS):
     y = x % y
     x = t
   return x
+
 
 def median(nums, vis=VIS):
   nums_sorted = sort_ints(nums)
@@ -379,30 +365,3 @@ def median(nums, vis=VIS):
   else:
     res = nums_sorted[n // 2]
   return res
-
-if __name__ == "__main__":
-  test_arithmetic = False
-  test_sort = True
-  if test_arithmetic:
-    tests = [(324, 6), (6, 324), (199, 1), (199, 2), (500, 200), (970, 30), (907, 93), (9, 2), (0, 62), ("0023", "152")]
-    #print("024 >> '0' = ", TInt("024") >> TInt("0"))
-    for x, y in tests:
-      x = TInt(x)
-      y = TInt(y)
-      print(x, y)
-      print("x + y = ", x + y)
-      if x >= y: print("x - y = ", x - y)
-      else: print("y - x = ", y - x)
-      print("x * y = ", x * y)
-      print("x // y = ", x // y)
-      print("x % y = ", x % y)
-      print("gcd(x, y)", euclidean_alg(x, y))
-  if test_sort:
-    tests = [[1, 2, 3, 4], [5, 4, 32, 51], [1, 5, 3, 7, 2, 0, 0], [5, 4, 3, 2, 1], [0, 0, 1, 0, 2, 3], [0, 0, 2, 3, 1, 1]]
-    for l in tests:
-      TIntList = [TInt(x) for x in l]
-      print(TIntList)
-      print("sort = ", sort_ints(TIntList))
-      print("median = ", median(TIntList))
-      print("-"*50)
-
