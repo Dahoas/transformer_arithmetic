@@ -1,0 +1,23 @@
+save_folder: "datasets/data/"
+prompt_template: "chain_of_thought"
+op_name: "add"
+
+# argument sampling params
+sampling_mode: "len"
+arg_min_size: 1
+arg_max_size: 10
+n_args: 2
+
+# op visibilities
+invisible_ops: []  # By default all lower level ops are invisible
+visible_ops: []  # By default all higher level ops are visible
+
+# noise levels
+doc_noise: 0.0
+char_noise: 0.0
+line_noise: 0.0
+dynamic_noise: 0.0
+
+# sample sizes
+num_train: 50
+num_test: 100
