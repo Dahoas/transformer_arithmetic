@@ -17,17 +17,22 @@ from util import dump_jsonl
 from func import *
 
 
+######## TInt trace utility ########
+
 codefile = "func.py"
 f = open(codefile)
 lines = f.read().splitlines()
 
-
 prev_vars = {}
 prev_changed_var = ''
 trace = ''
+trace_line_limit = 300
 exec_depth = 0
 subbed_line = ""
 include_code = False
+
+class TraceLimitExceeded(Exception):
+    pass
 
 
 def reset_vars():
@@ -86,18 +91,13 @@ def simple_template(l):
 
 
 def custom_trace(frame, event, arg = None):
-  global codefile, prev_vars, prev_changed_var, trace, exec_depth, subbed_line, include_code
-  #print(event, frame.f_lineno, frame.f_code, frame.f_locals)
+  global codefile, prev_vars, prev_changed_var, trace, exec_depth, subbed_line, include_code, trace_line_limit
   line_no = frame.f_lineno
-  #print(frame.f_code.co_filename)
   if codefile != "func.py": print("CODEFILE CHANGED: ", codefile + "\n")
   if not codefile in frame.f_code.co_filename: 
     return custom_trace
   code_line = lines[line_no - 1].strip()
-  #trace += "CUSTOM TRACE CALL: " + code_line + " " + event + "\n"
   local_vars = frame.f_locals
-  #trace += "Code, event: " + code_line + event + "\n"
-  #trace += "localvars: " + str(local_vars) + "\n"
   if local_vars["vis"] == INVIS:
     subbed_line = ""
     return custom_trace
@@ -107,17 +107,14 @@ def custom_trace(frame, event, arg = None):
     subbed_line = ""
     pass # keep trace
   elif local_vars["vis"] == CALL:
-    #trace += "LOCALVIS=CALL\n"
     #if exec_depth > 2: return custom_trace
     if event == "call":
-      #trace += "EVENT=CALL with subbedline: " + subbed_line + "\n"
       # Only keep trace for top level call of function
       if len(subbed_line) > 0: trace += subbed_line + "\n"
     subbed_line = ""
     return custom_trace
   else:
     raise ValueError("Unknown visibility {}".format(local_vars["vis"]))
-  #print(prev_vars, local_vars)
 
   if include_code and event not in ["call"] and "return" not in code_line:
     trace += code_line + "\n"
@@ -141,11 +138,19 @@ def custom_trace(frame, event, arg = None):
   for var in vars_list_by_length:
     code_rhs = code_rhs.replace(var, str(local_vars[var]))
   subbed_line = code_lhs + "= call(" + code_rhs + ")"
-  #trace += "SUBBED LINE: " + subbed_line + '\n'
+
+  # If len of trace exceeds trace_line_limit then terminate execution
+  if len(trace.split("\n")) - 1 > trace_line_limit: raise TraceLimitExceeded
+
   return custom_trace
 
 
-def no_template(op_string, noise_fn, *args):
+######## Templates ########
+
+def no_template(op_string, 
+                noise_fn,
+                line_limit,
+                *args):
     ops = {
             "add": operator.add,
             "sub": operator.sub,
@@ -183,7 +188,6 @@ def no_template(op_string, noise_fn, *args):
     if op_string == "median":
         args = [list(args)]
 
-
     ret = ops[op_string](*args)
     ret = TInt(int(ret))
     ret = noise_fn(ret)
@@ -197,12 +201,10 @@ def no_template(op_string, noise_fn, *args):
     return {"prompt": prompt, "response": response}
 
 
-######## Templates ########
-
 def chain_of_thought_template(op_string, 
-                              noise_fn, 
+                              noise_fn,
                               *args):
-    global trace
+    global trace, trace_line_limit
 
     ops = {"add": operator.add,
             "sub": operator.sub,
@@ -239,7 +241,10 @@ def chain_of_thought_template(op_string,
         args = [list(args)]
 
     sys.settrace(custom_trace)
-    ret = ops[op_string](*args)
+    try:
+        ret = ops[op_string](*args)
+    except TraceLimitExceeded:
+        ret = O
     sys.settrace(None)
     ret = TInt(int(ret))
 
@@ -433,6 +438,7 @@ def _gen_noisy_dataset(op_name,
 def gen_noisy_dataset(save_folder,
                       op_name,
                       prompt_template,
+                      new_trace_line_limit,
                       visible_ops,
                       invisible_ops,
                       doc_noise,
@@ -447,10 +453,13 @@ def gen_noisy_dataset(save_folder,
                       num_test,
                       num_procs=1,):
     torch.random.seed()
+    # Set trace_line_limit
+    global trace_line_limit
+    trace_line_limit = new_trace_line_limit
     # Reset op visibilities 
     TInt.reset_vis()
-    [TInt.update_vis(op_name, "INVIS") for op_name in invisible_ops]
-    [TInt.update_vis(op_name, "VIS") for op_name in visible_ops]
+    [TInt.update_vis(op_name, INVIS) for op_name in invisible_ops]
+    [TInt.update_vis(op_name, VIS) for op_name in visible_ops]
     # Set dynamic noise level
     TInt.set_dynamic_noise(dynamic_noise)
 
@@ -510,6 +519,42 @@ def gen_noisy_dataset(save_folder,
     dump_jsonl(os.path.join(save_path, "train.jsonl"), train_dataset)
     dump_jsonl(os.path.join(save_path, "test.jsonl"), test_dataset)
 
+    # Compute stats about generated datasets
+    def compute_stats(dataset):
+        stats = dict()
+        stats["num_samples"] = len(dataset)
+        line_counts = np.array([len(sample["response"].split("\n")) - 1 for sample in dataset], dtype=np.int32)
+        stats["avg_trace_line_count"] = float(np.mean(line_counts))
+        stats["max_trace_line_count"] = int(np.max(line_counts))
+        stats["num_at_max_trace_line_count"] = int(np.sum(line_counts >= trace_line_limit))
+        stats["trace_line_limit"] = trace_line_limit
+        return stats
+
+    stats = dict()
+    stats["train"] = compute_stats(train_dataset)
+    stats["test"] = compute_stats(test_dataset)
+    stats["config"] = dict(
+                        save_folder=save_folder,
+                        op_name=op_name,
+                        prompt_template=prompt_template.__name__,
+                        new_trace_line_limit=new_trace_line_limit,
+                        visible_ops=visible_ops,
+                        invisible_ops=invisible_ops,
+                        doc_noise=doc_noise,
+                        line_noise=line_noise,
+                        char_noise=char_noise,
+                        dynamic_noise=dynamic_noise,
+                        sampling_mode=sampling_mode, 
+                        arg_min_size=arg_min_size,
+                        arg_max_size=arg_max_size,
+                        n_args=n_args,
+                        num_train=num_train,
+                        num_test=num_test,
+                        num_procs=num_procs,
+                    )
+    with open(os.path.join(save_path, "stats.json"), "w") as f:
+        json.dump(stats, f, indent=2)
+
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser()
@@ -522,13 +567,14 @@ if __name__ == "__main__":
     parser.add_argument("--arg_max_size", default=10, type=int)
     parser.add_argument("--n_args", type=int, default=2, help="Number of arguments to sample")
 
-    parser.add_argument("--op_name", type=str, default="add", choices=["add", "sub", "mul",
-                                                                       "div", "len", "rsh",
-                                                                       "rind", "sort", "gcd",
-                                                                       "median",])
+    parser.add_argument("--op_name", type=str, default="add", choices=["__eq__", "__ne__", "__gt__", "__ge__",
+                                                                       "__or__", "__getitem__", "__rshift__", "__lshift__",
+                                                                       "__add__", "__sub__", "__mul__", "__floordiv__"])
+
     parser.add_argument("--invisible_ops", default=[], type=List[str], help="By default all lower level ops are invisible")
     parser.add_argument("--visible_ops", default=[], type=List[str], help="By default all higher level ops are visible")
-    
+    parser.add_argument("--new_trace_line_limit", default=300, help="Maximum number of lines in generated trace before termination")
+
     parser.add_argument("--doc_noise", default=0, type=float)
     parser.add_argument("--line_noise", default=0, type=float)
     parser.add_argument("--char_noise", default=0, type=float)

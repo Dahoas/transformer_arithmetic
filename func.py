@@ -139,7 +139,6 @@ class TInt:
     res = copy(E)
     carry = copy(O)
     while x != O or y != O:
-      #print(x, y, res)
       digx = x[O]
       digy = y[O]
       x = x >> I
@@ -151,7 +150,6 @@ class TInt:
         carry = copy(O)
       else:
         carry = copy(I)
-      #print(x, y, res)
     if carry > O:
       res = carry | res
     return res
@@ -183,8 +181,8 @@ class TInt:
 
     Note: This might be a difficult base case to learn
     """
-    assert x.len() <= I
-    assert y.len() <= I
+    assert x.len() <= I or TInt.noise_pr > 0
+    assert y.len() <= I or TInt.noise_pr > 0
     return TInt(int(x) * int(y))
 
   def __mul__(x, y, vis=VIS):
@@ -224,10 +222,11 @@ class TInt:
     return out_res
 
   def __sub(x, y, vis=INVIS):
-    return TInt(int(x) - int(y))
+    assert x >= y or TInt.noise_pr > 0
+    return TInt(np.abs(int(x) - int(y)))
 
   def __sub__(x, y, vis=VIS):
-    assert x >= y
+    assert x >= y or TInt.noise_pr > 0
     res = copy(E)
     borrow = copy(O)
     while y != O:
@@ -246,7 +245,7 @@ class TInt:
           digx = digx.__sub(I)
       # subtract
       if digx < digy:
-        assert borrow == O
+        assert borrow == O or TInt.noise_pr > 0
         digx = I | digx
         borrow = I
       dd = digx.__sub(digy)

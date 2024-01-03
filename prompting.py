@@ -28,8 +28,6 @@ with three levels of dataset noise
 Run 0.5 noise first to see how that affects the model
 
 Also test on sorting and gcd tasks with clean data
-
-Seems to be a bug for dynamic noise and multiplication
 """
 
 
