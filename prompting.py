@@ -17,13 +17,14 @@ to minimize cost use num_test = 100
 Do noise experiments on
 - add 1-10
 - med 1-8
-- mult/division 1-8
+- mult 1-8
 with three levels of dataset noise
-- 0.0, 0.5, 1.0
-    - Use 0.25, 0.5, 0.75 char, line, dynamic
+- 0.0, 0.2, 0.5, 0.8
+    - Use 0.3, 0.6, 0.9 char, line
+    - 0.2, 0.4 dynamic
 
-3 * 2 * 3 * 3 + 3 = 57 total experiments
-- 5700 total queries -> 5700 minutes
+3 + 3 * 3 * 3 + 3 * 3 * 2 = 58
+- 5800 total queries -> 5800 minutes
 
 Run 0.5 noise first to see how that affects the model
 
@@ -44,7 +45,8 @@ def solve(exemplar_path,
           save_folder,
           model_name,
           oai_key,):
-    system_prompt_text = "Below are several questions and solutions solved using an algorithm. Use this algorithm to solve the last question. Do NOT use code."
+    system_prompt_text = "Below are several questions and solutions solved using an algorithm. Use this algorithm to solve the last question. \
+Do NOT use code. Make sure to give your final answer on the last newline without any other text."
     exemplars = load_jsonl(exemplar_path)
     task_prompt_text = make_few_shot_prompt(exemplars, num_few_shot)
 

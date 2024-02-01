@@ -15,16 +15,16 @@ if __name__ == "__main__":
     print(json.dumps(base_config, indent=2))
 
     ops = {
-            #"add": {"arg_max_size": 10, "invisible_ops": [], "visible_ops": []},
-            #"mul": {"arg_max_size": 5, "invisible_ops": ["__add__", "__sub__"], "visible_ops": []},
-            "div": {"arg_max_size": 8, "invisible_ops": ["__add__", "__sub__"], "visible_ops": []},
-            "median": {"arg_max_size": 5, "invisible_ops": ["__add__", "__sub__", "__mul__", "__floordiv__"], "visible_ops": []},
+            #"add": {"arg_max_size": 10, "invisible_ops": [], "visible_ops": [], "n_args": 2},
+            #"mul": {"arg_max_size": 5, "invisible_ops": ["__add__", "__sub__"], "visible_ops": [], "n_args": 2},
+            #"div": {"arg_max_size": 8, "invisible_ops": ["__add__", "__sub__"], "visible_ops": [], "n_args": 2},
+            "median": {"arg_max_size": 3, "invisible_ops": ["__add__", "__sub__", "__mul__", "__floordiv__"], "visible_ops": [], "n_args": 5},
           }
 
-    d_noises = np.linspace(0, 0.2, num=3, endpoint=True)
-    c_noises = np.linspace(0.1, 0.3, num=3, endpoint=True)
-    l_noises = np.linspace(0.1, 0.3, num=3, endpoint=True)
-    dynamic_noises = np.linspace(0.1, 0.3, num=3, endpoint=True)
+    d_noises = [0, 0.2, 0.5, 0.8]
+    c_noises = [0.3, 0.6, 0.9]
+    l_noises = [0.3, 0.6, 0.9]
+    dynamic_noises = [0.2, 0.4]
 
     def update_and_generate(updates: dict):
        exp_config = deepcopy(base_config)
@@ -38,6 +38,7 @@ if __name__ == "__main__":
         exp_config["arg_max_size"] = ops[op]["arg_max_size"]
         exp_config["invisible_ops"] = ops[op]["invisible_ops"]
         exp_config["visible_ops"] = ops[op]["visible_ops"]
+        exp_config["n_args"] = ops[op]["n_args"]
         for d_noise in d_noises:
           exp_config["doc_noise"] = d_noise
           if d_noise == 0:
