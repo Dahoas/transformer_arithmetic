@@ -1,5 +1,10 @@
 data/datasets/*/*.jsonl
 data/datasets/
+datasets/
 *.jsonl
 wandb/
-logs/
+logs/*
+ckpts/
+__pycache__
+scripts/
+results/

@@ -1,1 +1,0 @@
-python experiment.py --num_procs 1 --master_config master/distillation_experiments.yaml
